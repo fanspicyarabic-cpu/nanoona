@@ -11,9 +11,16 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Method Not Allowed. يرجى استخدام طريقة POST.' });
   }
-
   try {
-    const { userId, telegramUsername, amount, serviceType } = req.body || {};
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
+    const { userId, telegramUsername, amount, serviceType } = body || {};
 
     const cleanTelegram = (telegramUsername || userId || '').trim();
     if (!cleanTelegram) {
