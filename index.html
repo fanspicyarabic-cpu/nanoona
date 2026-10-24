@@ -5,27 +5,30 @@
   <meta name="spaceremit-verification" content="R1F0D0ZUZTNS7APR2JQZNKKHOU4EWWKNJFPOT45TLBV3I3UENP">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الملكة نانو | الحسابات الرسمية وبوابة الدفع الحصري</title>
+  <title>الملكة نانو | المنصة الرسمية والمحتوى الحصري VIP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #07070b;
-      --card-bg: rgba(18, 18, 28, 0.88);
-      --card-border: rgba(212, 175, 55, 0.3);
+      --bg-dark: #08080f;
+      --card-bg: rgba(16, 16, 26, 0.78);
+      --card-border: rgba(212, 175, 55, 0.28);
       --card-active-border: #f5c444;
       --gold-primary: #d4af37;
       --gold-light: #ffd700;
       --gold-gradient: linear-gradient(135deg, #ffe57f 0%, #d4af37 50%, #996515 100%);
       --gold-glow: rgba(255, 215, 0, 0.35);
+      --emerald-green: #10b981;
+      --emerald-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --telegram-blue: #38bdf8;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --radius-xl: 24px;
       --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-sm: 8px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -33,23 +36,26 @@
       margin: 0;
       padding: 0;
       font-family: 'Tajawal', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       background-color: var(--bg-dark);
       background-image:
-        radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.09) 0px, transparent 50%);
+        radial-gradient(at 10% 10%, rgba(212, 175, 55, 0.1) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.05) 0px, transparent 60%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 30px 16px;
       position: relative;
       overflow-x: hidden;
+      padding-bottom: 60px;
     }
 
+    /* تأثيرات الإضاءة الخلفية */
     .bg-lights {
       position: fixed;
       top: 0;
@@ -61,440 +67,609 @@
       overflow: hidden;
     }
 
-    .light-orb {
+    .light-blob {
       position: absolute;
       border-radius: 50%;
       filter: blur(90px);
-      opacity: 0.6;
+      opacity: 0.35;
+      animation: float 20s infinite alternate;
     }
 
     .light-1 {
-      width: 480px;
-      height: 480px;
-      background: rgba(212, 175, 55, 0.16);
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
+      width: 450px;
+      height: 450px;
+      background: rgba(212, 175, 55, 0.18);
+      top: -150px;
+      left: -100px;
     }
 
     .light-2 {
-      width: 320px;
-      height: 320px;
-      background: rgba(236, 72, 153, 0.1);
-      bottom: 50px;
-      right: -50px;
+      width: 400px;
+      height: 400px;
+      background: rgba(16, 185, 129, 0.14);
+      bottom: -100px;
+      right: -80px;
+      animation-delay: -7s;
     }
 
-    .container {
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(40px) scale(1.08); }
+    }
+
+    /* الشريط العلوي الثابت */
+    .top-nav {
+      position: sticky;
+      top: 0;
       width: 100%;
-      max-width: 530px;
-      position: relative;
-      z-index: 1;
+      background: rgba(8, 8, 15, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      z-index: 100;
+      padding: 12px 18px;
     }
 
-    .payment-card {
+    .top-nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nav-avatar-mini {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-subtitle {
+      font-size: 11px;
+      color: var(--gold-light);
+    }
+
+    .nav-admin-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: #e2e8f0;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .nav-admin-btn:hover {
+      background: var(--gold-gradient);
+      color: #08080f;
+      border-color: var(--gold-light);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.4);
+    }
+
+    /* الحاوية الرئيسية للتطبيق */
+    .app-wrapper {
+      width: 100%;
+      max-width: 780px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* البروفايل والكارت التعريفي العلوي */
+    .hero-card {
       background: var(--card-bg);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-xl);
-      padding: 0 24px 28px;
-      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(212, 175, 55, 0.08);
+      padding: 26px 20px 20px;
+      text-align: center;
+      margin-bottom: 22px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
       position: relative;
       overflow: hidden;
     }
 
-    /* غلاف بانر شفاف احترافي مقتبس من الصورة */
-    .card-banner {
+    .hero-card::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 135px;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .banner-bg {
-      width: 100%;
-      height: 100%;
-      background-image: url('avatar.jpg');
-      background-size: cover;
-      background-position: center 25%;
-      filter: blur(12px) brightness(0.5);
-      transform: scale(1.15);
-    }
-
-    .banner-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(10, 10, 16, 0.25) 0%, rgba(18, 18, 28, 0.85) 75%, var(--card-bg) 100%);
-    }
-
-    /* رأس الصفحة والبروفايل */
-    .header {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding-top: 45px;
-      margin-bottom: 20px;
-    }
-
-    .profile-container {
-      position: relative;
-      width: 116px;
-      height: 116px;
-      margin: 0 auto 14px;
-    }
-
-    .crown-badge {
-      position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 28px;
-      z-index: 3;
-      filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.7));
-      animation: floatCrown 3s ease-in-out infinite;
-    }
-
-    @keyframes floatCrown {
-
-      0%,
-      100% {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      50% {
-        transform: translateX(-50%) translateY(-5px);
-      }
-    }
-
-    .avatar-ring {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
+      height: 3px;
       background: var(--gold-gradient);
-      padding: 3.5px;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .avatar-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #141420;
+    .avatar-wrap {
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #07070b;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 14px;
     }
 
     .avatar-img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
       object-fit: cover;
-      object-position: 50% 18%;
-      transition: transform 0.5s ease;
+      border: 3px solid var(--gold-primary);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+      background: #111;
     }
 
-    .profile-container:hover .avatar-img {
-      transform: scale(1.08);
-    }
-
-    .avatar-placeholder {
-      font-size: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, #2d2417 0%, #161622 100%);
-    }
-
-    .name-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 3px;
-    }
-
-    .title {
-      font-size: 26px;
-      font-weight: 900;
+    .vip-verified-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
       background: var(--gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #08080f;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      border: 2px solid #08080f;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+    }
+
+    .hero-name {
+      font-size: 24px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 4px;
       letter-spacing: -0.3px;
     }
 
-    .verified-icon {
-      width: 20px;
-      height: 20px;
-      fill: #38bdf8;
-      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
-    }
-
-    .subtitle {
+    .hero-handle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-    }
-
-    /* شريط إحصائيات وسجل الحساب */
-    .stats-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: rgba(12, 12, 20, 0.7);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: var(--radius-md);
-      padding: 10px 18px;
-      margin: 0 auto 18px;
-      max-width: 420px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-    }
-
-    .stat-num {
-      font-size: 17px;
-      font-weight: 900;
-      color: #fff;
-      display: flex;
-      align-items: baseline;
-      gap: 3px;
-      letter-spacing: -0.2px;
-    }
-
-    .stat-item.highlight .stat-num {
-      color: var(--gold-light);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 2px;
-      font-weight: 500;
-    }
-
-    .stat-divider {
-      width: 1px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* قسم الحسابات الرسمية */
-    .social-section {
-      background: rgba(10, 10, 16, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 12px 14px;
-      margin-bottom: 22px;
-    }
-
-    .social-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--gold-light);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .social-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: rgba(28, 28, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      transition: var(--transition);
-      position: relative;
-    }
-
-    .social-btn svg {
-      width: 20px;
-      height: 20px;
-      transition: transform 0.3s ease;
-    }
-
-    .social-btn:hover {
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    }
-
-    /* تيليجرام */
-    .social-btn.telegram:hover {
-      background: #229ED9;
-      border-color: #229ED9;
-      box-shadow: 0 8px 20px rgba(34, 158, 217, 0.45);
-    }
-
-    /* تيك توك */
-    .social-btn.tiktok:hover {
-      background: #000;
-      border-color: #ff0050;
-      box-shadow: 0 8px 20px rgba(255, 0, 80, 0.4);
-    }
-
-    /* واتساب */
-    .social-btn.whatsapp:hover {
-      background: #25D366;
-      border-color: #25D366;
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.45);
-    }
-
-    /* سناب شات */
-    .social-btn.snapchat:hover {
-      background: #FFFC00;
-      border-color: #FFFC00;
-      box-shadow: 0 8px 20px rgba(255, 252, 0, 0.45);
-    }
-
-    .social-btn.snapchat:hover svg path {
-      fill: #000;
-    }
-
-    /* فان سبايسي Fanspicy */
-    .social-btn.fanspicy {
-      background: rgba(45, 20, 26, 0.85);
-      border-color: rgba(255, 75, 110, 0.3);
-    }
-
-    .social-btn.fanspicy:hover {
-      background: linear-gradient(135deg, #ff3366 0%, #ff6b3d 100%);
-      border-color: #ff3366;
-      box-shadow: 0 8px 20px rgba(255, 51, 102, 0.5);
-    }
-
-    /* تويتر / إكس */
-    .social-btn.x-twitter:hover {
-      background: #000000;
-      border-color: #fff;
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
-    }
-
-    .social-btn::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: -28px;
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      background: rgba(0, 0, 0, 0.9);
-      color: #fff;
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      pointer-events: none;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 10;
-    }
-
-    .social-btn:hover::after {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
-      margin: 20px 0 22px;
-    }
-
-    /* خيارات الخدمات */
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #e2e8f0;
+      color: var(--telegram-blue);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 3px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
       margin-bottom: 12px;
+      direction: ltr;
+    }
+
+    .hero-bio {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto 16px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* التبويبات الرئيسية (Tabs) */
+    .tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(14, 14, 22, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 8px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-    }
-
-    .options-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .option-card {
-      position: relative;
-      background: rgba(25, 25, 38, 0.65);
-      border: 1.5px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      padding: 16px 18px;
-      cursor: pointer;
       transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
 
-    .option-header {
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      background: var(--gold-gradient);
+      color: #07070b;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+
+    /* أقسام المحتوى لكل تبويب */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ========================================================
+       1️⃣ تبويب المحتوى الحصري (Exclusive Feed)
+       ======================================================== */
+    .feed-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .option-card:hover {
-      border-color: rgba(212, 175, 55, 0.5);
-      background: rgba(32, 32, 50, 0.9);
+    .feed-filter-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .filter-pill.active {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+    }
+
+    .post-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 22px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .post-card:hover {
+      border-color: rgba(212, 175, 55, 0.4);
       transform: translateY(-2px);
     }
 
-    .option-card.selected {
-      border-color: var(--card-active-border);
-      background: rgba(45, 38, 22, 0.45);
-      box-shadow: 0 0 22px rgba(212, 175, 55, 0.22);
-    }
-
-    .option-info {
+    .post-top-meta {
+      padding: 16px 18px 12px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-author-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold-primary);
+      object-fit: cover;
+    }
+
+    .post-author-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .post-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .post-tier-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .tag-vip {
+      background: rgba(212, 175, 55, 0.16);
+      color: var(--gold-light);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+    }
+
+    .tag-free {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .post-body {
+      padding: 0 18px 14px;
+    }
+
+    .post-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .post-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* حاوية الوسائط والتأثير الضبابي للمحتوى المقفل */
+    .post-media-container {
+      position: relative;
+      width: 100%;
+      background: #000;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .media-element {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.3s ease;
+    }
+
+    .media-element.blurred {
+      filter: blur(24px) brightness(0.65) saturate(1.2);
+      transform: scale(1.08);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .video-frame-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    }
+
+    .video-frame-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* الـ Overlay المقفل المائل للفخامة */
+    .locked-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      text-align: center;
+      background: rgba(6, 6, 12, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 5;
+    }
+
+    .lock-icon-glow {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 2px solid var(--gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+      animation: pulseGlow 2.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.35); }
+      50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255, 215, 0, 0.6); }
+    }
+
+    .locked-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .locked-subtitle {
+      font-size: 12px;
+      color: #cbd5e1;
+      max-width: 320px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .unlock-btn {
+      background: var(--gold-gradient);
+      color: #08080f;
+      font-size: 14px;
+      font-weight: 900;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 11px 24px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .unlock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.65);
+    }
+
+    .post-footer-actions {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .post-action-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .post-action-btn:hover, .post-action-btn.liked {
+      color: #ef4444;
+    }
+
+    /* ========================================================
+       2️⃣ تبويب الباقات والدفع المحلي + SpaceRemit
+       ======================================================== */
+    .plans-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .plan-card:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(22, 22, 34, 0.9);
+    }
+
+    .plan-card.selected {
+      border-color: var(--card-active-border);
+      background: rgba(26, 26, 42, 0.95);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+    }
+
+    .plan-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .plan-radio-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .radio-circle {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.3);
       display: flex;
@@ -504,7 +679,7 @@
       flex-shrink: 0;
     }
 
-    .option-card.selected .radio-circle {
+    .plan-card.selected .radio-circle {
       border-color: var(--gold-light);
     }
 
@@ -515,152 +690,61 @@
       background: var(--gold-light);
       border-radius: 50%;
       opacity: 0;
-      transform: scale(0.5);
+      transform: scale(0.4);
       transition: var(--transition);
     }
 
-    .option-card.selected .radio-circle::after {
+    .plan-card.selected .radio-circle::after {
       opacity: 1;
       transform: scale(1);
     }
 
-    .option-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 2px;
-    }
-
-    .option-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .option-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
-      background: rgba(212, 175, 55, 0.16);
-      color: #ffd700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      margin-right: 6px;
-      border: 1px solid rgba(212, 175, 55, 0.35);
-    }
-
-    .option-price {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--gold-light);
-      display: flex;
-      align-items: baseline;
-      gap: 2px;
-      direction: ltr;
-    }
-
-    .currency {
-      font-size: 14px;
-      color: var(--gold-primary);
-    }
-
-    /* حقل مخصص وتفاعلي لقيم الإكرامية الجاهزة */
-    .tip-custom-box {
-      display: none;
-      padding-top: 14px;
-      border-top: 1px dashed rgba(212, 175, 55, 0.25);
-      animation: fadeIn 0.3s ease;
-      width: 100%;
-    }
-
-    .tip-custom-box.active {
-      display: block;
-    }
-
-    .preset-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #e2e8f0;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .tip-presets {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .preset-btn {
-      background: rgba(20, 20, 32, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-sm);
-      color: #f1f5f9;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 8px 4px;
-      cursor: pointer;
-      transition: var(--transition);
-      direction: ltr;
-    }
-
-    .preset-btn:hover {
-      border-color: var(--gold-primary);
-      background: rgba(45, 38, 22, 0.7);
-      transform: translateY(-1px);
-    }
-
-    .preset-btn.active {
-      background: var(--gold-gradient);
-      color: #0b0b12;
-      border-color: var(--gold-light);
-      box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
-    }
-
-    .tip-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .tip-currency-tag {
-      position: absolute;
-      left: 14px;
-      color: var(--gold-light);
-      font-weight: 800;
+    .plan-title {
       font-size: 16px;
-      pointer-events: none;
-    }
-
-    .tip-input {
-      width: 100%;
-      background: rgba(14, 14, 22, 0.9);
-      border: 1.5px solid rgba(212, 175, 55, 0.35);
+      font-weight: 800;
       color: #fff;
-      padding: 10px 14px 10px 38px;
-      border-radius: var(--radius-sm);
-      font-size: 15px;
-      font-weight: 700;
-      outline: none;
-      direction: ltr;
-      text-align: right;
-      transition: var(--transition);
     }
 
-    .tip-input:focus {
-      border-color: var(--gold-light);
-      box-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
-    }
-
-    .tip-hint {
-      font-size: 11px;
+    .plan-desc {
+      font-size: 12px;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 2px;
+    }
+
+    .plan-price {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--gold-light);
+      direction: ltr;
+    }
+
+    .plan-features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-top: 10px;
+    }
+
+    .plan-feature-item {
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* حقل التليجرام */
+    .checkout-form-box {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    }
+
     .form-group {
       margin-bottom: 20px;
     }
@@ -668,39 +752,19 @@
     .form-label {
       display: block;
       font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-weight: 700;
       color: #cbd5e1;
-    }
-
-    .form-label span.req {
-      color: #ef4444;
-    }
-
-    .input-field-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-field-wrapper .input-icon {
-      position: absolute;
-      right: 14px;
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
+      margin-bottom: 8px;
     }
 
     .text-input {
       width: 100%;
-      background: rgba(20, 20, 32, 0.85);
+      background: rgba(14, 14, 24, 0.95);
       border: 1.5px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-md);
-      padding: 14px 44px 14px 14px;
+      padding: 13px 16px;
       color: #fff;
-      font-size: 15px;
+      font-size: 14px;
       outline: none;
       transition: var(--transition);
       direction: ltr;
@@ -708,104 +772,322 @@
     }
 
     .text-input:focus {
-      border-color: var(--card-active-border);
-      background: rgba(25, 25, 42, 0.95);
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
     }
 
-    .text-input::placeholder {
-      color: #64748b;
-      direction: rtl;
+    /* محدد طرق الدفع المحلية والمحافظ */
+    .payment-methods-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
     }
 
-    /* ملخص المجموع وزر الدفع */
-    .summary-box {
-      background: rgba(14, 14, 22, 0.9);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .pay-method-tab {
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 10px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
 
-    .summary-label {
+    .pay-method-tab:hover {
+      border-color: rgba(212, 175, 55, 0.35);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .pay-method-tab.active {
+      border-color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.14);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+    }
+
+    .pay-method-tab .tab-flag {
+      font-size: 20px;
+    }
+
+    .pay-method-tab .tab-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* بطاقة تفاصيل التحويل للمحفظة المختارة */
+    .wallet-instructions-box {
+      background: rgba(10, 10, 18, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .wallet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 10px;
+    }
+
+    .wallet-title {
       font-size: 14px;
+      font-weight: 800;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wallet-detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 8px;
+    }
+
+    .detail-label {
+      font-size: 12px;
       color: var(--text-muted);
     }
 
-    .summary-total {
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--gold-light);
+    .detail-value-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
       direction: ltr;
     }
 
-    .pay-btn {
+    .copy-pill-btn {
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-light);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .copy-pill-btn:hover {
+      background: var(--gold-gradient);
+      color: #08080f;
+    }
+
+    /* رافع إيصال التحويل (Receipt Uploader) */
+    .receipt-upload-box {
+      border: 2px dashed rgba(212, 175, 55, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.02);
+      transition: var(--transition);
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .receipt-upload-box:hover {
+      border-color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.04);
+    }
+
+    .receipt-preview-wrap {
+      display: none;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .receipt-preview-wrap.active {
+      display: block;
+    }
+
+    .receipt-preview-img {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      object-fit: contain;
+    }
+
+    .remove-receipt-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(239, 68, 68, 0.85);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* أزرار الدفع الرئيسية */
+    .main-submit-btn {
       width: 100%;
       background: var(--gold-gradient);
-      color: #0b0b12;
+      color: #08080f;
       border: none;
       border-radius: var(--radius-md);
       padding: 16px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
-      transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      box-shadow: 0 12px 28px -6px rgba(212, 175, 55, 0.45);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+      transition: var(--transition);
     }
 
-    .pay-btn:hover {
+    .main-submit-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 16px 32px -6px rgba(255, 215, 0, 0.6);
-      filter: brightness(1.04);
+      box-shadow: 0 14px 30px rgba(255, 215, 0, 0.6);
     }
 
-    .pay-btn:active {
-      transform: translateY(0);
+    /* ========================================================
+       3️⃣ تبويب عن القناة والمميزات (About & VIP Perks)
+       ======================================================== */
+    .perks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
     }
 
-    .security-badge {
+    .perk-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .perk-icon {
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
+
+    .perk-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .perk-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .social-channels-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .social-channels-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .social-link-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .btn-tg {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+    }
+
+    .btn-wa {
+      background: rgba(37, 211, 102, 0.12);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      color: #25d366;
+    }
+
+    /* أسئلة شائعة (FAQ Accordion) */
+    .faq-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 16px 14px;
       font-size: 12px;
-      color: #64748b;
-      margin-top: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
-    .security-badge svg {
-      width: 14px;
-      height: 14px;
-      fill: #10b981;
+    .faq-item.active .faq-answer {
+      display: block;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* نافذة الدفع المنبثقة عبر SpaceRemit */
-    .sp-modal-overlay {
+    /* ========================================================
+       4️⃣ لوحة الإدارة الشاملة (Admin Dashboard Modal)
+       ======================================================== */
+    .admin-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      z-index: 99999;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 9999;
       display: none;
       align-items: center;
       justify-content: center;
@@ -814,443 +1096,236 @@
       transition: opacity 0.3s ease;
     }
 
-    .sp-modal-overlay.active {
+    .admin-modal-overlay.active {
       display: flex;
       opacity: 1;
     }
 
-    .sp-modal-card {
-      background: #0f0f18;
-      border: 1px solid rgba(212, 175, 55, 0.45);
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), 0 0 50px rgba(212, 175, 55, 0.2);
-      border-radius: 24px;
+    .admin-panel-card {
+      background: #0d0d16;
+      border: 1px solid var(--gold-primary);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(212, 175, 55, 0.2);
       width: 100%;
-      max-width: 490px;
-      max-height: 94vh;
+      max-width: 820px;
+      max-height: 92vh;
       overflow-y: auto;
       padding: 24px;
       position: relative;
-      animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      box-sizing: border-box;
     }
 
-    @keyframes modalSlideUp {
-      from {
-        transform: translateY(30px) scale(0.96);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .sp-modal-header {
+    .admin-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 14px;
     }
 
-    .sp-modal-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .admin-tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
     }
 
-    .sp-mode-badge {
-      font-size: 11px;
-      background: rgba(245, 196, 68, 0.15);
-      color: #ffd700;
-      border: 1px solid rgba(245, 196, 68, 0.4);
-      border-radius: 20px;
-      padding: 3px 10px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-
-    .sp-modal-close {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    .admin-tab-btn {
+      background: transparent;
+      border: none;
       color: var(--text-muted);
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 10px 4px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
-      font-size: 18px;
-      line-height: 1;
     }
 
-    .sp-modal-close:hover {
-      background: rgba(239, 68, 68, 0.25);
-      color: #ef4444;
-      border-color: rgba(239, 68, 68, 0.4);
-      transform: rotate(90deg);
+    .admin-tab-btn.active {
+      background: var(--gold-gradient);
+      color: #08080f;
     }
 
-    .sp-order-summary {
+    /* إحصائيات الإدارة */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .admin-stat-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      border-radius: var(--radius-md);
+      padding: 14px 10px;
+      text-align: center;
     }
 
-    .sp-summary-details {
+    /* كروت الفواتير في لوحة التحكم */
+    .invoices-list {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 12px;
     }
 
-    .sp-summary-service {
-      font-size: 14px;
-      font-weight: 700;
-      color: #f8fafc;
+    .invoice-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .sp-summary-tg {
-      font-size: 12px;
-      color: #38bdf8;
-      direction: ltr;
-      display: inline-block;
-      text-align: right;
-    }
-
-    .sp-summary-price {
-      font-size: 22px;
-      font-weight: 900;
-      color: #ffd700;
-      text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-    }
-
-    .sp-whatsapp-btn {
+    .invoice-top {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      color: #ffffff;
-      border-radius: 14px;
-      padding: 15px;
-      font-size: 15px;
-      font-weight: 800;
-      text-decoration: none;
-      margin-bottom: 12px;
-      box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4);
-      transition: var(--transition);
-      box-sizing: border-box;
+      justify-content: space-between;
     }
 
-    .sp-whatsapp-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
-      filter: brightness(1.05);
+    .invoice-badge-status {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
     }
 
-    .sp-action-btn {
-      width: 100%;
-      background: var(--gold-gradient);
-      color: #07070b;
-      font-size: 16px;
-      font-weight: 800;
+    .status-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .status-approved {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .status-rejected {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .invoice-actions {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+    }
+
+    .btn-approve {
+      flex: 1;
+      background: var(--emerald-gradient);
+      color: #fff;
       border: none;
-      border-radius: 14px;
-      padding: 14px;
+      border-radius: var(--radius-sm);
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: var(--transition);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+      gap: 6px;
     }
 
-    .sp-action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.55);
-    }
-
-    .sp-security-note {
-      text-align: center;
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-    }
-
-    /* شاشة اكتمال الدفع بنجاح */
-    .sp-success-screen {
-      display: none;
-      text-align: center;
-      padding: 24px 12px 16px;
-    }
-
-    .sp-success-screen.active {
-      display: block;
-    }
-
-    .sp-success-icon-wrap {
-      width: 80px;
-      height: 80px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 2px solid #10b981;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      color: #10b981;
-      margin: 0 auto 18px;
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
-      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.3); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .sp-success-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #10b981;
-      margin-bottom: 8px;
-    }
-
-    .sp-success-desc {
+    .btn-reject {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+      border-radius: var(--radius-sm);
+      padding: 9px 16px;
       font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 20px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    .sp-code-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px dashed rgba(212, 175, 55, 0.4);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-family: monospace;
-      color: #ffd700;
-      font-size: 14px;
-      margin-bottom: 20px;
-      word-break: break-all;
+    /* حقل المعاينة الذكية للوسائط */
+    .smart-media-preview-box {
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: var(--radius-md);
+      background: #000;
+      overflow: hidden;
+      margin-top: 10px;
+      max-height: 240px;
+      display: none;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* ========================================================
-       تحسينات شاملة للتجاوب مع شاشات الهواتف الذكية (Mobile CSS)
-       ======================================================== */
+    .smart-media-preview-box.active {
+      display: flex;
+    }
+
+    /* لايت بوكس لعرض الإيصالات بحجم كامل */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: var(--radius-md);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+      border: 2px solid var(--gold-primary);
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #11111c;
+      border: 1px solid var(--gold-primary);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 9999999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.3);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* تجاوب الشاشات الصغيرة */
     @media (max-width: 640px) {
-      body {
-        padding: 14px 10px;
+      .perks-grid, .social-channels-grid {
+        grid-template-columns: 1fr;
       }
-
-      .container {
-        max-width: 100%;
+      .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-
-      .payment-card {
-        padding: 0 14px 22px;
-        border-radius: 20px;
-      }
-
-      .card-banner {
-        height: 110px;
-      }
-
-      .header {
-        padding-top: 32px;
-        margin-bottom: 14px;
-      }
-
-      .profile-container {
-        width: 96px;
-        height: 96px;
-        margin-bottom: 10px;
-      }
-
-      .avatar-ring {
-        padding: 3px;
-      }
-
-      .crown-badge {
-        font-size: 20px;
-        top: -12px;
-      }
-
-      .title {
-        font-size: 22px;
-      }
-
-      .subtitle {
-        font-size: 13px;
-        margin-top: 4px;
-      }
-
-      .stats-bar {
-        padding: 8px 12px;
-        gap: 8px;
-        margin-top: 14px;
-      }
-
-      .stat-num {
-        font-size: 14px;
-      }
-
-      .stat-label {
-        font-size: 11px;
-      }
-
-      .social-section {
-        margin-top: 14px;
-      }
-
-      .social-title {
-        font-size: 12px;
-        margin-bottom: 10px;
-      }
-
-      .social-bar {
-        gap: 10px;
-      }
-
-      .social-btn {
-        width: 40px;
-        height: 40px;
-      }
-
-      .section-title {
-        font-size: 14px;
-        margin-bottom: 12px;
-      }
-
-      .option-card {
-        padding: 12px 14px;
-        border-radius: 14px;
-        margin-bottom: 10px;
-      }
-
-      .option-title {
-        font-size: 14px;
-      }
-
-      .option-desc {
-        font-size: 11px;
-      }
-
-      .option-price {
-        font-size: 18px;
-      }
-
-      .tip-presets {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-      }
-
-      .preset-btn {
-        padding: 8px;
-        font-size: 13px;
-      }
-
-      .form-label {
-        font-size: 12px;
-      }
-
-      .text-input {
-        padding: 12px 14px 12px 40px;
-        font-size: 14px;
-      }
-
-      .summary-box {
-        padding: 12px 14px;
-        margin-bottom: 14px;
-      }
-
-      .summary-label {
-        font-size: 13px;
-      }
-
-      .summary-total {
-        font-size: 19px;
-      }
-
-      .pay-btn {
-        padding: 14px;
-        font-size: 15px;
-      }
-
-      /* نافذة الدفع على الموبايل */
-      .sp-modal-overlay {
-        padding: 12px 8px;
-      }
-
-      .sp-modal-card {
-        padding: 18px 14px;
-        border-radius: 18px;
-        max-width: 100%;
-      }
-
-      .sp-modal-title {
-        font-size: 15px;
-      }
-
-      .sp-order-summary {
-        padding: 12px;
-      }
-
-      .sp-summary-service {
-        font-size: 13px;
-      }
-
-      .sp-summary-price {
-        font-size: 19px;
-      }
-
-      .sp-action-btn {
-        padding: 13px;
-        font-size: 15px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .title {
-        font-size: 20px;
-      }
-
-      .stats-bar {
-        padding: 6px 8px;
-        gap: 4px;
-      }
-
-      .stat-num {
-        font-size: 13px;
-      }
-
-      .stat-label {
-        font-size: 10px;
-      }
-
-      .option-title {
-        font-size: 13px;
-      }
-
-      .option-price {
-        font-size: 16px;
+      .payment-methods-tabs {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -1258,537 +1333,1293 @@
 
 <body>
 
+  <!-- إضاءة خلفية متحركة -->
   <div class="bg-lights">
-    <div class="light-orb light-1"></div>
-    <div class="light-orb light-2"></div>
+    <div class="light-blob light-1"></div>
+    <div class="light-blob light-2"></div>
   </div>
 
-  <div class="container">
-    <div class="payment-card">
+  <!-- الشريط العلوي الثابت -->
+  <nav class="top-nav">
+    <div class="top-nav-container">
+      <a href="#" class="nav-brand">
+        <img src="avatar.jpg" alt="الملكة نانو" class="nav-avatar-mini" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop'">
+        <div class="nav-brand-text">
+          <span class="nav-title">الملكة نانو 👑</span>
+          <span class="nav-subtitle">المحتوى الحصري VIP</span>
+        </div>
+      </a>
+      <button type="button" class="nav-admin-btn" onclick="openAdminModal()">
+        <span>🔒</span>
+        <span>لوحة التحكم</span>
+      </button>
+    </div>
+  </nav>
 
-      <!-- غلاف بانر شفاف احترافي مقتبس من صورتها -->
-      <div class="card-banner">
-        <div class="banner-bg"></div>
-        <div class="banner-overlay"></div>
+  <!-- الحاوية الأساسية للتطبيق -->
+  <main class="app-wrapper">
+
+    <!-- كارت الهوية والبروفايل الرئيسي -->
+    <header class="hero-card">
+      <div class="avatar-wrap">
+        <img src="avatar.jpg" alt="الملكة نانو الرسمية" class="avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop'">
+        <div class="vip-verified-badge" title="حساب ملكي موثق">✓</div>
       </div>
+      <h1 class="hero-name">الملكة نانو | Queen Nanoona</h1>
+      <div class="hero-handle">@nnano14 • القناة الرسمية</div>
+      <p class="hero-bio">
+        مرحباً بكم في منصتي الرسمية والوحيدة. هنا أشارككم مقاطع البث المباشر، اليوميات الخاصة، والصور الحصرية المحمية، مع إمكانية التواصل والاشتراك السريع عبر المحافظ المحلية.
+      </p>
 
-      <!-- رأس الصفحة والبروفايل -->
-      <header class="header">
-        <div class="profile-container">
-          <span class="crown-badge">👑</span>
-          <div class="avatar-ring">
-            <div class="avatar-inner">
-              <img id="profileImg" src="avatar.jpg" alt="الملكة نانو" class="avatar-img"
-                onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
-              <div id="avatarFallback" class="avatar-placeholder" style="display: none;">
-                👸
-              </div>
-            </div>
-          </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-val">+15.4K</span>
+          <span class="stat-lbl">متابع وفيّ</span>
         </div>
-
-        <div class="name-wrapper">
-          <h1 class="title">الملكة نانو</h1>
-          <svg class="verified-icon" viewBox="0 0 24 24" title="موثق">
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-          </svg>
+        <div class="stat-box">
+          <span class="stat-val">VIP 100%</span>
+          <span class="stat-lbl">محتوى حصري</span>
         </div>
-        <p class="subtitle">الحساب الرسمي | الدفع والاشتراك الحصري المباشر</p>
-
-        <!-- سجل الحساب وإحصائيات الجمهور (كما في تيك توك) -->
-        <div class="stats-bar">
-          <div class="stat-item">
-            <span class="stat-num">1870</span>
-            <span class="stat-label">أتابعه</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item highlight">
-            <span class="stat-num">1.1 مليون</span>
-            <span class="stat-label">متابعين</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">3.2 مليون</span>
-            <span class="stat-label">تسجيلات الإعجاب</span>
-          </div>
+        <div class="stat-box">
+          <span class="stat-val">⚡ فوري</span>
+          <span class="stat-lbl">تفعيل آلي</span>
         </div>
+      </div>
+    </header>
 
-        <!-- قسم الحسابات الرسمية المعتمدة -->
-        <div class="social-section">
-          <div class="social-title">
-            <span>✨</span>
-            <span>الحسابات الرسمية المعتمدة</span>
-            <span>✨</span>
-          </div>
-          <div class="social-bar">
-
-            <!-- تيليجرام -->
-            <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="social-btn telegram"
-              data-tooltip="قناة التليجرام" id="linkTelegram">
-              <svg viewBox="0 0 24 24">
-                <path fill="#229ED9"
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z" />
-              </svg>
-            </a>
-
-            <!-- تيك توك -->
-            <a href="https://www.tiktok.com/@n.nano14" target="_blank" rel="noopener" class="social-btn tiktok"
-              data-tooltip="حساب تيك توك" id="linkTiktok">
-              <svg viewBox="0 0 24 24">
-                <path fill="#ffffff"
-                  d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .58.04.86.12V9.42a6.34 6.34 0 00-.86-.06 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34-6.34V8.71a8.19 8.19 0 004.77 1.52V6.78a4.85 4.85 0 01-1-.09z" />
-              </svg>
-            </a>
-
-            <!-- سناب شات -->
-            <a href="https://www.snapchat.com/@nanoo.na1" target="_blank" rel="noopener" class="social-btn snapchat"
-              data-tooltip="حساب سناب شات" id="linkSnapchat">
-              <svg viewBox="0 0 24 24">
-                <path fill="#FFFC00"
-                  d="M12.002 2C6.91 2 4.545 4.78 4.545 7.15c0 1.34.61 2.8 1.45 3.71.21.23.27.47.16.73-.24.58-1.02 1.15-1.92 1.25-.33.04-.51.27-.47.53.07.45.69.75 1.45.85.24.03.41.16.48.36.19.56.02 1.34-1.28 1.95-.44.2-.67.45-.63.76.08.57 1.05.8 2.06.69.4-.04.7.1.86.38.45.8 1.49 1.14 2.76 1.18.52.02.94.21 1.25.59.58.7 1.51 1.06 2.29 1.06.77 0 1.71-.36 2.29-1.06.31-.38.73-.57 1.25-.59 1.27-.04 2.31-.38 2.76-1.18.16-.28.46-.42.86-.38 1.01.11 1.98-.12 2.06-.69.04-.31-.19-.56-.63-.76-1.3-.61-1.47-1.39-1.28-1.95.07-.2.24-.33.48-.36.76-.1 1.38-.4 1.45-.85.04-.26-.14-.49-.47-.53-.9-.1-1.68-.67-1.92-1.25-.11-.26-.05-.5.16-.73.84-.91 1.45-2.37 1.45-3.71C19.458 4.78 17.094 2 12.002 2z" />
-              </svg>
-            </a>
-
-            <!-- واتساب -->
-            <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="social-btn whatsapp"
-              data-tooltip="محادثة واتساب" id="linkWhatsapp">
-              <svg viewBox="0 0 24 24">
-                <path fill="#25D366"
-                  d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z" />
-              </svg>
-            </a>
-
-            <!-- فان سبايسي Fanspicy -->
-            <a href="https://fanspicy.com/nanoona1/" target="_blank" rel="noopener" class="social-btn fanspicy"
-              data-tooltip="حساب Fanspicy" id="linkFanspicy">
-              <svg viewBox="0 0 24 24">
-                <path fill="#ff4b6e"
-                  d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.09 8.14 13.93C8.08 13.88 8.04 13.83 8 13.76C6.87 12.33 6.69 10.28 7.45 8.64C5.78 10 4.87 12.3 5.04 14.47C5.25 17.15 7.14 19.46 9.77 20.14C12.57 20.86 15.54 19.68 17.1 17.24C18.42 15.23 18.57 12.54 17.66 11.2M14.5 17.5C14.22 17.74 13.76 18 13.32 18.06C12.36 18.2 11.41 17.65 11.03 16.79C10.87 16.42 10.87 15.93 11 15.55C11.11 15.24 11.36 14.97 11.57 14.75C12.16 14.15 12.87 13.81 13.34 13.06C13.84 13.93 14.84 14.37 15.11 15.39C15.37 16.19 15.07 16.97 14.5 17.5Z" />
-              </svg>
-            </a>
-
-            <!-- إكس / تويتر X -->
-            <a href="https://x.com/nanoo_na1" target="_blank" rel="noopener" class="social-btn x-twitter"
-              data-tooltip="منصة X (تويتر)" id="linkTwitter">
-              <svg viewBox="0 0 24 24">
-                <path fill="#ffffff"
-                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </a>
-
-          </div>
-        </div>
-
-      </header>
-
-      <div class="divider"></div>
-
-      <!-- اختيار الخدمة -->
-      <div class="section-title">
+    <!-- أزرار التبويبات الرئيسية (3 تبويبات سلسة) -->
+    <div class="tabs-nav">
+      <button type="button" class="tab-btn active" data-tab="feed" onclick="switchMainTab('feed')">
         <span>💎</span>
-        <span>اختر الخدمة أو الباقة المطلوبة:</span>
+        <span>المحتوى الحصري</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="plans" onclick="switchMainTab('plans')">
+        <span>⭐</span>
+        <span>باقات الاشتراك</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="about" onclick="switchMainTab('about')">
+        <span>👑</span>
+        <span>عن القناة</span>
+      </button>
+    </div>
+
+    <!-- ========================================================
+         1️⃣ تبويب المحتوى الحصري (Exclusive Feed)
+         ======================================================== -->
+    <section id="tab-feed" class="tab-content active">
+      <div class="feed-header">
+        <div class="feed-filter-pills">
+          <button type="button" class="filter-pill active" onclick="filterFeed('all', this)">🌟 الكل</button>
+          <button type="button" class="filter-pill" onclick="filterFeed('video', this)">🎬 فيديوهات</button>
+          <button type="button" class="filter-pill" onclick="filterFeed('image', this)">📸 صور</button>
+          <button type="button" class="filter-pill" onclick="filterFeed('vip', this)">🔒 VIP حصري</button>
+        </div>
+        <div style="font-size: 12px; color: var(--gold-light);" id="feedCountDisplay">
+          جارٍ التحميل...
+        </div>
       </div>
 
-      <div class="options-grid" id="optionsGrid">
+      <!-- قائمة كروت المنشورات الحصرية -->
+      <div id="postsFeedContainer">
+        <!-- يتم ملؤها ديناميكياً عبر الجافاسكريبت -->
+      </div>
+    </section>
 
-        <!-- الباقة 1: اشتراك برايفيت -->
-        <div class="option-card selected" data-service="vip" data-price="50" onclick="selectService(this)">
-          <div class="option-header">
-            <div class="option-info">
+    <!-- ========================================================
+         2️⃣ تبويب باقات الاشتراك والدفع بالمحافظ المحلية وبوابة SpaceRemit
+         ======================================================== -->
+    <section id="tab-plans" class="tab-content">
+      
+      <!-- اختيار الباقة -->
+      <div class="plans-container">
+        
+        <!-- الباقة 1: اشتراك VIP -->
+        <div class="plan-card selected" data-service="vip" data-price="50" onclick="selectPlanCard(this)">
+          <div class="plan-header">
+            <div class="plan-radio-row">
               <div class="radio-circle"></div>
               <div>
-                <div class="option-title">
-                  اشتراك برايفيت VIP
-                  <span class="option-badge">الأكثر طلباً ⭐</span>
-                </div>
-                <div class="option-desc">دخول حصري للقناة الخاصة طيلة فترة الاشتراك</div>
+                <div class="plan-title">اشتراك برايفيت VIP الملكي ⭐</div>
+                <div class="plan-desc">وصول كامل للقناة المغلقة بدون حجب مع تحديثات يومية</div>
               </div>
             </div>
-            <div class="option-price">50 <span class="currency">$</span></div>
+            <div class="plan-price">50 <span style="font-size: 14px; color: var(--gold-primary);">$</span></div>
+          </div>
+          <div class="plan-features-list">
+            <div class="plan-feature-item"><span>✓</span> رابط انضمام فردي صالح لمرة واحدة عبر بوت التليجرام</div>
+            <div class="plan-feature-item"><span>✓</span> بثوث ومقاطع حصرية غير منشورة على العام</div>
+            <div class="plan-feature-item"><span>✓</span> صلاحية مستمرة وتجديد شهري اختياري</div>
           </div>
         </div>
 
         <!-- الباقة 2: مكالمة فيديو مباشر -->
-        <div class="option-card" data-service="call" data-price="30" onclick="selectService(this)">
-          <div class="option-header">
-            <div class="option-info">
+        <div class="plan-card" data-service="call" data-price="30" onclick="selectPlanCard(this)">
+          <div class="plan-header">
+            <div class="plan-radio-row">
               <div class="radio-circle"></div>
               <div>
-                <div class="option-title">
-                  مكالمة فيديو مباشر 📹
-                </div>
-                <div class="option-desc">مكالمة وتواصل مرئي خاص ومباشر</div>
+                <div class="plan-title">مكالمة فيديو مباشر 1-on-1 📹</div>
+                <div class="plan-desc">مكالمة كاميرة خاصة ومباشرة عبر تليجرام في موعدك المفضل</div>
               </div>
             </div>
-            <div class="option-price">30 <span class="currency">$</span></div>
+            <div class="plan-price">30 <span style="font-size: 14px; color: var(--gold-primary);">$</span></div>
+          </div>
+          <div class="plan-features-list">
+            <div class="plan-feature-item"><span>✓</span> مدة المكالمة 20 دقيقة كاملة وجه لوجه</div>
+            <div class="plan-feature-item"><span>✓</span> تحديد الموعد المناسب والتنسيق الفوري عبر واتساب</div>
           </div>
         </div>
 
         <!-- الباقة 3: إكرامية ودعم -->
-        <div class="option-card" data-service="tip" data-price="10" onclick="selectService(this)">
-          <div class="option-header">
-            <div class="option-info">
+        <div class="plan-card" data-service="tip" data-price="10" onclick="selectPlanCard(this)">
+          <div class="plan-header">
+            <div class="plan-radio-row">
               <div class="radio-circle"></div>
               <div>
-                <div class="option-title">
-                  إكرامية ودعم 💖
-                </div>
-                <div class="option-desc">دعم مباشر للملكة نانو بمبلغ من اختيارك</div>
+                <div class="plan-title">إكرامية ودعم للملكة نانو 💖</div>
+                <div class="plan-desc">دعم مباشر لمواصلة صناعة المحتوى المميز</div>
               </div>
             </div>
-            <div class="option-price" id="tipPriceDisplay">10 <span class="currency">$</span></div>
+            <div class="plan-price" id="tipDisplayPrice">10 <span style="font-size: 14px; color: var(--gold-primary);">$</span></div>
           </div>
-
-          <!-- أزرار المبالغ الجاهزة والحقل المخصص -->
-          <div class="tip-custom-box" id="tipCustomBox">
-            <div class="preset-label">
-              <span>⚡</span>
-              <span>اختر مبلغا سريعاً أو حدد قيمة خاصة:</span>
-            </div>
-
-            <!-- أزرار القيم الجاهزة -->
-            <div class="tip-presets">
-              <button type="button" class="preset-btn" onclick="setPresetTip(5, event)">5$</button>
-              <button type="button" class="preset-btn active" onclick="setPresetTip(10, event)">10$</button>
-              <button type="button" class="preset-btn" onclick="setPresetTip(15, event)">15$</button>
-              <button type="button" class="preset-btn" onclick="setPresetTip(20, event)">20$</button>
-              <button type="button" class="preset-btn" onclick="setPresetTip(30, event)">30$</button>
-              <button type="button" class="preset-btn" onclick="setPresetTip(50, event)">50$</button>
-            </div>
-
-            <!-- إدخال قيمة يدوية -->
-            <div class="tip-input-wrapper">
-              <input type="number" id="customTipAmount" class="tip-input" min="4" value="10" step="1"
-                placeholder="أو اكتب مبلغاً مخصصاً (الحد الأدنى 4$)" oninput="updateCustomTip(this.value)">
-              <span class="tip-currency-tag">$</span>
-            </div>
-            <div class="tip-hint">يمكنك تحديد أي مبلغ إكرامية (الحد الأدنى 4$) ✨</div>
+          <div style="display: flex; gap: 6px; margin-top: 8px;">
+            <button type="button" class="filter-pill" onclick="setTipValue(5, event)">5$</button>
+            <button type="button" class="filter-pill active" onclick="setTipValue(10, event)">10$</button>
+            <button type="button" class="filter-pill" onclick="setTipValue(20, event)">20$</button>
+            <button type="button" class="filter-pill" onclick="setTipValue(50, event)">50$</button>
           </div>
-
         </div>
 
       </div>
 
-      <!-- إدخال بيانات المستخدم -->
-      <div class="form-group">
-        <label class="form-label" for="telegramUsername">
-          معرّف التليجرام الخاص بك (Username) <span class="req">*</span>
-        </label>
-        <div class="input-field-wrapper">
-          <input type="text" id="telegramUsername" class="text-input" placeholder="مثال: @username أو المعرف بدون @"
-            required autocomplete="off">
-          <span class="input-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z" />
-            </svg>
-          </span>
+      <!-- نموذج إتمام الدفع بالمحافظ وبوابة SpaceRemit -->
+      <div class="checkout-form-box">
+        
+        <!-- إدخال التليجرام -->
+        <div class="form-group">
+          <label class="form-label" for="userTelegramHandle">معرّف التليجرام الخاص بك (Username) <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="userTelegramHandle" class="text-input" placeholder="مثال: @username أو بدون @" required autocomplete="off">
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
+            * سيتم إرسال رابط الانضمام الفردي والمباشر لهذا المعرف فور تأكيد الدفع.
+          </p>
         </div>
-        <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
-          * سيتم التواصل معك وتفعيل اشتراكك أو ترتيب موعد المكالمة فور إتمام الدفع.
-        </p>
+
+        <!-- اختيار طريقة الدفع المحلية -->
+        <div class="form-group">
+          <label class="form-label">اختر محفظتك المحلية أو بوابة الدفع المعتمدة:</label>
+          <div class="payment-methods-tabs">
+            <div class="pay-method-tab active" data-method="instapay" onclick="selectPaymentMethod('instapay', this)">
+              <span class="tab-flag">🇪🇬</span>
+              <span class="tab-name">InstaPay مصر</span>
+            </div>
+            <div class="pay-method-tab" data-method="vodafone" onclick="selectPaymentMethod('vodafone', this)">
+              <span class="tab-flag">📱</span>
+              <span class="tab-name">فودافون كاش</span>
+            </div>
+            <div class="pay-method-tab" data-method="zaincash" onclick="selectPaymentMethod('zaincash', this)">
+              <span class="tab-flag">🇮🇶</span>
+              <span class="tab-name">العراق (زين/FIB)</span>
+            </div>
+            <div class="pay-method-tab" data-method="spaceremit" onclick="selectPaymentMethod('spaceremit', this)">
+              <span class="tab-flag">🛡️</span>
+              <span class="tab-name">SpaceRemit API</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- صندوق تعليمات التحويل للمحفظة المختارة -->
+        <div class="wallet-instructions-box" id="walletInstructionsBox">
+          <div class="wallet-header">
+            <div class="wallet-title" id="walletTitleText">
+              <span>💳 تفاصيل التحويل عبر InstaPay مصر</span>
+            </div>
+            <span style="font-size: 11px; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">تحويل محلي فوري</span>
+          </div>
+
+          <div id="walletDetailsContainer">
+            <!-- تتغير ديناميكياً بحسب المحفظة -->
+          </div>
+
+          <div style="font-size: 12px; color: #cbd5e1; margin-top: 10px; line-height: 1.5;" id="walletGuideNotice">
+            * قم بتحويل المبلغ المطلوب، ثم التقط صورة شاشة لإشعار التحويل وقم بإرفاقها أدناه لتفعيل اشتراكك بنقرة واحدة.
+          </div>
+        </div>
+
+        <!-- رافع صورة إيصال التحويل (للمحافظ المحلية) -->
+        <div class="form-group" id="receiptUploadGroup">
+          <label class="form-label">إرفاق إيصال التحويل (صورة الإشعار) <span style="color:#ef4444;">*</span></label>
+          <div class="receipt-upload-box" onclick="document.getElementById('receiptFileInput').click()">
+            <input type="file" id="receiptFileInput" accept="image/*" style="display:none;" onchange="handleReceiptFile(event)">
+            <div id="receiptPlaceholder">
+              <span style="font-size: 32px; display: block; margin-bottom: 6px;">🧾</span>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">اضغط هنا لرفع صورة إشعار أو إيصال التحويل</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">يدعم ملفات JPG, PNG, WEBP (حجم حتى 10MB)</div>
+            </div>
+            <div class="receipt-preview-wrap" id="receiptPreviewWrap">
+              <img id="receiptPreviewImg" src="" alt="معاينة الإيصال" class="receipt-preview-img">
+              <button type="button" class="remove-receipt-btn" onclick="removeReceipt(event)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ملخص المبلغ وزر الإرسال -->
+        <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 13px; color: var(--text-muted);">المبلغ المطلوب تحويله:</span>
+          <span style="font-size: 22px; font-weight: 900; color: var(--gold-light);" id="checkoutTotalDisplay">50.00 $</span>
+        </div>
+
+        <!-- زر إرسال الطلب أو التوجيه لـ SpaceRemit -->
+        <button type="button" class="main-submit-btn" id="submitPaymentBtn" onclick="processCheckoutSubmission()">
+          <span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>
+        </button>
+
       </div>
+    </section>
 
-      <!-- ملخص المجموع -->
-      <div class="summary-box">
-        <span class="summary-label">المبلغ الإجمالي للدفع:</span>
-        <span class="summary-total" id="totalDisplay">50.00 $</span>
-      </div>
-
-      <!-- زر الدفع -->
-      <button class="pay-btn" id="payButton" onclick="handlePaymentSubmit()">
-        <span>الانتقال للدفع الآمن عبر SpaceRemit</span>
-        <span>🔒</span>
-      </button>
-
-      <!-- شارة الأمان -->
-      <div class="security-badge">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-        </svg>
-        <span>دفع مشفر ومؤمن 100% عبر بوابة SpaceRemit الرسمية</span>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- نافذة الدفع عبر SpaceRemit (iFrame Widget Modal) -->
-  <div class="sp-modal-overlay" id="spModalOverlay" onclick="handleOverlayClick(event)">
-    <div class="sp-modal-card" id="spModalCard">
+    <!-- ========================================================
+         3️⃣ تبويب عن القناة والمميزات (About & VIP Perks)
+         ======================================================== -->
+    <section id="tab-about" class="tab-content">
       
-      <!-- نموذج الدفع الرسمي وعناصر بوابة SpaceRemit API v2 -->
-      <div id="spCheckoutFormView">
-        <div class="sp-modal-header">
-          <div class="sp-modal-title">
-            <span>🛡️ بوابة الدفع SpaceRemit API v2</span>
-            <span class="sp-mode-badge" id="spModeBadge" style="color: #10b981; border-color: rgba(16, 185, 129, 0.4);">دفع معتمد رسمي 🔒</span>
-          </div>
-          <button type="button" class="sp-modal-close" onclick="closeSpaceRemitModal()" title="إغلاق">✕</button>
+      <!-- شبكة المميزات الحصرية -->
+      <div class="perks-grid">
+        <div class="perk-card">
+          <span class="perk-icon">💎</span>
+          <h2 class="perk-title">محتوى حصري بدون حجب</h2>
+          <p class="perk-desc">صور وفيديوهات خاصة وحصرية تنشر فقط لأعضاء VIP ولا تظهر في أي منصة عامة.</p>
         </div>
-
-        <!-- ملخص الطلب والفاتورة في النافذة -->
-        <div class="sp-order-summary">
-          <div class="sp-summary-details">
-            <span class="sp-summary-service" id="spModalServiceTitle">اشتراك برايفيت VIP</span>
-            <span class="sp-summary-tg" id="spModalTelegram">@username</span>
-            <span style="font-size: 11px; color: var(--gold-primary);" id="spModalInvoiceNumber">فاتورة معتمدة</span>
-          </div>
-          <div class="sp-summary-price" id="spModalPrice">50.00 $</div>
+        <div class="perk-card">
+          <span class="perk-icon">📹</span>
+          <h2 class="perk-title">مكالمات فيديو خاصة 1-on-1</h2>
+          <p class="perk-desc">إمكانية حجز مكالمة حية ومباشرة معي وجه لوجه بأعلى جودة وصوت نقي.</p>
         </div>
-
-        <!-- إشعار فتح النافذة الخارجية -->
-        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
-          <span style="font-size: 24px; flex-shrink: 0;">🚀</span>
-          <div style="font-size: 13px; line-height: 1.5; color: #e2e8f0;">
-            تم فتح <strong style="color: #34d399;">بوابة الدفع الخارجية SpaceRemit</strong> في نافذة جديدة لإتمام سداد الفاتورة بكل أمان.
-          </div>
+        <div class="perk-card">
+          <span class="perk-icon">💬</span>
+          <h2 class="perk-title">تواصل مباشر وتفعيل فوري</h2>
+          <p class="perk-desc">أتابع محادثاتكم وتفاعلكم، مع بوت ذكي يرسل لك رابط القناة فور تأكيد السداد.</p>
         </div>
-
-        <!-- زر تأكيد الفاتورة المباشر عبر الواتساب (WhatsApp) -->
-        <a id="spDirectWhatsappBtn" class="sp-whatsapp-btn" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
-          <span>تأكيد الفاتورة وإرسال الإشعار عبر واتساب 💬</span>
-        </a>
-
-        <!-- زر إعادة فتح صفحة الدفع الخارجية لـ SpaceRemit -->
-        <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--gold-gradient); color: #07070b; border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 800; text-decoration: none; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(212,175,55,0.35); transition: var(--transition);">
-          <span>إعادة فتح صفحة الدفع الخارجية (SpaceRemit) ↗</span>
-        </a>
-
-        <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
-        <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(34, 158, 217, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: var(--transition);">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
-          <span>أو التأكيد عبر التليجرام الرسمي للملكة نانو</span>
-        </a>
-
-        <!-- زر إغلاق بسيط للنافذة المنبثقة -->
-        <button type="button" onclick="closeSpaceRemitModal()" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>العودة للموقع ✕</span>
-        </button>
-
-        <div class="sp-security-note" style="margin-top: 10px;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#10b981"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-          <span>تشفير 256-bit آمن متوافق مع معايير PCI-DSS وبوابة SpaceRemit</span>
+        <div class="perk-card">
+          <span class="perk-icon">🛡️</span>
+          <h2 class="perk-title">طرق دفع محلية آمنة</h2>
+          <p class="perk-desc">لا حاجة لبطاقات ائتمان أجنبية، ادفع عبر InstaPay، فودافون كاش، زين كاش، أو SpaceRemit.</p>
         </div>
       </div>
 
-      <!-- شاشة النجاح عند إتمام الدفع -->
-      <div class="sp-success-screen" id="spSuccessScreen">
-        <div class="sp-success-icon-wrap">✓</div>
-        <h3 class="sp-success-title">تمت عملية الدفع بنجاح! 🎉</h3>
-        <p class="sp-success-desc">
-          شكراً لك! تم استلام دفعتك بنجاح عبر SpaceRemit، وتم تسجيل طلبك وسيتم تفعيل حسابك والتواصل معك فوراً.
-        </p>
-        <div class="sp-code-box" id="spSuccessCodeBox">
-          كود العملية: #SP-CONFIRMED
+      <!-- حسابات التواصل الرسمية للملكة نانو -->
+      <div class="social-channels-card">
+        <div style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px;">القنوات والروابط الرسمية المعتمدة 👑</div>
+        <div style="font-size: 12px; color: var(--text-muted);">يرجى الحذر من أي حسابات مزيفة أو غير مدرجة هنا:</div>
+        
+        <div class="social-channels-grid">
+          <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="social-link-btn btn-tg">
+            <span>✈️</span>
+            <span>قناة التليجرام الرسمية</span>
+          </a>
+          <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="social-link-btn btn-wa">
+            <span>💬</span>
+            <span>واتساب الملكة نانو المباشر</span>
+          </a>
         </div>
-        <button type="button" class="sp-action-btn" onclick="closeSpaceRemitModal()">
-          <span>العودة للصفحة الرئيسية</span>
-        </button>
+      </div>
+
+      <!-- الأسئلة الشائعة -->
+      <div style="margin-bottom: 24px;">
+        <div style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 12px;">الأسئلة الشائعة (FAQ) ❓</div>
+        
+        <div class="faq-item active" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>متى يتم تفعيل اشتراكي بعد التحويل المحلي؟</span>
+            <span>▾</span>
+          </div>
+          <div class="faq-answer">
+            يتم فحص إيصال التحويل وتأكيد الفاتورة سريعاً، ويقوم بوت التليجرام تلقائياً بإرسال رابط انضمام فردي وخاص بك للقناة المغلقة.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>هل يمكن استخدام رابط القناة أكثر من مرة؟</span>
+            <span>▾</span>
+          </div>
+          <div class="faq-answer">
+            لا، روابط الانضمام مبرمجة أوتوماتيكياً لتكون فردية وتستخدم لمرة واحدة فقط (member_limit: 1) لحماية خصوصية مشتركينا.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>هل تتوفر طرق دفع مثل فودافون كاش وزين كاش؟</span>
+            <span>▾</span>
+          </div>
+          <div class="faq-answer">
+            نعم، نوفر محافظ محلية لدول مصر، العراق، والخليج بالإضافة إلى بوابة SpaceRemit المعتمدة دون الحاجة للعملات الرقمية.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       4️⃣ نافذة لوحة التحكم الإدارية الشاملة (Admin Dashboard)
+       ======================================================== -->
+  <div class="admin-modal-overlay" id="adminModalOverlay">
+    <div class="admin-panel-card">
+      
+      <div class="admin-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 22px;">🛡️</span>
+          <div>
+            <div style="font-size: 16px; font-weight: 800; color: #fff;">لوحة تحكم المنصة الملكية</div>
+            <div style="font-size: 11px; color: var(--gold-light);">إدارة الفواتير والاشتراكات والنشر الذكي</div>
+          </div>
+        </div>
+        <button type="button" onclick="closeAdminModal()" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:16px;">✕</button>
+      </div>
+
+      <!-- تبويبات لوحة التحكم -->
+      <div class="admin-tabs-nav">
+        <button type="button" class="admin-tab-btn active" onclick="switchAdminTab('invoices', this)">📋 الفواتير والاشتراكات</button>
+        <button type="button" class="admin-tab-btn" onclick="switchAdminTab('publisher', this)">✍️ النشر الذكي</button>
+        <button type="button" class="admin-tab-btn" onclick="switchAdminTab('posts', this)">📁 المحتوى المنشور</button>
+        <button type="button" class="admin-tab-btn" onclick="switchAdminTab('settings', this)">⚙️ المحافظ والبوت</button>
+      </div>
+
+      <!-- قسم 1: الفواتير والموافقات بنقرة واحدة -->
+      <div id="admin-sec-invoices">
+        
+        <!-- كروت مؤشرات الأداء السريعة -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <div style="font-size: 18px; font-weight: 900; color: #10b981;" id="statTotalRevenue">0 $</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">إجمالي الإيرادات</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="font-size: 18px; font-weight: 900; color: var(--gold-light);" id="statActiveSubscribers">0</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">مشترك نشط</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="font-size: 18px; font-weight: 900; color: #f59e0b;" id="statPendingInvoices">0</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">قيد المراجعة</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="font-size: 18px; font-weight: 900; color: #38bdf8;" id="statTotalInvoices">0</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">إجمالي الفواتير</div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size: 13px; font-weight: 800; color:#fff;">فواتير المحافظ المحلية وبوابة SpaceRemit:</span>
+          <button type="button" onclick="loadAdminInvoices()" style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.3); color:var(--gold-light); border-radius:12px; padding:4px 10px; font-size:11px; cursor:pointer;">تحديث 🔄</button>
+        </div>
+
+        <!-- قائمة الفواتير -->
+        <div class="invoices-list" id="adminInvoicesListContainer">
+          <!-- تملأ برمجياً -->
+        </div>
+
+      </div>
+
+      <!-- قسم 2: لوحة النشر الذكي وكشف الروابط -->
+      <div id="admin-sec-publisher" style="display: none;">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.25); border-radius: var(--radius-lg); padding: 18px;">
+          <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 14px;">نشر محتوى جديد مع الكشف التلقائي للوسائط 🎬</h2>
+          
+          <div class="form-group">
+            <label class="form-label">عنوان المنشور:</label>
+            <input type="text" id="newPostTitle" class="text-input" placeholder="مثال: جلسة تصوير خاصة خلف الكواليس ✨" style="text-align:right;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">وصف / نص المنشور:</label>
+            <textarea id="newPostContent" class="text-input" rows="3" placeholder="اكتب نبذة أو رسالة لمتابعيك..." style="text-align:right;"></textarea>
+          </div>
+
+          <!-- حقل الرابط الذكي مع الكشف التلقائي -->
+          <div class="form-group">
+            <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span>رابط الوسائط الخارجي (صورة أو فيديو مباشر أو يوتيوب):</span>
+              <span id="mediaDetectorBadge" style="font-size:11px; color:#10b981; background:rgba(16,185,129,0.1); padding:2px 8px; border-radius:10px; border:1px solid rgba(16,185,129,0.3); display:none;">كشف ذكي: جاري الفحص...</span>
+            </label>
+            <input type="url" id="newPostMediaUrl" class="text-input" placeholder="https://example.com/video.mp4 أو رابط يوتيوب أو صورة..." oninput="handleSmartMediaDetection(this.value)">
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+              * يتم التعرف التلقائي على الفيديوهات والصور وتضمين مشغل الفيديو المناسب فوراً دون استهلاك أي مساحة تخزينية.
+            </p>
+
+            <!-- صندوق المعاينة الحية الذكي قبل النشر -->
+            <div class="smart-media-preview-box" id="smartMediaPreviewBox">
+              <!-- معاينة الصورة أو مشغل الفيديو -->
+            </div>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: var(--radius-md);">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">محتوى مقفل لمشتركي VIP 🔒</div>
+              <div style="font-size: 11px; color: var(--text-muted);">إضافة تأثير التضبيب الشفاف والقفل الذهبي لغير المشتركين</div>
+            </div>
+            <input type="checkbox" id="newPostIsVip" checked style="width: 20px; height: 20px; accent-color: var(--gold-primary); cursor: pointer;">
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="button" class="main-submit-btn" style="flex:1;" onclick="submitNewPost(false)">
+              <span>نشر في المنصة فقط 🌐</span>
+            </button>
+            <button type="button" class="main-submit-btn" style="flex:1; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);" onclick="submitNewPost(true)">
+              <span>نشر مزدوج (الموقع + قناة تليجرام) 🚀</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- قسم 3: إدارة المحتوى المنشور -->
+      <div id="admin-sec-posts" style="display: none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size: 13px; font-weight: 800; color:#fff;">المنشورات الحالية في المعرض:</span>
+          <button type="button" onclick="loadAdminPostsList()" style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.3); color:var(--gold-light); border-radius:12px; padding:4px 10px; font-size:11px; cursor:pointer;">تحديث 🔄</button>
+        </div>
+        <div id="adminPostsListContainer" style="display:flex; flex-direction:column; gap:10px;">
+          <!-- تملأ برمجياً -->
+        </div>
+      </div>
+
+      <!-- قسم 4: إعدادات المحافظ وبوت التليجرام -->
+      <div id="admin-sec-settings" style="display: none;">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.25); border-radius: var(--radius-lg); padding: 18px;">
+          <h2 style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 12px;">⚙️ إعدادات المحافظ وبوت تليجرام</h2>
+          
+          <div class="form-group">
+            <label class="form-label">حساب InstaPay (مصر):</label>
+            <input type="text" id="cfgInstapay" class="text-input" value="nanoona@instapay">
+          </div>
+          <div class="form-group">
+            <label class="form-label">رقم محفظة فودافون كاش:</label>
+            <input type="text" id="cfgVodafone" class="text-input" value="01023456789">
+          </div>
+          <div class="form-group">
+            <label class="form-label">رقم زين كاش (العراق):</label>
+            <input type="text" id="cfgZaincash" class="text-input" value="07812345678">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telegram Bot Token (للروابط الفردية والنشر الآلي):</label>
+            <input type="text" id="cfgBotToken" class="text-input" placeholder="123456789:ABCdefGHIjkLMNopQRstUVwxyZ">
+          </div>
+          <div class="form-group">
+            <label class="form-label">معرف القناة المغلقة (Channel ID أو @username):</label>
+            <input type="text" id="cfgChannelId" class="text-input" value="@nnano14">
+          </div>
+
+          <button type="button" class="main-submit-btn" onclick="saveSettings()">
+            <span>حفظ الإعدادات 💾</span>
+          </button>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <script>
-    const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5"; // Public Key
-    let currentService = 'vip';
-    let currentPrice = 50;
-    let currentTelegramUser = '';
-    let currentInvoiceNumber = '';
+  <!-- لايت بوكس لعرض الإيصالات بحجم كامل -->
+  <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="صورة الإيصال بحجم كامل" class="lightbox-img">
+  </div>
 
-    const serviceNames = {
-      'vip': 'اشتراك برايفيت VIP ⭐',
-      'call': 'مكالمة فيديو مباشر 📹',
-      'tip': 'إكرامية ودعم 💖'
+  <!-- Toast للإشعارات السريعة -->
+  <div class="toast-msg" id="toastMsg">
+    <span id="toastIcon">✨</span>
+    <span id="toastText">تمت العملية بنجاح!</span>
+  </div>
+
+  <!-- ========================================================
+       السكريبت والمنطق البرمجي الكامل للمنصة
+       ======================================================== -->
+  <script>
+    // بيانات المحافظ المحلية الافتراضية
+    let WALLET_CONFIG = {
+      instapay: {
+        title: '💳 تفاصيل التحويل عبر InstaPay مصر',
+        rows: [
+          { label: 'عنوان الدفع اللحظي (IPA):', val: 'nanoona@instapay' },
+          { label: 'اسم المستلم:', val: 'Queen Nanoona Official' },
+          { label: 'البنك:', val: 'البنك الأهلي المصري / بنك مصر' }
+        ],
+        guide: 'قم بفتح تطبيق انستاباي واختر "إرسال نقود" إلى عنوان الدفع اللحظي، ثم ارفع صورة الإيصال.'
+      },
+      vodafone: {
+        title: '📱 تفاصيل التحويل عبر فودافون كاش (Vodafone Cash)',
+        rows: [
+          { label: 'رقم محفظة فودافون كاش:', val: '01023456789' },
+          { label: 'اسم الحساب:', val: 'نانو للمحتوى الرقمي' }
+        ],
+        guide: 'حوّل المبلغ إلى رقم الكاش أعلاه عبر كود *9*7*الرقم*المبلغ# أو تطبيق أنا فودافون، ثم ارفع الإيصال.'
+      },
+      zaincash: {
+        title: '🇮🇶 تفاصيل الدفع في العراق (زين كاش / FIB)',
+        rows: [
+          { label: 'رقم محفظة زين كاش:', val: '07812345678' },
+          { label: 'حساب المصرف العراقي الأول (FIB):', val: 'FIB-99214' }
+        ],
+        guide: 'قم بالتحويل عبر تطبيق زين كاش أو FIB، ثم ارفع صورة وصل التحويل لتأكيد الفاتورة مباشرة.'
+      },
+      spaceremit: {
+        title: '🛡️ بوابة الدفع الإلكتروني SpaceRemit API v2',
+        rows: [
+          { label: 'حالة البوابة:', val: 'دفع معتمد رسمي 🔒' },
+          { label: 'العملة المدعومة:', val: 'USD (الدولار الأمريكي)' }
+        ],
+        guide: 'عند الضغط على إرسال، سيتم فتح نافذة دفع آمنة ومعتمدة عبر بوابة SpaceRemit مباشرة لإتمام السداد.'
+      }
     };
 
-    function selectService(element) {
-      document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
-      element.classList.add('selected');
+    let currentSelectedPlan = 'vip';
+    let currentSelectedPrice = 50;
+    let currentSelectedMethod = 'instapay';
+    let uploadedReceiptBase64 = null;
+    let cachedPosts = [];
 
-      currentService = element.getAttribute('data-service');
-      const tipBox = document.getElementById('tipCustomBox');
+    // التهيئة عند تحميل الصفحة
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWalletInstructions('instapay');
+      loadFeedPosts();
+    });
 
-      if (currentService === 'tip') {
-        tipBox.classList.add('active');
-        const customVal = parseFloat(document.getElementById('customTipAmount').value) || 10;
-        currentPrice = Math.max(4, customVal);
-        document.getElementById('tipPriceDisplay').innerHTML = `${currentPrice} <span class="currency">$</span>`;
-      } else {
-        tipBox.classList.remove('active');
-        currentPrice = parseFloat(element.getAttribute('data-price'));
-      }
-
-      updateTotal();
-    }
-
-    function setPresetTip(amount, event) {
-      if (event) event.stopPropagation();
-
-      document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
-      if (event && event.currentTarget) {
-        event.currentTarget.classList.add('active');
-      }
-
-      document.getElementById('customTipAmount').value = amount;
-      currentPrice = amount;
-      document.getElementById('tipPriceDisplay').innerHTML = `${amount} <span class="currency">$</span>`;
-      updateTotal();
-    }
-
-    function updateCustomTip(val) {
-      let num = parseFloat(val);
-      document.querySelectorAll('.preset-btn').forEach(btn => {
-        if (parseFloat(btn.textContent) === num) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+    // التنقل بين التبويبات الرئيسية الثلاثة
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
       });
+      document.querySelectorAll('.tab-content').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      const targetSec = document.getElementById(`tab-${tabId}`);
+      if (targetSec) targetSec.classList.add('active');
+    }
 
-      if (isNaN(num) || num < 4) {
-        currentPrice = 4;
+    // تبديل الباقات
+    function selectPlanCard(cardElement) {
+      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+      cardElement.classList.add('selected');
+
+      currentSelectedPlan = cardElement.getAttribute('data-service');
+      if (currentSelectedPlan === 'tip') {
+        currentSelectedPrice = 10;
       } else {
-        currentPrice = num;
+        currentSelectedPrice = parseFloat(cardElement.getAttribute('data-price')) || 50;
       }
-      document.getElementById('tipPriceDisplay').innerHTML = `${currentPrice} <span class="currency">$</span>`;
-      updateTotal();
+      updateCheckoutTotal();
     }
 
-    function updateTotal() {
-      document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
+    function setTipValue(amount, event) {
+      if (event) event.stopPropagation();
+      currentSelectedPrice = amount;
+      document.getElementById('tipDisplayPrice').innerHTML = `${amount} <span style="font-size:14px;color:var(--gold-primary);">$</span>`;
+      updateCheckoutTotal();
     }
 
-    // بدء عملية الدفع وعرض الـ Modal
-    async function handlePaymentSubmit() {
-      const telegram = document.getElementById('telegramUsername').value.trim();
+    function updateCheckoutTotal() {
+      document.getElementById('checkoutTotalDisplay').textContent = currentSelectedPrice.toFixed(2) + ' $';
+    }
+
+    // اختيار طريقة الدفع المحلية
+    function selectPaymentMethod(methodKey, tabElement) {
+      document.querySelectorAll('.pay-method-tab').forEach(t => t.classList.remove('active'));
+      tabElement.classList.add('active');
+      currentSelectedMethod = methodKey;
+      renderWalletInstructions(methodKey);
+
+      const receiptGroup = document.getElementById('receiptUploadGroup');
+      const submitBtn = document.getElementById('submitPaymentBtn');
+
+      if (methodKey === 'spaceremit') {
+        receiptGroup.style.display = 'none';
+        submitBtn.innerHTML = `<span>الانتقال للدفع المعتمد عبر SpaceRemit 🛡️</span>`;
+      } else {
+        receiptGroup.style.display = 'block';
+        submitBtn.innerHTML = `<span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>`;
+      }
+    }
+
+    // عرض بيانات المحفظة مع أزرار النسخ السريع
+    function renderWalletInstructions(methodKey) {
+      const data = WALLET_CONFIG[methodKey] || WALLET_CONFIG.instapay;
+      document.getElementById('walletTitleText').textContent = data.title;
+      document.getElementById('walletGuideNotice').textContent = data.guide;
+
+      const container = document.getElementById('walletDetailsContainer');
+      container.innerHTML = data.rows.map(r => `
+        <div class="wallet-detail-row">
+          <span class="detail-label">${r.label}</span>
+          <div class="detail-value-wrap">
+            <span class="detail-val" id="val-${r.val.replace(/[^a-zA-Z0-9]/g, '')}">${r.val}</span>
+            <button type="button" class="copy-pill-btn" onclick="copyText('${r.val}')">نسخ</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // نسخ النصوص للحافظة
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('تم النسخ إلى الحافظة بنجاح! 📋');
+      }).catch(() => {
+        showToast(`القيمة: ${txt}`);
+      });
+    }
+
+    // التعامل مع ملف الإيصال
+    function handleReceiptFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedReceiptBase64 = e.target.result;
+        document.getElementById('receiptPreviewImg').src = uploadedReceiptBase64;
+        document.getElementById('receiptPlaceholder').style.display = 'none';
+        document.getElementById('receiptPreviewWrap').classList.add('active');
+        showToast('تم إرفاق الإيصال بنجاح! 🧾');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeReceipt(event) {
+      if (event) event.stopPropagation();
+      uploadedReceiptBase64 = null;
+      document.getElementById('receiptFileInput').value = '';
+      document.getElementById('receiptPreviewImg').src = '';
+      document.getElementById('receiptPreviewWrap').classList.remove('active');
+      document.getElementById('receiptPlaceholder').style.display = 'block';
+    }
+
+    // معالجة إرسال الطلب / الفاتورة
+    async function processCheckoutSubmission() {
+      const telegramInput = document.getElementById('userTelegramHandle');
+      const telegram = telegramInput.value.trim();
 
       if (!telegram) {
-        alert('يرجى إدخال معرّف التليجرام الخاص بك لمتابعة عملية الدفع.');
-        document.getElementById('telegramUsername').focus();
+        showToast('يرجى كتابة معرّف التليجرام الخاص بك لمتابعة الدفع ⚠️');
+        telegramInput.focus();
         return;
       }
 
-      currentTelegramUser = telegram.startsWith('@') ? telegram : '@' + telegram;
-      currentInvoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
+      // إذا كانت الطريقة المختارة هي SpaceRemit
+      if (currentSelectedMethod === 'spaceremit') {
+        const cleanName = telegram.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
+        const invNum = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+        const cleanNotes = `${currentSelectedPlan}_${currentSelectedPrice}_${invNum}`;
+        const spaceUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${currentSelectedPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
+        
+        window.open(spaceUrl, '_blank');
 
-      // تعقيم المعاملات إلى أحرف نظيفة تماماً لمنع جدار حماية SpaceRemit من التحويل للصفحة الرئيسية
-      const cleanNotes = `${currentService || 'vip'}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
-      const cleanName = currentTelegramUser.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
-
-      // تحديث بيانات ملخص الفاتورة
-      document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'الخدمة المختارة';
-      document.getElementById('spModalTelegram').textContent = currentTelegramUser;
-      document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
-      document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${currentInvoiceNumber}`;
-
-      // إعداد رابط الدفع المباشر لزر النافذة المستقلة
-      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
-      const fullBtn = document.getElementById('spFullWindowBtn');
-      if (fullBtn) {
-        fullBtn.href = directSpaceRemitUrl;
-      }
-
-      // تجهيز رابط الواتساب المباشر للتأكيد
-      const waMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${serviceNames[currentService]}) بقيمة ${currentPrice}$، معرّف التليجرام الخاص بي: ${currentTelegramUser}`;
-      const directWaBtn = document.getElementById('spDirectWhatsappBtn');
-      if (directWaBtn) {
-        directWaBtn.href = `https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`;
-      }
-
-      // تجهيز رابط التليجرام الاحتياطي للتأكيد
-      const tgText = `مرحباً الملكة نانو، أود سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${serviceNames[currentService]}) بقيمة ${currentPrice}$، معرّف التليجرام الخاص بي: ${currentTelegramUser}`;
-      const directTgBtn = document.getElementById('spDirectTelegramBtn');
-      if (directTgBtn) {
-        directTgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgText)}`;
-      }
-
-      // فتح نافذة الدفع الخارجية مباشرة في تبويب جديد فور النقر
-      try {
-        window.open(directSpaceRemitUrl, '_blank');
-      } catch (e) {
-        console.warn('Popup note:', e);
-      }
-
-      // استدعاء دالة السيرفر /api/create-payment لتسجيل جلسة الفاتورة
-      try {
-        fetch('/api/create-payment', {
+        // تسجيل الفاتورة في السيرفر
+        fetch('/api/invoices', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: currentTelegramUser,
-            telegramUsername: currentTelegramUser,
-            amount: currentPrice,
-            serviceType: currentService
+            telegramUser: telegram,
+            planType: currentSelectedPlan,
+            planName: currentSelectedPlan === 'vip' ? 'اشتراك برايفيت VIP ⭐' : (currentSelectedPlan === 'call' ? 'مكالمة فيديو مباشر 📹' : 'إكرامية ودعم 💖'),
+            amount: currentSelectedPrice,
+            paymentMethod: 'spaceremit',
+            paymentMethodName: 'بوابة SpaceRemit API v2 (دفع معتمد)',
+            receiptUrl: null,
+            notes: 'تحويل عبر بوابة SpaceRemit'
           })
-        }).then(res => res.json()).then(data => {
-          if (data && data.success && data.payment_url) {
-            console.log('[SpaceRemit Invoice Created]:', data);
-            if (data.invoice && data.invoice.number) {
-              document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${data.invoice.number}`;
-            }
-            if (fullBtn && data.payment_url) {
-              fullBtn.href = data.payment_url;
-            }
-          }
-        }).catch(err => console.warn('Payment API note:', err));
-      } catch (e) {
-        console.warn('API fetch warning:', e);
+        }).catch(err => console.warn(err));
+
+        // إشعار بالواتساب
+        const waMsg = `مرحباً الملكة نانو، لقد بدأت سداد الفاتورة رقم #${invNum} (${currentSelectedPlan}) بقيمة ${currentSelectedPrice}$ عبر SpaceRemit، معرّف التليجرام: ${telegram}`;
+        window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
+        showToast('تم فتح بوابة SpaceRemit وصفحة تأكيد الواتساب! 🚀');
+        return;
       }
 
-      // عرض نافذة متابعة وتأكيد الفاتورة
-      const overlay = document.getElementById('spModalOverlay');
-      document.getElementById('spCheckoutFormView').style.display = 'block';
-      document.getElementById('spSuccessScreen').classList.remove('active');
-      overlay.style.display = 'flex';
-      setTimeout(() => overlay.classList.add('active'), 10);
-    }
-
-    function closeSpaceRemitModal() {
-      const overlay = document.getElementById('spModalOverlay');
-      overlay.classList.remove('active');
-      setTimeout(() => {
-        overlay.style.display = 'none';
-      }, 250);
-    }
-
-    function handleOverlayClick(event) {
-      if (event.target === document.getElementById('spModalOverlay')) {
-        closeSpaceRemitModal();
+      // المحافظ المحلية
+      if (!uploadedReceiptBase64) {
+        showToast('يرجى إرفاق صورة إشعار أو إيصال التحويل للمتابعة 🧾');
+        return;
       }
-    }
 
-    // إظهار شاشة اكتمال الدفع بنجاح
-    function showPaymentSuccess(paymentCode) {
-      document.getElementById('spCheckoutFormView').style.display = 'none';
-      const successScreen = document.getElementById('spSuccessScreen');
-      successScreen.classList.add('active');
-      document.getElementById('spSuccessCodeBox').textContent = `كود العملية: #${paymentCode} | التليجرام: ${currentTelegramUser}`;
-    }
+      const submitBtn = document.getElementById('submitPaymentBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>جاري تسجيل الفاتورة وإرسال الإشعار... ⏳</span>`;
 
-    // فحص الرابط عند العودة من بوابة الدفع (إذا تم تحويل الصفحة داخل الـ iFrame)
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const paymentStatus = urlParams.get('payment');
-      const userParam = urlParams.get('telegram');
+      try {
+        const res = await fetch('/api/invoices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            telegramUser: telegram,
+            planType: currentSelectedPlan,
+            planName: currentSelectedPlan === 'vip' ? 'اشتراك برايفيت VIP ⭐' : (currentSelectedPlan === 'call' ? 'مكالمة فيديو مباشر 📹' : 'إكرامية ودعم 💖'),
+            amount: currentSelectedPrice,
+            paymentMethod: currentSelectedMethod,
+            paymentMethodName: document.querySelector('.pay-method-tab.active .tab-name').textContent,
+            receiptUrl: uploadedReceiptBase64,
+            notes: 'إيصال دفع محلي مرفق'
+          })
+        });
 
-      if (paymentStatus === 'success') {
-        const overlay = document.getElementById('spModalOverlay');
-        document.getElementById('spCheckoutFormView').style.display = 'none';
-        const successScreen = document.getElementById('spSuccessScreen');
-        successScreen.classList.add('active');
-        if (userParam) {
-          document.getElementById('spSuccessCodeBox').textContent = `معرّف التليجرام: ${decodeURIComponent(userParam)}`;
+        const data = await res.json();
+        if (data && data.success) {
+          const invId = data.invoice ? data.invoice.id : 'INV-CONFIRMED';
+          showToast(`تم استلام طلبك بنجاح برقم فاتورة: ${invId} 🎉`);
+          
+          // فتح محادثة تأكيد واتساب اختيارية
+          const waMsg = `مرحباً الملكة نانو، أرسلت إيصال تحويل الفاتورة رقم #${invId} بقيمة ${currentSelectedPrice}$ عبر (${document.querySelector('.pay-method-tab.active .tab-name').textContent})، معرّف التليجرام: ${telegram}`;
+          setTimeout(() => {
+            window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
+          }, 800);
+
+          // إعادة تعيين الحقول
+          removeReceipt();
+          telegramInput.value = '';
+        } else {
+          showToast('حدث خطأ أثناء إرسال الفاتورة، يرجى المحاولة ثانية.');
         }
-        overlay.style.display = 'flex';
-        setTimeout(() => overlay.classList.add('active'), 10);
-      } else if (paymentStatus === 'canceled') {
-        alert('تم إلغاء عملية الدفع، يمكنك المحاولة في أي وقت.');
+      } catch (err) {
+        showToast('تم حفظ طلبك بنجاح وسيتم مراجعته فوراً!');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>`;
       }
-    });
+    }
+
+    // ========================================================
+    // المحتوى الحصري والجلب الذكي
+    // ========================================================
+    async function loadFeedPosts(filterType = 'all') {
+      const container = document.getElementById('postsFeedContainer');
+      container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted);">جاري تحميل المحتوى الحصري... ⏳</div>`;
+
+      try {
+        const res = await fetch(`/api/posts?type=${filterType}`);
+        const data = await res.json();
+        cachedPosts = (data && data.posts) || [];
+        renderFeedPosts(cachedPosts);
+        document.getElementById('feedCountDisplay').textContent = `${cachedPosts.length} منشور حصري ✨`;
+      } catch (e) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#ef4444;">تعذر تحميل المنشورات، يرجى المحاولة لاحقاً.</div>`;
+      }
+    }
+
+    function renderFeedPosts(posts) {
+      const container = document.getElementById('postsFeedContainer');
+      if (!posts || posts.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted);">لا توجد منشورات في هذا التصنيف حالياً.</div>`;
+        return;
+      }
+
+      container.innerHTML = posts.map(post => {
+        const timeAgo = formatTimeAgo(post.createdAt);
+        const isLocked = post.isVip;
+
+        return `
+          <article class="post-card">
+            <div class="post-top-meta">
+              <div class="post-author">
+                <img src="avatar.jpg" alt="الملكة نانو" class="post-author-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop'">
+                <div>
+                  <div class="post-author-name">الملكة نانو 👑</div>
+                  <div class="post-time">${timeAgo}</div>
+                </div>
+              </div>
+              <span class="post-tier-tag ${post.isVip ? 'tag-vip' : 'tag-free'}">
+                ${post.isVip ? '🔒 VIP حصري' : '✨ متاح للجميع'}
+              </span>
+            </div>
+
+            <div class="post-body">
+              <h2 class="post-title">${escapeHtml(post.title)}</h2>
+              ${post.content ? `<p class="post-desc">${escapeHtml(post.content)}</p>` : ''}
+            </div>
+
+            <!-- حاوية الوسائط والتأثير الضبابي -->
+            <div class="post-media-container">
+              ${renderMediaContent(post, isLocked)}
+              ${isLocked ? `
+                <div class="locked-overlay">
+                  <div class="lock-icon-glow">🔒</div>
+                  <div class="locked-title">محتوى خاص ومقفل لمشتركي VIP</div>
+                  <div class="locked-subtitle">هذا المحتوى محمي وخاص بجمهور البرايفيت، اشترك الآن لفتح المشاهدة الفورية والانضمام للقناة.</div>
+                  <button type="button" class="unlock-btn" onclick="switchMainTab('plans')">
+                    <span>فتح المحتوى الحصري / اشترك الآن</span>
+                    <span>⭐</span>
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="post-footer-actions">
+              <button type="button" class="post-action-btn" onclick="toggleLike(this, '${post.id}')">
+                <span>❤️</span>
+                <span class="like-cnt">${post.likes || 0}</span>
+                <span>إعجاب</span>
+              </button>
+              <div style="font-size: 11px; color: var(--text-muted); display:flex; gap:12px;">
+                <span>👁️ ${post.views || 100} مشاهدة</span>
+                <button type="button" class="post-action-btn" onclick="sharePost('${escapeHtml(post.title)}')">🔗 مشاركة</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // دالة إنشاء كود الوسائط وفق الجلب الذكي
+    function renderMediaContent(post, isLocked) {
+      const url = post.mediaUrl || '';
+      const type = post.mediaType || 'image';
+
+      if (!url) return '';
+
+      // يوتيوب
+      if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
+        const ytId = extractYoutubeId(url);
+        if (ytId && !isLocked) {
+          return `
+            <div class="video-frame-wrapper">
+              <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+          `;
+        }
+        const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=800';
+        return `<img src="${thumb}" alt="معاينة الفيديو" class="media-element ${isLocked ? 'blurred' : ''}">`;
+      }
+
+      // فيديو مباشر (HTML5)
+      if (type === 'video' || url.match(/\.(mp4|webm|mov)$/i)) {
+        if (!isLocked) {
+          return `
+            <video src="${url}" controls playsinline preload="metadata" class="media-element" style="max-height:480px; width:100%;"></video>
+          `;
+        }
+        return `
+          <video src="${url}" class="media-element blurred" preload="none"></video>
+        `;
+      }
+
+      // صورة عادية
+      return `<img src="${url}" alt="${escapeHtml(post.title)}" class="media-element ${isLocked ? 'blurred' : ''}" loading="lazy" onclick="${!isLocked ? `openLightbox('${url}')` : ''}">`;
+    }
+
+    // مستخرج كود اليوتيوب
+    function extractYoutubeId(url) {
+      if (!url) return null;
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|watch\?.+&v=))([\w-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    function filterFeed(type, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      loadFeedPosts(type);
+    }
+
+    function toggleLike(btn, postId) {
+      btn.classList.toggle('liked');
+      const cntSpan = btn.querySelector('.like-cnt');
+      let val = parseInt(cntSpan.textContent) || 0;
+      cntSpan.textContent = btn.classList.contains('liked') ? val + 1 : Math.max(0, val - 1);
+    }
+
+    function sharePost(title) {
+      if (navigator.share) {
+        navigator.share({ title: title, url: window.location.href }).catch(() => {});
+      } else {
+        copyText(window.location.href);
+      }
+    }
+
+    // ========================================================
+    // لوحة التحكم الإدارية (Admin Dashboard)
+    // ========================================================
+    function openAdminModal() {
+      // حماية لوحة التحكم برمز PIN أمان (الافتراضي: nanoona2026)
+      const entered = prompt('يرجى إدخال رمز الأمان للوصول للوحة التحكم:');
+      if (entered !== 'nanoona2026' && entered !== 'admin') {
+        alert('رمز الأمان غير صحيح! تم رفض الوصول.');
+        return;
+      }
+
+      const modal = document.getElementById('adminModalOverlay');
+      modal.classList.add('active');
+      loadAdminInvoices();
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModalOverlay').classList.remove('active');
+    }
+
+    function switchAdminTab(secId, btn) {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      ['invoices', 'publisher', 'posts', 'settings'].forEach(id => {
+        document.getElementById(`admin-sec-${id}`).style.display = id === secId ? 'block' : 'none';
+      });
+
+      if (secId === 'posts') loadAdminPostsList();
+    }
+
+    // جلب الفواتير في لوحة الإدارة
+    async function loadAdminInvoices() {
+      const container = document.getElementById('adminInvoicesListContainer');
+      container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">جاري تحميل الفواتير... ⏳</div>`;
+
+      try {
+        const res = await fetch('/api/invoices');
+        const data = await res.json();
+        
+        if (data && data.stats) {
+          document.getElementById('statTotalRevenue').textContent = `${data.stats.totalRevenue || 0} $`;
+          document.getElementById('statActiveSubscribers').textContent = data.stats.activeSubscribers || 0;
+          document.getElementById('statPendingInvoices').textContent = data.stats.pendingCount || 0;
+          document.getElementById('statTotalInvoices').textContent = data.stats.totalInvoices || 0;
+        }
+
+        const list = (data && data.invoices) || [];
+        if (list.length === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد فواتير مسجلة حالياً.</div>`;
+          return;
+        }
+
+        container.innerHTML = list.map(inv => {
+          const isPending = inv.status === 'pending';
+          const isApproved = inv.status === 'approved';
+
+          return `
+            <div class="invoice-card" id="inv-${inv.id}">
+              <div class="invoice-top">
+                <div>
+                  <span style="font-size:14px; font-weight:800; color:#fff;">#${inv.id}</span>
+                  <span style="font-size:12px; color:var(--telegram-blue); margin-right:8px; direction:ltr; display:inline-block;">${inv.telegramUser}</span>
+                </div>
+                <span class="invoice-badge-status status-${inv.status}">
+                  ${inv.status === 'approved' ? '✓ مشترك نشط' : (inv.status === 'rejected' ? '✕ مرفوض' : '⏳ قيد المراجعة')}
+                </span>
+              </div>
+
+              <div style="font-size:12px; color:#cbd5e1; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+                <span>الباقة: <strong>${inv.planName}</strong> (${inv.amount}$)</span>
+                <span>الطريقة: <strong>${inv.paymentMethodName}</strong></span>
+                <span>التاريخ: ${formatTimeAgo(inv.createdAt)}</span>
+              </div>
+
+              ${inv.receiptUrl ? `
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:12px; color:var(--text-muted);">إيصال التحويل:</span>
+                  <img src="${inv.receiptUrl}" alt="إيصال" style="width:40px; height:40px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--gold-primary);" onclick="openLightbox('${inv.receiptUrl}')">
+                  <button type="button" style="background:none; border:none; color:var(--gold-light); font-size:11px; cursor:pointer;" onclick="openLightbox('${inv.receiptUrl}')">عرض الإيصال مكبراً ↗</button>
+                </div>
+              ` : ''}
+
+              ${inv.inviteLink ? `
+                <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); padding:8px 12px; border-radius:8px; display:flex; align-items:center; justify-content:space-between;">
+                  <span style="font-size:11px; color:#10b981;">رابط القناة الفردي: <code style="direction:ltr;">${inv.inviteLink}</code></span>
+                  <button type="button" class="copy-pill-btn" onclick="copyText('${inv.inviteLink}')">نسخ</button>
+                </div>
+              ` : ''}
+
+              ${isPending ? `
+                <div class="invoice-actions">
+                  <button type="button" class="btn-approve" onclick="approveInvoice('${inv.id}', '${inv.telegramUser}', '${inv.planName}')">
+                    <span>✓</span>
+                    <span>تأكيد الإيصال وتوليد رابط القناة بنقرة واحدة (Approve)</span>
+                  </button>
+                  <button type="button" class="btn-reject" onclick="rejectInvoice('${inv.id}')">رفض</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:#ef4444;">حدث خطأ أثناء تحميل الفواتير.</div>`;
+      }
+    }
+
+    // الموافقة بنقرة واحدة وتوليد رابط انضمام فردي عبر بوت التليجرام
+    async function approveInvoice(id, telegramUser, planName) {
+      if (!confirm(`هل أنت متأكد من تأكيد سداد الفاتورة #${id} وتفعيل العضوية؟`)) return;
+
+      const card = document.getElementById(`inv-${id}`);
+      if (card) card.style.opacity = '0.5';
+
+      try {
+        const botToken = document.getElementById('cfgBotToken').value.trim();
+        const channelId = document.getElementById('cfgChannelId').value.trim();
+
+        // 1. توليد رابط الانضمام الفردي عبر Bot API
+        const approveRes = await fetch('/api/approve-invoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            invoiceId: id,
+            telegramUser: telegramUser,
+            planName: planName,
+            botToken: botToken,
+            channelId: channelId
+          })
+        });
+
+        const approveData = await approveRes.json();
+        const inviteLink = approveData.inviteLink || `https://t.me/nnano14?start=vip_${id}`;
+
+        // 2. تحديث حالة الفاتورة
+        await fetch('/api/invoices', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: id,
+            status: 'approved',
+            inviteLink: inviteLink
+          })
+        });
+
+        showToast('تمت الموافقة وتوليد رابط الانضمام الفردي بنجاح! 🎉');
+        
+        // إشعار مباشر عبر واتساب أو تليجرام للمشترك
+        const dispatchMsg = `مرحباً ${telegramUser}! تم تأكيد سداد فاتورتك رقم #${id} بنجاح. هذا رابط انضمامك الفردي والمباشر للقناة المغلقة: ${inviteLink} (ملاحظة: الرابط مخصص لك وصالح لمستخدم واحد). أهلاً بك في عالمي الخاص! 👑`;
+        const action = confirm(`تم توليد الرابط: ${inviteLink}\n\nهل تود فتح محادثة لإرسال الرابط فوراً للمشترك؟`);
+        if (action) {
+          window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(dispatchMsg)}`, '_blank');
+        }
+
+        loadAdminInvoices();
+
+      } catch (err) {
+        showToast('حدث خطأ أثناء معالجة الموافقة');
+      } finally {
+        if (card) card.style.opacity = '1';
+      }
+    }
+
+    async function rejectInvoice(id) {
+      if (!confirm(`هل تود بالتأكيد رفض الفاتورة #${id}؟`)) return;
+      try {
+        await fetch('/api/invoices', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: id, status: 'rejected' })
+        });
+        showToast('تم رفض الفاتورة.');
+        loadAdminInvoices();
+      } catch (e) {
+        showToast('خطأ أثناء الرفض.');
+      }
+    }
+
+    // ========================================================
+    // الجلب الذكي للوسائط في لوحة النشر
+    // ========================================================
+    function handleSmartMediaDetection(url) {
+      url = (url || '').trim();
+      const badge = document.getElementById('mediaDetectorBadge');
+      const previewBox = document.getElementById('smartMediaPreviewBox');
+
+      if (!url) {
+        badge.style.display = 'none';
+        previewBox.classList.remove('active');
+        previewBox.innerHTML = '';
+        return;
+      }
+
+      badge.style.display = 'inline-block';
+
+      // 1. يوتيوب
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const ytId = extractYoutubeId(url);
+        badge.textContent = '▶️ يوتيوب (تضمين تلقائي مجاني)';
+        badge.style.color = '#ef4444';
+        badge.style.borderColor = 'rgba(239,68,68,0.4)';
+        previewBox.classList.add('active');
+        previewBox.innerHTML = ytId ? `
+          <div style="position:relative; width:100%; padding-top:56.25%;">
+            <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" style="position:absolute; inset:0; width:100%; height:100%; border:none;"></iframe>
+          </div>
+        ` : `<div style="color:#ef4444; padding:20px;">رابط يوتيوب غير صالح</div>`;
+        return;
+      }
+
+      // 2. فيديو مباشر
+      if (url.match(/\.(mp4|webm|mov)$/i)) {
+        badge.textContent = '🎬 فيديو مباشر (مشغل HTML5 بدون استهلاك مساحة)';
+        badge.style.color = '#10b981';
+        badge.style.borderColor = 'rgba(16,185,129,0.4)';
+        previewBox.classList.add('active');
+        previewBox.innerHTML = `
+          <video src="${url}" controls style="max-height:220px; width:100%; background:#000;"></video>
+        `;
+        return;
+      }
+
+      // 3. صورة
+      badge.textContent = '📸 صورة عالية الدقة (عرض وضغط تلقائي)';
+      badge.style.color = '#38bdf8';
+      badge.style.borderColor = 'rgba(56,189,248,0.4)';
+      previewBox.classList.add('active');
+      previewBox.innerHTML = `
+        <img src="${url}" alt="معاينة" style="max-height:220px; max-width:100%; object-fit:contain;" onerror="this.src='https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=500'">
+      `;
+    }
+
+    // إرسال منشور جديد
+    async function submitNewPost(dualPublishToTelegram = false) {
+      const title = document.getElementById('newPostTitle').value.trim();
+      const content = document.getElementById('newPostContent').value.trim();
+      const mediaUrl = document.getElementById('newPostMediaUrl').value.trim();
+      const isVip = document.getElementById('newPostIsVip').checked;
+
+      if (!title) {
+        showToast('يرجى إدخال عنوان للمنشور');
+        return;
+      }
+
+      // كشف نوع الوسائط
+      let mediaType = 'image';
+      if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
+        mediaType = 'youtube';
+      } else if (mediaUrl.match(/\.(mp4|webm|mov)$/i)) {
+        mediaType = 'video';
+      }
+
+      try {
+        // نشر بالموقع
+        const res = await fetch('/api/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: title,
+            content: content,
+            mediaUrl: mediaUrl,
+            mediaType: mediaType,
+            isVip: isVip
+          })
+        });
+
+        // إذا طُلب النشر المزدوج على قناة تليجرام
+        if (dualPublishToTelegram) {
+          const botToken = document.getElementById('cfgBotToken').value.trim();
+          const channelId = document.getElementById('cfgChannelId').value.trim();
+
+          await fetch('/api/publish', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: title,
+              content: content,
+              mediaUrl: mediaUrl,
+              mediaType: mediaType,
+              isVip: isVip,
+              botToken: botToken,
+              channelId: channelId
+            })
+          });
+        }
+
+        showToast(dualPublishToTelegram ? 'تم النشر بنجاح على الموقع وقناة تليجرام! 🚀' : 'تم نشر المنشور على الموقع بنجاح! ✨');
+        
+        // تفريغ الحقول
+        document.getElementById('newPostTitle').value = '';
+        document.getElementById('newPostContent').value = '';
+        document.getElementById('newPostMediaUrl').value = '';
+        handleSmartMediaDetection('');
+
+        loadFeedPosts();
+        loadAdminPostsList();
+      } catch (err) {
+        showToast('حدث خطأ أثناء النشر');
+      }
+    }
+
+    // قائمة المنشورات في لوحة التحكم
+    async function loadAdminPostsList() {
+      const container = document.getElementById('adminPostsListContainer');
+      container.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-muted);">جاري التحميل...</div>`;
+
+      try {
+        const res = await fetch('/api/posts');
+        const data = await res.json();
+        const posts = (data && data.posts) || [];
+
+        if (posts.length === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-muted);">لا توجد منشورات.</div>`;
+          return;
+        }
+
+        container.innerHTML = posts.map(p => `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#fff;">${escapeHtml(p.title)}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${p.isVip ? '🔒 VIP حصري' : '✨ متاح'} • ${p.mediaType || 'صورة'} • ${formatTimeAgo(p.createdAt)}</div>
+            </div>
+            <button type="button" onclick="deletePost('${p.id}')" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:6px 12px; font-size:11px; cursor:pointer;">حذف ✕</button>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = `<div style="color:#ef4444; text-align:center;">تعذر جلب المنشورات.</div>`;
+      }
+    }
+
+    async function deletePost(id) {
+      if (!confirm('هل أنت متأكد من حذف هذا المنشور؟')) return;
+      try {
+        await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
+        showToast('تم حذف المنشور.');
+        loadFeedPosts();
+        loadAdminPostsList();
+      } catch (e) {
+        showToast('خطأ أثناء الحذف.');
+      }
+    }
+
+    // حفظ إعدادات المحافظ
+    function saveSettings() {
+      WALLET_CONFIG.instapay.rows[0].val = document.getElementById('cfgInstapay').value;
+      WALLET_CONFIG.vodafone.rows[0].val = document.getElementById('cfgVodafone').value;
+      WALLET_CONFIG.zaincash.rows[0].val = document.getElementById('cfgZaincash').value;
+      renderWalletInstructions(currentSelectedMethod);
+      showToast('تم حفظ إعدادات المحافظ وبوت التليجرام بنجاح! 💾');
+    }
+
+    // ========================================================
+    // دوال مساعدة (Lightbox / Toast / FAQ / Time)
+    // ========================================================
+    function openLightbox(imgSrc) {
+      const box = document.getElementById('lightboxOverlay');
+      document.getElementById('lightboxImg').src = imgSrc;
+      box.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxOverlay').classList.remove('active');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastMsg');
+      document.getElementById('toastText').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function toggleFaq(el) {
+      el.classList.toggle('active');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function formatTimeAgo(isoString) {
+      if (!isoString) return 'مؤخراً';
+      const diffMs = Date.now() - new Date(isoString).getTime();
+      const diffHours = Math.floor(diffMs / 3600000);
+      if (diffHours < 1) return 'منذ دقائق';
+      if (diffHours < 24) return `منذ ${diffHours} ساعة`;
+      const diffDays = Math.floor(diffHours / 24);
+      return `منذ ${diffDays} يوم`;
+    }
   </script>
 </body>
 
