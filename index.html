@@ -1759,8 +1759,7 @@
         console.warn('استخدام الرابط المباشر للبوابة:', err);
         // Fallback فوري ومباشر
         const pubKey = SPACEREMIT_CONFIG.livePublicKey;
-        const notes = `${serviceNames[currentService] || currentService} - ${currentTelegramUser}`;
-        const directUrl = `https://spaceremit.com/apipay-v2/?k=${encodeURIComponent(pubKey)}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(currentTelegramUser)}`;
+        const directUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(pubKey)}&amount=${encodeURIComponent(currentPrice)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(currentTelegramUser)}`;
         window.location.href = directUrl;
       } finally {
         setTimeout(() => {
