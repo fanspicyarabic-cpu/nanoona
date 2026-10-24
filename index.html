@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta name="spaceremit-verification" content="R1F0D0ZUZTNS7APR2JQZNKKHOU4EWWKNJFPOT45TLBV3I3UENP">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الملكة نانو | الحسابات الرسمية وبوابة الدفع الحصري</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07070b;
+      --card-bg: rgba(18, 18, 28, 0.88);
+      --card-border: rgba(212, 175, 55, 0.3);
+      --card-active-border: #f5c444;
+      --gold-primary: #d4af37;
+      --gold-light: #ffd700;
+      --gold-gradient: linear-gradient(135deg, #ffe57f 0%, #d4af37 50%, #996515 100%);
+      --gold-glow: rgba(255, 215, 0, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.09) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-lights {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .light-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.6;
+    }
+
+    .light-1 {
+      width: 480px;
+      height: 480px;
+      background: rgba(212, 175, 55, 0.16);
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .light-2 {
+      width: 320px;
+      height: 320px;
+      background: rgba(236, 72, 153, 0.1);
+      bottom: 50px;
+      right: -50px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 530px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .payment-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 0 24px 28px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
+                  0 0 40px rgba(212, 175, 55, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* غلاف بانر شفاف احترافي مقتبس من الصورة */
+    .card-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 135px;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .banner-bg {
+      width: 100%;
+      height: 100%;
+      background-image: url('avatar.jpg');
+      background-size: cover;
+      background-position: center 25%;
+      filter: blur(12px) brightness(0.5);
+      transform: scale(1.15);
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10, 10, 16, 0.25) 0%, rgba(18, 18, 28, 0.85) 75%, var(--card-bg) 100%);
+    }
+
+    /* رأس الصفحة والبروفايل */
+    .header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding-top: 45px;
+      margin-bottom: 20px;
+    }
+
+    .profile-container {
+      position: relative;
+      width: 116px;
+      height: 116px;
+      margin: 0 auto 14px;
+    }
+
+    .crown-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      z-index: 3;
+      filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.7));
+      animation: floatCrown 3s ease-in-out infinite;
+    }
+
+    @keyframes floatCrown {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .avatar-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      padding: 3.5px;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #141420;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #07070b;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 18%;
+      transition: transform 0.5s ease;
+    }
+
+    .profile-container:hover .avatar-img {
+      transform: scale(1.08);
+    }
+
+    .avatar-placeholder {
+      font-size: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #2d2417 0%, #161622 100%);
+    }
+
+    .name-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 900;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .verified-icon {
+      width: 20px;
+      height: 20px;
+      fill: #38bdf8;
+      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* شريط إحصائيات وسجل الحساب */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(12, 12, 20, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      margin: 0 auto 18px;
+      max-width: 420px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .stat-num {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      letter-spacing: -0.2px;
+    }
+
+    .stat-item.highlight .stat-num {
+      color: var(--gold-light);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* قسم الحسابات الرسمية */
+    .social-section {
+      background: rgba(10, 10, 16, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      margin-bottom: 22px;
+    }
+
+    .social-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .social-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(28, 28, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* تيليجرام */
+    .social-btn.telegram:hover {
+      background: #229ED9;
+      border-color: #229ED9;
+      box-shadow: 0 8px 20px rgba(34, 158, 217, 0.45);
+    }
+
+    /* تيك توك */
+    .social-btn.tiktok:hover {
+      background: #000;
+      border-color: #ff0050;
+      box-shadow: 0 8px 20px rgba(255, 0, 80, 0.4);
+    }
+
+    /* واتساب */
+    .social-btn.whatsapp:hover {
+      background: #25D366;
+      border-color: #25D366;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.45);
+    }
+
+    /* سناب شات */
+    .social-btn.snapchat:hover {
+      background: #FFFC00;
+      border-color: #FFFC00;
+      box-shadow: 0 8px 20px rgba(255, 252, 0, 0.45);
+    }
+    .social-btn.snapchat:hover svg path {
+      fill: #000;
+    }
+
+    /* فان سبايسي Fanspicy */
+    .social-btn.fanspicy {
+      background: rgba(45, 20, 26, 0.85);
+      border-color: rgba(255, 75, 110, 0.3);
+    }
+    .social-btn.fanspicy:hover {
+      background: linear-gradient(135deg, #ff3366 0%, #ff6b3d 100%);
+      border-color: #ff3366;
+      box-shadow: 0 8px 20px rgba(255, 51, 102, 0.5);
+    }
+
+    /* تويتر / إكس */
+    .social-btn.x-twitter:hover {
+      background: #000000;
+      border-color: #fff;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
+    }
+
+    .social-btn::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
+
+    .social-btn:hover::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
+      margin: 20px 0 22px;
+    }
+
+    /* خيارات الخدمات */
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .option-card {
+      position: relative;
+      background: rgba(25, 25, 38, 0.65);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .option-card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      background: rgba(32, 32, 50, 0.9);
+      transform: translateY(-2px);
+    }
+
+    .option-card.selected {
+      border-color: var(--card-active-border);
+      background: rgba(45, 38, 22, 0.45);
+      box-shadow: 0 0 22px rgba(212, 175, 55, 0.22);
+    }
+
+    .option-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .option-card.selected .radio-circle {
+      border-color: var(--gold-light);
+    }
+
+    .radio-circle::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--gold-light);
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: var(--transition);
+    }
+
+    .option-card.selected .radio-circle::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .option-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .option-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .option-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(212, 175, 55, 0.16);
+      color: #ffd700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .option-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--gold-light);
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      direction: ltr;
+    }
+
+    .currency {
+      font-size: 14px;
+      color: var(--gold-primary);
+    }
+
+    /* حقل مخصص وتفاعلي لقيم الإكرامية الجاهزة */
+    .tip-custom-box {
+      display: none;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(212, 175, 55, 0.25);
+      animation: fadeIn 0.3s ease;
+      width: 100%;
+    }
+
+    .tip-custom-box.active {
+      display: block;
+    }
+
+    .preset-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tip-presets {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .preset-btn {
+      background: rgba(20, 20, 32, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      color: #f1f5f9;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      direction: ltr;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--gold-primary);
+      background: rgba(45, 38, 22, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .preset-btn.active {
+      background: var(--gold-gradient);
+      color: #0b0b12;
+      border-color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+    }
+
+    .tip-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .tip-currency-tag {
+      position: absolute;
+      left: 14px;
+      color: var(--gold-light);
+      font-weight: 800;
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .tip-input {
+      width: 100%;
+      background: rgba(14, 14, 22, 0.9);
+      border: 1.5px solid rgba(212, 175, 55, 0.35);
+      color: #fff;
+      padding: 10px 14px 10px 38px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 700;
+      outline: none;
+      direction: ltr;
+      text-align: right;
+      transition: var(--transition);
+    }
+
+    .tip-input:focus {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
+    }
+
+    .tip-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* حقل التليجرام */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    .form-label span.req {
+      color: #ef4444;
+    }
+
+    .input-field-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field-wrapper .input-icon {
+      position: absolute;
+      right: 14px;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .text-input {
+      width: 100%;
+      background: rgba(20, 20, 32, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 44px 14px 14px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: var(--transition);
+      direction: ltr;
+      text-align: right;
+    }
+
+    .text-input:focus {
+      border-color: var(--card-active-border);
+      background: rgba(25, 25, 42, 0.95);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+    }
+
+    .text-input::placeholder {
+      color: #64748b;
+      direction: rtl;
+    }
+
+    /* ملخص المجموع وزر الدفع */
+    .summary-box {
+      background: rgba(14, 14, 22, 0.9);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .summary-label {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .summary-total {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--gold-light);
+      direction: ltr;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: var(--gold-gradient);
+      color: #0b0b12;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 12px 28px -6px rgba(212, 175, 55, 0.45);
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -6px rgba(255, 215, 0, 0.6);
+      filter: brightness(1.04);
+    }
+
+    .pay-btn:active {
+      transform: translateY(0);
+    }
+
+    .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 18px;
+    }
+
+    .security-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: #10b981;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-lights">
+    <div class="light-orb light-1"></div>
+    <div class="light-orb light-2"></div>
+  </div>
+
+  <div class="container">
+    <div class="payment-card">
+      
+      <!-- غلاف بانر شفاف احترافي مقتبس من صورتها -->
+      <div class="card-banner">
+        <div class="banner-bg"></div>
+        <div class="banner-overlay"></div>
+      </div>
+
+      <!-- رأس الصفحة والبروفايل -->
+      <header class="header">
+        <div class="profile-container">
+          <span class="crown-badge">👑</span>
+          <div class="avatar-ring">
+            <div class="avatar-inner">
+              <img 
+                id="profileImg"
+                src="avatar.jpg" 
+                alt="الملكة نانو" 
+                class="avatar-img"
+                onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';"
+              >
+              <div id="avatarFallback" class="avatar-placeholder" style="display: none;">
+                👸
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="name-wrapper">
+          <h1 class="title">الملكة نانو</h1>
+          <svg class="verified-icon" viewBox="0 0 24 24" title="موثق">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+        <p class="subtitle">الحساب الرسمي | الدفع والاشتراك الحصري المباشر</p>
+
+        <!-- سجل الحساب وإحصائيات الجمهور (كما في تيك توك) -->
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-num">1870</span>
+            <span class="stat-label">أتابعه</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item highlight">
+            <span class="stat-num">1.1 مليون</span>
+            <span class="stat-label">متابعين</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">3.2 مليون</span>
+            <span class="stat-label">تسجيلات الإعجاب</span>
+          </div>
+        </div>
+
+        <!-- قسم الحسابات الرسمية المعتمدة -->
+        <div class="social-section">
+          <div class="social-title">
+            <span>✨</span>
+            <span>الحسابات الرسمية المعتمدة</span>
+            <span>✨</span>
+          </div>
+          <div class="social-bar">
+            
+            <!-- تيليجرام -->
+            <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="social-btn telegram" data-tooltip="قناة التليجرام" id="linkTelegram">
+              <svg viewBox="0 0 24 24">
+                <path fill="#229ED9" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+              </svg>
+            </a>
+
+            <!-- تيك توك -->
+            <a href="https://www.tiktok.com/@n.nano14" target="_blank" rel="noopener" class="social-btn tiktok" data-tooltip="حساب تيك توك" id="linkTiktok">
+              <svg viewBox="0 0 24 24">
+                <path fill="#ffffff" d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .58.04.86.12V9.42a6.34 6.34 0 00-.86-.06 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34-6.34V8.71a8.19 8.19 0 004.77 1.52V6.78a4.85 4.85 0 01-1-.09z"/>
+              </svg>
+            </a>
+
+            <!-- سناب شات -->
+            <a href="https://www.snapchat.com/@nanoo.na1" target="_blank" rel="noopener" class="social-btn snapchat" data-tooltip="حساب سناب شات" id="linkSnapchat">
+              <svg viewBox="0 0 24 24">
+                <path fill="#FFFC00" d="M12.002 2C6.91 2 4.545 4.78 4.545 7.15c0 1.34.61 2.8 1.45 3.71.21.23.27.47.16.73-.24.58-1.02 1.15-1.92 1.25-.33.04-.51.27-.47.53.07.45.69.75 1.45.85.24.03.41.16.48.36.19.56.02 1.34-1.28 1.95-.44.2-.67.45-.63.76.08.57 1.05.8 2.06.69.4-.04.7.1.86.38.45.8 1.49 1.14 2.76 1.18.52.02.94.21 1.25.59.58.7 1.51 1.06 2.29 1.06.77 0 1.71-.36 2.29-1.06.31-.38.73-.57 1.25-.59 1.27-.04 2.31-.38 2.76-1.18.16-.28.46-.42.86-.38 1.01.11 1.98-.12 2.06-.69.04-.31-.19-.56-.63-.76-1.3-.61-1.47-1.39-1.28-1.95.07-.2.24-.33.48-.36.76-.1 1.38-.4 1.45-.85.04-.26-.14-.49-.47-.53-.9-.1-1.68-.67-1.92-1.25-.11-.26-.05-.5.16-.73.84-.91 1.45-2.37 1.45-3.71C19.458 4.78 17.094 2 12.002 2z"/>
+              </svg>
+            </a>
+
+            <!-- واتساب -->
+            <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="social-btn whatsapp" data-tooltip="محادثة واتساب" id="linkWhatsapp">
+              <svg viewBox="0 0 24 24">
+                <path fill="#25D366" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+              </svg>
+            </a>
+
+            <!-- فان سبايسي Fanspicy -->
+            <a href="https://fanspicy.com/nanoona1/" target="_blank" rel="noopener" class="social-btn fanspicy" data-tooltip="حساب Fanspicy" id="linkFanspicy">
+              <svg viewBox="0 0 24 24">
+                <path fill="#ff4b6e" d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.09 8.14 13.93C8.08 13.88 8.04 13.83 8 13.76C6.87 12.33 6.69 10.28 7.45 8.64C5.78 10 4.87 12.3 5.04 14.47C5.25 17.15 7.14 19.46 9.77 20.14C12.57 20.86 15.54 19.68 17.1 17.24C18.42 15.23 18.57 12.54 17.66 11.2M14.5 17.5C14.22 17.74 13.76 18 13.32 18.06C12.36 18.2 11.41 17.65 11.03 16.79C10.87 16.42 10.87 15.93 11 15.55C11.11 15.24 11.36 14.97 11.57 14.75C12.16 14.15 12.87 13.81 13.34 13.06C13.84 13.93 14.84 14.37 15.11 15.39C15.37 16.19 15.07 16.97 14.5 17.5Z"/>
+              </svg>
+            </a>
+
+            <!-- إكس / تويتر X -->
+            <a href="https://x.com/nanoo_na1" target="_blank" rel="noopener" class="social-btn x-twitter" data-tooltip="منصة X (تويتر)" id="linkTwitter">
+              <svg viewBox="0 0 24 24">
+                <path fill="#ffffff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+
+          </div>
+        </div>
+
+      </header>
+
+      <div class="divider"></div>
+
+      <!-- اختيار الخدمة -->
+      <div class="section-title">
+        <span>💎</span>
+        <span>اختر الخدمة أو الباقة المطلوبة:</span>
+      </div>
+
+      <div class="options-grid" id="optionsGrid">
+        
+        <!-- الباقة 1: اشتراك برايفيت -->
+        <div class="option-card selected" data-service="vip" data-price="50" onclick="selectService(this)">
+          <div class="option-header">
+            <div class="option-info">
+              <div class="radio-circle"></div>
+              <div>
+                <div class="option-title">
+                  اشتراك برايفيت VIP
+                  <span class="option-badge">الأكثر طلباً ⭐</span>
+                </div>
+                <div class="option-desc">دخول حصري للقناة الخاصة طيلة فترة الاشتراك</div>
+              </div>
+            </div>
+            <div class="option-price">50 <span class="currency">$</span></div>
+          </div>
+        </div>
+
+        <!-- الباقة 2: مكالمة فيديو مباشر -->
+        <div class="option-card" data-service="call" data-price="30" onclick="selectService(this)">
+          <div class="option-header">
+            <div class="option-info">
+              <div class="radio-circle"></div>
+              <div>
+                <div class="option-title">
+                  مكالمة فيديو مباشر 📹
+                </div>
+                <div class="option-desc">مكالمة وتواصل مرئي خاص ومباشر</div>
+              </div>
+            </div>
+            <div class="option-price">30 <span class="currency">$</span></div>
+          </div>
+        </div>
+
+        <!-- الباقة 3: إكرامية ودعم -->
+        <div class="option-card" data-service="tip" data-price="10" onclick="selectService(this)">
+          <div class="option-header">
+            <div class="option-info">
+              <div class="radio-circle"></div>
+              <div>
+                <div class="option-title">
+                  إكرامية ودعم 💖
+                </div>
+                <div class="option-desc">دعم مباشر للملكة نانو بمبلغ من اختيارك</div>
+              </div>
+            </div>
+            <div class="option-price" id="tipPriceDisplay">10 <span class="currency">$</span></div>
+          </div>
+          
+          <!-- أزرار المبالغ الجاهزة والحقل المخصص -->
+          <div class="tip-custom-box" id="tipCustomBox">
+            <div class="preset-label">
+              <span>⚡</span>
+              <span>اختر مبلغا سريعاً أو حدد قيمة خاصة:</span>
+            </div>
+
+            <!-- أزرار القيم الجاهزة -->
+            <div class="tip-presets">
+              <button type="button" class="preset-btn" onclick="setPresetTip(5, event)">5$</button>
+              <button type="button" class="preset-btn active" onclick="setPresetTip(10, event)">10$</button>
+              <button type="button" class="preset-btn" onclick="setPresetTip(15, event)">15$</button>
+              <button type="button" class="preset-btn" onclick="setPresetTip(20, event)">20$</button>
+              <button type="button" class="preset-btn" onclick="setPresetTip(30, event)">30$</button>
+              <button type="button" class="preset-btn" onclick="setPresetTip(50, event)">50$</button>
+            </div>
+
+            <!-- إدخال قيمة يدوية -->
+            <div class="tip-input-wrapper">
+              <input 
+                type="number" 
+                id="customTipAmount" 
+                class="tip-input" 
+                min="4" 
+                value="10" 
+                step="1"
+                placeholder="أو اكتب مبلغاً مخصصاً (الحد الأدنى 4$)"
+                oninput="updateCustomTip(this.value)"
+              >
+              <span class="tip-currency-tag">$</span>
+            </div>
+            <div class="tip-hint">يمكنك تحديد أي مبلغ إكرامية (الحد الأدنى 4$) ✨</div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- إدخال بيانات المستخدم -->
+      <div class="form-group">
+        <label class="form-label" for="telegramUsername">
+          معرّف التليجرام الخاص بك (Username) <span class="req">*</span>
+        </label>
+        <div class="input-field-wrapper">
+          <input 
+            type="text" 
+            id="telegramUsername" 
+            class="text-input" 
+            placeholder="مثال: @username أو المعرف بدون @"
+            required
+            autocomplete="off"
+          >
+          <span class="input-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </span>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+          * سيتم التواصل معك وتفعيل اشتراكك أو ترتيب موعد المكالمة فور إتمام الدفع.
+        </p>
+      </div>
+
+      <!-- ملخص المجموع -->
+      <div class="summary-box">
+        <span class="summary-label">المبلغ الإجمالي للدفع:</span>
+        <span class="summary-total" id="totalDisplay">50.00 $</span>
+      </div>
+
+      <!-- زر الدفع -->
+      <button class="pay-btn" id="payButton" onclick="handlePaymentSubmit()">
+        <span>الانتقال للدفع الآمن عبر SpaceRemit</span>
+        <span>🔒</span>
+      </button>
+
+      <!-- شارة الأمان -->
+      <div class="security-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>دفع مشفر ومؤمن 100% عبر بوابة SpaceRemit الرسمية</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentService = 'vip';
+    let currentPrice = 50;
+
+    function selectService(element) {
+      document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+      element.classList.add('selected');
+
+      currentService = element.getAttribute('data-service');
+      const tipBox = document.getElementById('tipCustomBox');
+
+      if (currentService === 'tip') {
+        tipBox.classList.add('active');
+        const customVal = parseFloat(document.getElementById('customTipAmount').value) || 10;
+        currentPrice = Math.max(4, customVal);
+        document.getElementById('tipPriceDisplay').innerHTML = `${currentPrice} <span class="currency">$</span>`;
+      } else {
+        tipBox.classList.remove('active');
+        currentPrice = parseFloat(element.getAttribute('data-price'));
+      }
+
+      updateTotal();
+    }
+
+    function setPresetTip(amount, event) {
+      if (event) event.stopPropagation();
+
+      document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
+
+      document.getElementById('customTipAmount').value = amount;
+      currentPrice = amount;
+      document.getElementById('tipPriceDisplay').innerHTML = `${amount} <span class="currency">$</span>`;
+      updateTotal();
+    }
+
+    function updateCustomTip(val) {
+      let num = parseFloat(val);
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        if (parseFloat(btn.textContent) === num) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (isNaN(num) || num < 4) {
+        currentPrice = 4;
+      } else {
+        currentPrice = num;
+      }
+      document.getElementById('tipPriceDisplay').innerHTML = `${currentPrice} <span class="currency">$</span>`;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
+    }
+
+    function handlePaymentSubmit() {
+      const telegram = document.getElementById('telegramUsername').value.trim();
+      
+      if (!telegram) {
+        alert('يرجى إدخال معرّف التليجرام الخاص بك لمتابعة عملية الدفع.');
+        document.getElementById('telegramUsername').focus();
+        return;
+      }
+
+      const cleanTelegram = telegram.startsWith('@') ? telegram : '@' + telegram;
+
+      const orderPayload = {
+        service: currentService,
+        amount: currentPrice,
+        currency: 'USD',
+        telegram: cleanTelegram
+      };
+
+      console.log('بيانات الطلب الجاهزة للإرسال للسيرفر:', orderPayload);
+      alert(`✅ تم تأكيد البيانات بنجاح!\n\n• الخدمة: ${currentService}\n• المبلغ: ${currentPrice} $\n• التليجرام: ${cleanTelegram}\n\nجاهزون الآن للربط مع السيرفر وبوابة SpaceRemit!`);
+    }
+  </script>
+</body>
+</html>
