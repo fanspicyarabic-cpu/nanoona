@@ -1106,6 +1106,208 @@
       margin-bottom: 20px;
       word-break: break-all;
     }
+
+    /* ========================================================
+       تحسينات شاملة للتجاوب مع شاشات الهواتف الذكية (Mobile CSS)
+       ======================================================== */
+    @media (max-width: 640px) {
+      body {
+        padding: 14px 10px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .payment-card {
+        padding: 0 14px 22px;
+        border-radius: 20px;
+      }
+
+      .card-banner {
+        height: 110px;
+      }
+
+      .header {
+        padding-top: 32px;
+        margin-bottom: 14px;
+      }
+
+      .profile-container {
+        width: 96px;
+        height: 96px;
+        margin-bottom: 10px;
+      }
+
+      .avatar-ring {
+        padding: 3px;
+      }
+
+      .crown-badge {
+        font-size: 20px;
+        top: -12px;
+      }
+
+      .title {
+        font-size: 22px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        margin-top: 4px;
+      }
+
+      .stats-bar {
+        padding: 8px 12px;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .stat-num {
+        font-size: 14px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+      }
+
+      .social-section {
+        margin-top: 14px;
+      }
+
+      .social-title {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .social-bar {
+        gap: 10px;
+      }
+
+      .social-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .option-card {
+        padding: 12px 14px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+      }
+
+      .option-title {
+        font-size: 14px;
+      }
+
+      .option-desc {
+        font-size: 11px;
+      }
+
+      .option-price {
+        font-size: 18px;
+      }
+
+      .tip-presets {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .preset-btn {
+        padding: 8px;
+        font-size: 13px;
+      }
+
+      .form-label {
+        font-size: 12px;
+      }
+
+      .text-input {
+        padding: 12px 14px 12px 40px;
+        font-size: 14px;
+      }
+
+      .summary-box {
+        padding: 12px 14px;
+        margin-bottom: 14px;
+      }
+
+      .summary-label {
+        font-size: 13px;
+      }
+
+      .summary-total {
+        font-size: 19px;
+      }
+
+      .pay-btn {
+        padding: 14px;
+        font-size: 15px;
+      }
+
+      /* نافذة الدفع على الموبايل */
+      .sp-modal-overlay {
+        padding: 12px 8px;
+      }
+
+      .sp-modal-card {
+        padding: 18px 14px;
+        border-radius: 18px;
+        max-width: 100%;
+      }
+
+      .sp-modal-title {
+        font-size: 15px;
+      }
+
+      .sp-order-summary {
+        padding: 12px;
+      }
+
+      .sp-summary-service {
+        font-size: 13px;
+      }
+
+      .sp-summary-price {
+        font-size: 19px;
+      }
+
+      .sp-action-btn {
+        padding: 13px;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .title {
+        font-size: 20px;
+      }
+
+      .stats-bar {
+        padding: 6px 8px;
+        gap: 4px;
+      }
+
+      .stat-num {
+        font-size: 13px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .option-title {
+        font-size: 13px;
+      }
+
+      .option-price {
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 
@@ -1390,32 +1592,26 @@
           <div class="sp-summary-price" id="spModalPrice">50.00 $</div>
         </div>
 
-        <!-- أزرار تبديل طريقة الدفع -->
-        <div class="sp-tabs">
-          <button type="button" class="sp-tab-btn active" id="tabCard" onclick="setPaymentWay('card')">
-            <span>💳</span>
-            <span>بطاقة مصرفية</span>
-          </button>
-          <button type="button" class="sp-tab-btn" id="tabLocal" onclick="setPaymentWay('local_methods')">
-            <span>🏦</span>
-            <span>طرق دفع ومحافظ</span>
-          </button>
-        </div>
-
-        <!-- إطار الدفع الآمن من SpaceRemit -->
-        <div class="sp-iframe-box" id="spIframeBox">
-          <div class="sp-iframe-loader" id="spIframeLoader">
-            <div class="sp-spinner"></div>
-            <span>جاري تهيئة الاتصال الآمن مع SpaceRemit...</span>
+        <!-- بطاقة التحويل المباشر لـ SpaceRemit -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.25); border-radius: 16px; padding: 18px 16px; text-align: center; margin-bottom: 18px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔒</div>
+          <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;">
+            تم تجهيز جلسة الدفع الآمنة بنجاح
           </div>
-          <iframe id="spPaymentIframe" src="" style="height: 165px;" allow="payment" onload="handleIframeLoaded()"></iframe>
-        </div>
+          <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+            سيتم تحويلك مباشرة لبوابة <strong>SpaceRemit</strong> الرسمية لإتمام الدفع بواسطة البطاقة البنكية أو المحافظ المحلية بأمان وتشفير كامل.
+          </div>
 
-        <!-- زر تأكيد الدفع النهائي -->
-        <button type="button" class="sp-action-btn" id="spConfirmPayBtn" onclick="triggerSpaceRemitPayment()">
-          <span>تأكيد وإتمام الدفع</span>
-          <span>⚡</span>
-        </button>
+          <!-- زر الانتقال المباشر لصفحة الدفع الرسمية -->
+          <button type="button" class="sp-action-btn" id="spDirectPayBtn" onclick="openDirectPayment()" style="font-size: 15px;">
+            <span>الانتقال لصفحة الدفع الآن</span>
+            <span>⚡</span>
+          </button>
+          
+          <div id="spAutoRedirectText" style="font-size: 11px; color: #ffd700; margin-top: 10px;">
+            جاري توجيهك تلقائياً خلال <span id="spCountdown">3</span> ثوانٍ...
+          </div>
+        </div>
 
         <div class="sp-security-note">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="#10b981"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
@@ -1431,7 +1627,7 @@
           شكراً لك! تم استلام دفعتك بنجاح عبر SpaceRemit، وتم تسجيل طلبك وسيتم تفعيل حسابك والتواصل معك فوراً.
         </p>
         <div class="sp-code-box" id="spSuccessCodeBox">
-          كود العملية: #SP-PENDING
+          كود العملية: #SP-CONFIRMED
         </div>
         <button type="button" class="sp-action-btn" onclick="closeSpaceRemitModal()">
           <span>العودة للصفحة الرئيسية</span>
@@ -1446,25 +1642,16 @@
     // إعدادات وبيانات بوابة SpaceRemit
     // ==========================================
     const SPACEREMIT_CONFIG = {
-      // تم تفعيل وضع التجربة (Test) كما طلبت، لتجربة وسحب العمليات التجريبية أولاً
       isTestMode: true,
-
-      // مفاتيح الاختبار التجريبي (Test Keys)
       testPublicKey: "test_pk535XG65TKLUK0XAFVR5XYDVLU8IO2ZJ7T6B2VUSU0YER3XBOWX",
-      testSecretKey: "test_skXZ2IACDM9IZMKX65FZFFVLCSXE5HSA60EW4ULOIW8ER8QPRZQ7",
-
-      // مفاتيح الدفع الحقيقي (Live Keys) - يمكنك التبديل إليها متى رغبت بجعل isTestMode: false
-      livePublicKey: "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5",
-      liveSecretKey: "skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B",
-
-      callbackUrl: "https://nanoona.vercel.app/api/callback",
-      apiBaseUrl: "https://spaceremit.com/apipay-v2/"
+      livePublicKey: "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5"
     };
 
     let currentService = 'vip';
     let currentPrice = 50;
-    let currentPaymentWay = 'card'; // 'card' or 'local_methods'
     let currentTelegramUser = '';
+    let currentPaymentUrl = '';
+    let redirectTimer = null;
 
     const serviceNames = {
       'vip': 'اشتراك برايفيت VIP ⭐',
@@ -1529,8 +1716,8 @@
       document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
     }
 
-    // فتح نافذة الدفع عبر SpaceRemit
-    function handlePaymentSubmit() {
+    // بدء عملية الدفع عبر الاتصال بـ api/create-payment
+    async function handlePaymentSubmit() {
       const telegram = document.getElementById('telegramUsername').value.trim();
 
       if (!telegram) {
@@ -1540,162 +1727,100 @@
       }
 
       currentTelegramUser = telegram.startsWith('@') ? telegram : '@' + telegram;
+      const payBtn = document.getElementById('payButton');
+      const originalBtnText = payBtn.innerHTML;
 
-      // تحديث بيانات نافذة الدفع
-      document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'خدمة مخصصة';
-      document.getElementById('spModalTelegram').textContent = currentTelegramUser;
-      document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
-
-      // تحديث شارة الوضع (تجريبي أو حقيقي)
-      const badge = document.getElementById('spModeBadge');
-      if (SPACEREMIT_CONFIG.isTestMode) {
-        badge.textContent = 'وضع تجريبي 🧪';
-        badge.style.color = '#ffd700';
-        badge.style.borderColor = 'rgba(245, 196, 68, 0.4)';
-      } else {
-        badge.textContent = 'دفع حقيقي 🔒';
-        badge.style.color = '#10b981';
-        badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-      }
-
-      // إعادة ضبط الشاشات
-      document.getElementById('spCheckoutFormView').style.display = 'block';
-      document.getElementById('spSuccessScreen').classList.remove('active');
-
-      // إظهار النافذة وتحميل إطار الدفع
-      const overlay = document.getElementById('spModalOverlay');
-      overlay.style.display = 'flex';
-      setTimeout(() => overlay.classList.add('active'), 10);
-
-      loadSpaceRemitIframe();
-    }
-
-    // تبديل طريقة الدفع (بطاقة مصرفية / وسائل دفع ومحافظ)
-    function setPaymentWay(way) {
-      if (currentPaymentWay === way) return;
-      currentPaymentWay = way;
-
-      if (way === 'card') {
-        document.getElementById('tabCard').classList.add('active');
-        document.getElementById('tabLocal').classList.remove('active');
-      } else {
-        document.getElementById('tabCard').classList.remove('active');
-        document.getElementById('tabLocal').classList.add('active');
-      }
-
-      loadSpaceRemitIframe();
-    }
-
-    // بناء رابط إطار الدفع الرسمي لـ SpaceRemit
-    function loadSpaceRemitIframe() {
-      const loader = document.getElementById('spIframeLoader');
-      const iframe = document.getElementById('spPaymentIframe');
-
-      loader.style.opacity = '1';
-      loader.style.display = 'flex';
-
-      const activePublicKey = SPACEREMIT_CONFIG.isTestMode
-        ? SPACEREMIT_CONFIG.testPublicKey
-        : SPACEREMIT_CONFIG.livePublicKey;
-
-      const notesText = `${serviceNames[currentService] || currentService} - ${currentTelegramUser}`;
-
-      // تعديل ارتفاع الإطار بما يناسب البطاقة أو وسائل الدفع المتعددة
-      if (currentPaymentWay === 'card') {
-        iframe.style.height = '165px';
-      } else {
-        iframe.style.height = '340px';
-      }
-
-      const paymentUrl = `${SPACEREMIT_CONFIG.apiBaseUrl}?k=${encodeURIComponent(activePublicKey)}&way=${currentPaymentWay}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notesText)}&name=${encodeURIComponent(currentTelegramUser)}`;
-
-      console.log('تحميل بوابة SpaceRemit:', paymentUrl);
-      iframe.src = paymentUrl;
-    }
-
-    function handleIframeLoaded() {
-      const loader = document.getElementById('spIframeLoader');
-      loader.style.opacity = '0';
-      setTimeout(() => {
-        loader.style.display = 'none';
-      }, 300);
-    }
-
-    // بدء الدفع بإرسال إشارة للـ iframe (كما هو موضح في توثيق SpaceRemit)
-    function triggerSpaceRemitPayment() {
-      const iframe = document.getElementById('spPaymentIframe');
-      if (!iframe || !iframe.contentWindow) return;
-
-      const typeKey = currentPaymentWay === 'card' ? 'CARD' : 'LOCAL_METHODS';
-
-      console.log('إرسال أمر تأكيد الدفع لـ SpaceRemit...', typeKey);
-      iframe.contentWindow.postMessage({
-        origin: "SP_MARKET_API_SYSTEM",
-        action: "intialize_payment",
-        type: typeKey
-      }, "*");
-    }
-
-    // الاستماع لردود وإشعارات بوابة SpaceRemit
-    window.addEventListener('message', function (e) {
-      const data = e.data;
-      if (!data) return;
-
-      // إشعارات SpaceRemit
-      if (data.origin === "SPACEREMIT_API_SYSTEM") {
-        console.log('رسالة قادمة من SpaceRemit:', data);
-
-        if (data.action === 'payment_completed') {
-          handlePaymentSuccess(data.spaceremit_id);
-        } else if (data.action === 'payment_canceled') {
-          alert('تم إلغاء عملية الدفع.');
-        } else if (data.action === 'messege') {
-          if (data.text) alert(data.text);
-        }
-      }
-
-      // إشعارات paytabs_spaceremit
-      if (data.from === "paytabs_spaceremit") {
-        if (data.status === "completed") {
-          handlePaymentSuccess(data.key);
-        } else if (data.message) {
-          alert(data.message);
-        }
-      }
-    });
-
-    // معالجة الدفع الناجح
-    function handlePaymentSuccess(transactionId) {
-      console.log('🎉 نجاح الدفع! كود المعاملة:', transactionId);
-      
-      document.getElementById('spCheckoutFormView').style.display = 'none';
-      const successScreen = document.getElementById('spSuccessScreen');
-      successScreen.classList.add('active');
-      document.getElementById('spSuccessCodeBox').textContent = `رقم العملية: #${transactionId || 'SP-' + Date.now()}`;
-
-      // إرسال تنبيه خلفي للـ API في Vercel
       try {
-        fetch('/api/callback', {
+        payBtn.innerHTML = `<span>جاري تهيئة جلسة الدفع...</span> <span>⏳</span>`;
+        payBtn.disabled = true;
+
+        // استدعاء دالة السيرفر create-payment
+        const response = await fetch('/api/create-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            spaceremit_id: transactionId,
-            service: currentService,
+            userId: currentTelegramUser,
+            telegramUsername: currentTelegramUser,
             amount: currentPrice,
-            telegram: currentTelegramUser,
-            status: 'completed',
-            mode: SPACEREMIT_CONFIG.isTestMode ? 'test' : 'live'
+            serviceType: currentService
           })
-        }).catch(err => console.log('Callback notify silent err:', err));
-      } catch (e) {}
+        });
+
+        const data = await response.json();
+
+        if (!data || !data.payment_url) {
+          throw new Error(data.message || 'لم نتمكن من الحصول على رابط الدفع.');
+        }
+
+        currentPaymentUrl = data.payment_url;
+
+        // تحديث بيانات نافذة الدفع
+        document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'خدمة مخصصة';
+        document.getElementById('spModalTelegram').textContent = currentTelegramUser;
+        document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
+
+        // تحديث شارة الوضع
+        const badge = document.getElementById('spModeBadge');
+        if (SPACEREMIT_CONFIG.isTestMode) {
+          badge.textContent = 'وضع تجريبي 🧪';
+          badge.style.color = '#ffd700';
+          badge.style.borderColor = 'rgba(245, 196, 68, 0.4)';
+        } else {
+          badge.textContent = 'دفع حقيقي 🔒';
+          badge.style.color = '#10b981';
+          badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        }
+
+        // إظهار نافذة التأكيد
+        document.getElementById('spCheckoutFormView').style.display = 'block';
+        document.getElementById('spSuccessScreen').classList.remove('active');
+
+        const overlay = document.getElementById('spModalOverlay');
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('active'), 10);
+
+        // عداد التوجيه التلقائي
+        let timeLeft = 3;
+        const countdownEl = document.getElementById('spCountdown');
+        countdownEl.textContent = timeLeft;
+
+        if (redirectTimer) clearInterval(redirectTimer);
+        redirectTimer = setInterval(() => {
+          timeLeft--;
+          if (countdownEl) countdownEl.textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(redirectTimer);
+            openDirectPayment();
+          }
+        }, 1000);
+
+      } catch (err) {
+        console.error('Payment initialization error:', err);
+        // Fallback: إنشاء الرابط المباشر لبوابة SpaceRemit فوراً
+        const pubKey = SPACEREMIT_CONFIG.isTestMode ? SPACEREMIT_CONFIG.testPublicKey : SPACEREMIT_CONFIG.livePublicKey;
+        const notes = `${serviceNames[currentService] || currentService} - ${currentTelegramUser}`;
+        currentPaymentUrl = `https://spaceremit.com/apipay-v2/?k=${encodeURIComponent(pubKey)}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(currentTelegramUser)}`;
+        openDirectPayment();
+      } finally {
+        payBtn.innerHTML = originalBtnText;
+        payBtn.disabled = false;
+      }
+    }
+
+    // فتح صفحة الدفع الرسمية لـ SpaceRemit مباشرة
+    function openDirectPayment() {
+      if (redirectTimer) clearInterval(redirectTimer);
+      if (currentPaymentUrl) {
+        window.location.href = currentPaymentUrl;
+      }
     }
 
     function closeSpaceRemitModal() {
+      if (redirectTimer) clearInterval(redirectTimer);
       const overlay = document.getElementById('spModalOverlay');
       overlay.classList.remove('active');
       setTimeout(() => {
         overlay.style.display = 'none';
-        document.getElementById('spPaymentIframe').src = '';
       }, 250);
     }
 
@@ -1704,6 +1829,27 @@
         closeSpaceRemitModal();
       }
     }
+
+    // فحص الرابط عند العودة من بوابة الدفع (إذا تم الدفع بنجاح أو تم الإلغاء)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentStatus = urlParams.get('payment');
+      const userParam = urlParams.get('telegram');
+
+      if (paymentStatus === 'success') {
+        const overlay = document.getElementById('spModalOverlay');
+        document.getElementById('spCheckoutFormView').style.display = 'none';
+        const successScreen = document.getElementById('spSuccessScreen');
+        successScreen.classList.add('active');
+        if (userParam) {
+          document.getElementById('spSuccessCodeBox').textContent = `معرّف التليجرام: ${decodeURIComponent(userParam)}`;
+        }
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('active'), 10);
+      } else if (paymentStatus === 'canceled') {
+        alert('تم إلغاء عملية الدفع، يمكنك المحاولة في أي وقت.');
+      }
+    });
   </script>
 </body>
 

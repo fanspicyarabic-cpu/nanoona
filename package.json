@@ -1,0 +1,11 @@
+{
+  "name": "nanoona",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Queen Nanoona Official Store with SpaceRemit Payment Gateway",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {}
+}
