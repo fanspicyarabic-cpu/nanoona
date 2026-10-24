@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta name="spaceremit-verification" content="R1F0D0ZUZTNS7APR2JQZNKKHOU4EWWKNJFPOT45TLBV3I3UENP">
   <meta charset="UTF-8">
@@ -36,7 +37,7 @@
 
     body {
       background-color: var(--bg-dark);
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.12) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.09) 0px, transparent 50%);
       color: var(--text-main);
@@ -99,7 +100,7 @@
       border-radius: var(--radius-xl);
       padding: 0 24px 28px;
       box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
-                  0 0 40px rgba(212, 175, 55, 0.08);
+        0 0 40px rgba(212, 175, 55, 0.08);
       position: relative;
       overflow: hidden;
     }
@@ -159,8 +160,15 @@
     }
 
     @keyframes floatCrown {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-5px); }
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(-5px);
+      }
     }
 
     .avatar-ring {
@@ -372,6 +380,7 @@
       border-color: #FFFC00;
       box-shadow: 0 8px 20px rgba(255, 252, 0, 0.45);
     }
+
     .social-btn.snapchat:hover svg path {
       fill: #000;
     }
@@ -381,6 +390,7 @@
       background: rgba(45, 20, 26, 0.85);
       border-color: rgba(255, 75, 110, 0.3);
     }
+
     .social-btn.fanspicy:hover {
       background: linear-gradient(135deg, #ff3366 0%, #ff6b3d 100%);
       border-color: #ff3366;
@@ -777,11 +787,328 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-6px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* نافذة الدفع المنبثقة عبر SpaceRemit */
+    .sp-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sp-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .sp-modal-card {
+      background: #0f0f18;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), 0 0 50px rgba(212, 175, 55, 0.2);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 490px;
+      max-height: 94vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+      animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        transform: translateY(30px) scale(0.96);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .sp-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+    }
+
+    .sp-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sp-mode-badge {
+      font-size: 11px;
+      background: rgba(245, 196, 68, 0.15);
+      color: #ffd700;
+      border: 1px solid rgba(245, 196, 68, 0.4);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .sp-modal-close {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .sp-modal-close:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.4);
+      transform: rotate(90deg);
+    }
+
+    .sp-order-summary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sp-summary-details {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .sp-summary-service {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .sp-summary-tg {
+      font-size: 12px;
+      color: #38bdf8;
+      direction: ltr;
+      display: inline-block;
+      text-align: right;
+    }
+
+    .sp-summary-price {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffd700;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .sp-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sp-tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 8px;
+      border-radius: 9px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .sp-tab-btn.active {
+      background: var(--gold-gradient);
+      color: #07070b;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+    }
+
+    .sp-iframe-box {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      min-height: 165px;
+    }
+
+    .sp-iframe-box iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      transition: height 0.3s ease;
+    }
+
+    .sp-iframe-loader {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #11111c;
+      color: #ffd700;
+      font-size: 13px;
+      gap: 12px;
+      z-index: 5;
+      transition: opacity 0.3s ease;
+    }
+
+    .sp-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(212, 175, 55, 0.2);
+      border-top-color: #ffd700;
+      border-radius: 50%;
+      animation: spSpin 0.8s linear infinite;
+    }
+
+    @keyframes spSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .sp-action-btn {
+      width: 100%;
+      background: var(--gold-gradient);
+      color: #07070b;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+    }
+
+    .sp-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.55);
+    }
+
+    .sp-security-note {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    /* شاشة اكتمال الدفع بنجاح */
+    .sp-success-screen {
+      display: none;
+      text-align: center;
+      padding: 24px 12px 16px;
+    }
+
+    .sp-success-screen.active {
+      display: block;
+    }
+
+    .sp-success-icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 2px solid #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #10b981;
+      margin: 0 auto 18px;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .sp-success-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #10b981;
+      margin-bottom: 8px;
+    }
+
+    .sp-success-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .sp-code-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(212, 175, 55, 0.4);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: monospace;
+      color: #ffd700;
+      font-size: 14px;
+      margin-bottom: 20px;
+      word-break: break-all;
     }
   </style>
 </head>
+
 <body>
 
   <div class="bg-lights">
@@ -791,7 +1118,7 @@
 
   <div class="container">
     <div class="payment-card">
-      
+
       <!-- غلاف بانر شفاف احترافي مقتبس من صورتها -->
       <div class="card-banner">
         <div class="banner-bg"></div>
@@ -804,13 +1131,8 @@
           <span class="crown-badge">👑</span>
           <div class="avatar-ring">
             <div class="avatar-inner">
-              <img 
-                id="profileImg"
-                src="avatar.jpg" 
-                alt="الملكة نانو" 
-                class="avatar-img"
-                onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';"
-              >
+              <img id="profileImg" src="avatar.jpg" alt="الملكة نانو" class="avatar-img"
+                onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
               <div id="avatarFallback" class="avatar-placeholder" style="display: none;">
                 👸
               </div>
@@ -821,7 +1143,8 @@
         <div class="name-wrapper">
           <h1 class="title">الملكة نانو</h1>
           <svg class="verified-icon" viewBox="0 0 24 24" title="موثق">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
           </svg>
         </div>
         <p class="subtitle">الحساب الرسمي | الدفع والاشتراك الحصري المباشر</p>
@@ -852,46 +1175,58 @@
             <span>✨</span>
           </div>
           <div class="social-bar">
-            
+
             <!-- تيليجرام -->
-            <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="social-btn telegram" data-tooltip="قناة التليجرام" id="linkTelegram">
+            <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="social-btn telegram"
+              data-tooltip="قناة التليجرام" id="linkTelegram">
               <svg viewBox="0 0 24 24">
-                <path fill="#229ED9" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+                <path fill="#229ED9"
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z" />
               </svg>
             </a>
 
             <!-- تيك توك -->
-            <a href="https://www.tiktok.com/@n.nano14" target="_blank" rel="noopener" class="social-btn tiktok" data-tooltip="حساب تيك توك" id="linkTiktok">
+            <a href="https://www.tiktok.com/@n.nano14" target="_blank" rel="noopener" class="social-btn tiktok"
+              data-tooltip="حساب تيك توك" id="linkTiktok">
               <svg viewBox="0 0 24 24">
-                <path fill="#ffffff" d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .58.04.86.12V9.42a6.34 6.34 0 00-.86-.06 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34-6.34V8.71a8.19 8.19 0 004.77 1.52V6.78a4.85 4.85 0 01-1-.09z"/>
+                <path fill="#ffffff"
+                  d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .58.04.86.12V9.42a6.34 6.34 0 00-.86-.06 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34-6.34V8.71a8.19 8.19 0 004.77 1.52V6.78a4.85 4.85 0 01-1-.09z" />
               </svg>
             </a>
 
             <!-- سناب شات -->
-            <a href="https://www.snapchat.com/@nanoo.na1" target="_blank" rel="noopener" class="social-btn snapchat" data-tooltip="حساب سناب شات" id="linkSnapchat">
+            <a href="https://www.snapchat.com/@nanoo.na1" target="_blank" rel="noopener" class="social-btn snapchat"
+              data-tooltip="حساب سناب شات" id="linkSnapchat">
               <svg viewBox="0 0 24 24">
-                <path fill="#FFFC00" d="M12.002 2C6.91 2 4.545 4.78 4.545 7.15c0 1.34.61 2.8 1.45 3.71.21.23.27.47.16.73-.24.58-1.02 1.15-1.92 1.25-.33.04-.51.27-.47.53.07.45.69.75 1.45.85.24.03.41.16.48.36.19.56.02 1.34-1.28 1.95-.44.2-.67.45-.63.76.08.57 1.05.8 2.06.69.4-.04.7.1.86.38.45.8 1.49 1.14 2.76 1.18.52.02.94.21 1.25.59.58.7 1.51 1.06 2.29 1.06.77 0 1.71-.36 2.29-1.06.31-.38.73-.57 1.25-.59 1.27-.04 2.31-.38 2.76-1.18.16-.28.46-.42.86-.38 1.01.11 1.98-.12 2.06-.69.04-.31-.19-.56-.63-.76-1.3-.61-1.47-1.39-1.28-1.95.07-.2.24-.33.48-.36.76-.1 1.38-.4 1.45-.85.04-.26-.14-.49-.47-.53-.9-.1-1.68-.67-1.92-1.25-.11-.26-.05-.5.16-.73.84-.91 1.45-2.37 1.45-3.71C19.458 4.78 17.094 2 12.002 2z"/>
+                <path fill="#FFFC00"
+                  d="M12.002 2C6.91 2 4.545 4.78 4.545 7.15c0 1.34.61 2.8 1.45 3.71.21.23.27.47.16.73-.24.58-1.02 1.15-1.92 1.25-.33.04-.51.27-.47.53.07.45.69.75 1.45.85.24.03.41.16.48.36.19.56.02 1.34-1.28 1.95-.44.2-.67.45-.63.76.08.57 1.05.8 2.06.69.4-.04.7.1.86.38.45.8 1.49 1.14 2.76 1.18.52.02.94.21 1.25.59.58.7 1.51 1.06 2.29 1.06.77 0 1.71-.36 2.29-1.06.31-.38.73-.57 1.25-.59 1.27-.04 2.31-.38 2.76-1.18.16-.28.46-.42.86-.38 1.01.11 1.98-.12 2.06-.69.04-.31-.19-.56-.63-.76-1.3-.61-1.47-1.39-1.28-1.95.07-.2.24-.33.48-.36.76-.1 1.38-.4 1.45-.85.04-.26-.14-.49-.47-.53-.9-.1-1.68-.67-1.92-1.25-.11-.26-.05-.5.16-.73.84-.91 1.45-2.37 1.45-3.71C19.458 4.78 17.094 2 12.002 2z" />
               </svg>
             </a>
 
             <!-- واتساب -->
-            <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="social-btn whatsapp" data-tooltip="محادثة واتساب" id="linkWhatsapp">
+            <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="social-btn whatsapp"
+              data-tooltip="محادثة واتساب" id="linkWhatsapp">
               <svg viewBox="0 0 24 24">
-                <path fill="#25D366" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+                <path fill="#25D366"
+                  d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z" />
               </svg>
             </a>
 
             <!-- فان سبايسي Fanspicy -->
-            <a href="https://fanspicy.com/nanoona1/" target="_blank" rel="noopener" class="social-btn fanspicy" data-tooltip="حساب Fanspicy" id="linkFanspicy">
+            <a href="https://fanspicy.com/nanoona1/" target="_blank" rel="noopener" class="social-btn fanspicy"
+              data-tooltip="حساب Fanspicy" id="linkFanspicy">
               <svg viewBox="0 0 24 24">
-                <path fill="#ff4b6e" d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.09 8.14 13.93C8.08 13.88 8.04 13.83 8 13.76C6.87 12.33 6.69 10.28 7.45 8.64C5.78 10 4.87 12.3 5.04 14.47C5.25 17.15 7.14 19.46 9.77 20.14C12.57 20.86 15.54 19.68 17.1 17.24C18.42 15.23 18.57 12.54 17.66 11.2M14.5 17.5C14.22 17.74 13.76 18 13.32 18.06C12.36 18.2 11.41 17.65 11.03 16.79C10.87 16.42 10.87 15.93 11 15.55C11.11 15.24 11.36 14.97 11.57 14.75C12.16 14.15 12.87 13.81 13.34 13.06C13.84 13.93 14.84 14.37 15.11 15.39C15.37 16.19 15.07 16.97 14.5 17.5Z"/>
+                <path fill="#ff4b6e"
+                  d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.09 8.14 13.93C8.08 13.88 8.04 13.83 8 13.76C6.87 12.33 6.69 10.28 7.45 8.64C5.78 10 4.87 12.3 5.04 14.47C5.25 17.15 7.14 19.46 9.77 20.14C12.57 20.86 15.54 19.68 17.1 17.24C18.42 15.23 18.57 12.54 17.66 11.2M14.5 17.5C14.22 17.74 13.76 18 13.32 18.06C12.36 18.2 11.41 17.65 11.03 16.79C10.87 16.42 10.87 15.93 11 15.55C11.11 15.24 11.36 14.97 11.57 14.75C12.16 14.15 12.87 13.81 13.34 13.06C13.84 13.93 14.84 14.37 15.11 15.39C15.37 16.19 15.07 16.97 14.5 17.5Z" />
               </svg>
             </a>
 
             <!-- إكس / تويتر X -->
-            <a href="https://x.com/nanoo_na1" target="_blank" rel="noopener" class="social-btn x-twitter" data-tooltip="منصة X (تويتر)" id="linkTwitter">
+            <a href="https://x.com/nanoo_na1" target="_blank" rel="noopener" class="social-btn x-twitter"
+              data-tooltip="منصة X (تويتر)" id="linkTwitter">
               <svg viewBox="0 0 24 24">
-                <path fill="#ffffff" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                <path fill="#ffffff"
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </a>
 
@@ -909,7 +1244,7 @@
       </div>
 
       <div class="options-grid" id="optionsGrid">
-        
+
         <!-- الباقة 1: اشتراك برايفيت -->
         <div class="option-card selected" data-service="vip" data-price="50" onclick="selectService(this)">
           <div class="option-header">
@@ -957,7 +1292,7 @@
             </div>
             <div class="option-price" id="tipPriceDisplay">10 <span class="currency">$</span></div>
           </div>
-          
+
           <!-- أزرار المبالغ الجاهزة والحقل المخصص -->
           <div class="tip-custom-box" id="tipCustomBox">
             <div class="preset-label">
@@ -977,16 +1312,8 @@
 
             <!-- إدخال قيمة يدوية -->
             <div class="tip-input-wrapper">
-              <input 
-                type="number" 
-                id="customTipAmount" 
-                class="tip-input" 
-                min="4" 
-                value="10" 
-                step="1"
-                placeholder="أو اكتب مبلغاً مخصصاً (الحد الأدنى 4$)"
-                oninput="updateCustomTip(this.value)"
-              >
+              <input type="number" id="customTipAmount" class="tip-input" min="4" value="10" step="1"
+                placeholder="أو اكتب مبلغاً مخصصاً (الحد الأدنى 4$)" oninput="updateCustomTip(this.value)">
               <span class="tip-currency-tag">$</span>
             </div>
             <div class="tip-hint">يمكنك تحديد أي مبلغ إكرامية (الحد الأدنى 4$) ✨</div>
@@ -1002,17 +1329,12 @@
           معرّف التليجرام الخاص بك (Username) <span class="req">*</span>
         </label>
         <div class="input-field-wrapper">
-          <input 
-            type="text" 
-            id="telegramUsername" 
-            class="text-input" 
-            placeholder="مثال: @username أو المعرف بدون @"
-            required
-            autocomplete="off"
-          >
+          <input type="text" id="telegramUsername" class="text-input" placeholder="مثال: @username أو المعرف بدون @"
+            required autocomplete="off">
           <span class="input-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z" />
             </svg>
           </span>
         </div>
@@ -1035,16 +1357,120 @@
 
       <!-- شارة الأمان -->
       <div class="security-badge">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+        </svg>
         <span>دفع مشفر ومؤمن 100% عبر بوابة SpaceRemit الرسمية</span>
       </div>
 
     </div>
   </div>
 
+  <!-- نافذة الدفع عبر SpaceRemit (Checkout Modal) -->
+  <div class="sp-modal-overlay" id="spModalOverlay" onclick="handleOverlayClick(event)">
+    <div class="sp-modal-card" id="spModalCard">
+      
+      <!-- نموذج الدفع والشاشة الرئيسية -->
+      <div id="spCheckoutFormView">
+        <div class="sp-modal-header">
+          <div class="sp-modal-title">
+            <span>🛡️ بوابة الدفع SpaceRemit</span>
+            <span class="sp-mode-badge" id="spModeBadge">وضع تجريبي 🧪</span>
+          </div>
+          <button type="button" class="sp-modal-close" onclick="closeSpaceRemitModal()" title="إغلاق">✕</button>
+        </div>
+
+        <!-- ملخص الطلب في النافذة -->
+        <div class="sp-order-summary">
+          <div class="sp-summary-details">
+            <span class="sp-summary-service" id="spModalServiceTitle">اشتراك برايفيت VIP</span>
+            <span class="sp-summary-tg" id="spModalTelegram">@username</span>
+          </div>
+          <div class="sp-summary-price" id="spModalPrice">50.00 $</div>
+        </div>
+
+        <!-- أزرار تبديل طريقة الدفع -->
+        <div class="sp-tabs">
+          <button type="button" class="sp-tab-btn active" id="tabCard" onclick="setPaymentWay('card')">
+            <span>💳</span>
+            <span>بطاقة مصرفية</span>
+          </button>
+          <button type="button" class="sp-tab-btn" id="tabLocal" onclick="setPaymentWay('local_methods')">
+            <span>🏦</span>
+            <span>طرق دفع ومحافظ</span>
+          </button>
+        </div>
+
+        <!-- إطار الدفع الآمن من SpaceRemit -->
+        <div class="sp-iframe-box" id="spIframeBox">
+          <div class="sp-iframe-loader" id="spIframeLoader">
+            <div class="sp-spinner"></div>
+            <span>جاري تهيئة الاتصال الآمن مع SpaceRemit...</span>
+          </div>
+          <iframe id="spPaymentIframe" src="" style="height: 165px;" allow="payment" onload="handleIframeLoaded()"></iframe>
+        </div>
+
+        <!-- زر تأكيد الدفع النهائي -->
+        <button type="button" class="sp-action-btn" id="spConfirmPayBtn" onclick="triggerSpaceRemitPayment()">
+          <span>تأكيد وإتمام الدفع</span>
+          <span>⚡</span>
+        </button>
+
+        <div class="sp-security-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#10b981"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <span>تشفير 256-bit آمن متوافق مع معايير PCI-DSS</span>
+        </div>
+      </div>
+
+      <!-- شاشة النجاح عند إتمام الدفع -->
+      <div class="sp-success-screen" id="spSuccessScreen">
+        <div class="sp-success-icon-wrap">✓</div>
+        <h3 class="sp-success-title">تمت عملية الدفع بنجاح! 🎉</h3>
+        <p class="sp-success-desc">
+          شكراً لك! تم استلام دفعتك بنجاح عبر SpaceRemit، وتم تسجيل طلبك وسيتم تفعيل حسابك والتواصل معك فوراً.
+        </p>
+        <div class="sp-code-box" id="spSuccessCodeBox">
+          كود العملية: #SP-PENDING
+        </div>
+        <button type="button" class="sp-action-btn" onclick="closeSpaceRemitModal()">
+          <span>العودة للصفحة الرئيسية</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <script>
+    // ==========================================
+    // إعدادات وبيانات بوابة SpaceRemit
+    // ==========================================
+    const SPACEREMIT_CONFIG = {
+      // تم تفعيل وضع التجربة (Test) كما طلبت، لتجربة وسحب العمليات التجريبية أولاً
+      isTestMode: true,
+
+      // مفاتيح الاختبار التجريبي (Test Keys)
+      testPublicKey: "test_pk535XG65TKLUK0XAFVR5XYDVLU8IO2ZJ7T6B2VUSU0YER3XBOWX",
+      testSecretKey: "test_skXZ2IACDM9IZMKX65FZFFVLCSXE5HSA60EW4ULOIW8ER8QPRZQ7",
+
+      // مفاتيح الدفع الحقيقي (Live Keys) - يمكنك التبديل إليها متى رغبت بجعل isTestMode: false
+      livePublicKey: "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5",
+      liveSecretKey: "skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B",
+
+      callbackUrl: "https://nanoona.vercel.app/api/callback",
+      apiBaseUrl: "https://spaceremit.com/apipay-v2/"
+    };
+
     let currentService = 'vip';
     let currentPrice = 50;
+    let currentPaymentWay = 'card'; // 'card' or 'local_methods'
+    let currentTelegramUser = '';
+
+    const serviceNames = {
+      'vip': 'اشتراك برايفيت VIP ⭐',
+      'call': 'مكالمة فيديو مباشر 📹',
+      'tip': 'إكرامية ودعم 💖'
+    };
 
     function selectService(element) {
       document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
@@ -1103,27 +1529,182 @@
       document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
     }
 
+    // فتح نافذة الدفع عبر SpaceRemit
     function handlePaymentSubmit() {
       const telegram = document.getElementById('telegramUsername').value.trim();
-      
+
       if (!telegram) {
         alert('يرجى إدخال معرّف التليجرام الخاص بك لمتابعة عملية الدفع.');
         document.getElementById('telegramUsername').focus();
         return;
       }
 
-      const cleanTelegram = telegram.startsWith('@') ? telegram : '@' + telegram;
+      currentTelegramUser = telegram.startsWith('@') ? telegram : '@' + telegram;
 
-      const orderPayload = {
-        service: currentService,
-        amount: currentPrice,
-        currency: 'USD',
-        telegram: cleanTelegram
-      };
+      // تحديث بيانات نافذة الدفع
+      document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'خدمة مخصصة';
+      document.getElementById('spModalTelegram').textContent = currentTelegramUser;
+      document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
 
-      console.log('بيانات الطلب الجاهزة للإرسال للسيرفر:', orderPayload);
-      alert(`✅ تم تأكيد البيانات بنجاح!\n\n• الخدمة: ${currentService}\n• المبلغ: ${currentPrice} $\n• التليجرام: ${cleanTelegram}\n\nجاهزون الآن للربط مع السيرفر وبوابة SpaceRemit!`);
+      // تحديث شارة الوضع (تجريبي أو حقيقي)
+      const badge = document.getElementById('spModeBadge');
+      if (SPACEREMIT_CONFIG.isTestMode) {
+        badge.textContent = 'وضع تجريبي 🧪';
+        badge.style.color = '#ffd700';
+        badge.style.borderColor = 'rgba(245, 196, 68, 0.4)';
+      } else {
+        badge.textContent = 'دفع حقيقي 🔒';
+        badge.style.color = '#10b981';
+        badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      }
+
+      // إعادة ضبط الشاشات
+      document.getElementById('spCheckoutFormView').style.display = 'block';
+      document.getElementById('spSuccessScreen').classList.remove('active');
+
+      // إظهار النافذة وتحميل إطار الدفع
+      const overlay = document.getElementById('spModalOverlay');
+      overlay.style.display = 'flex';
+      setTimeout(() => overlay.classList.add('active'), 10);
+
+      loadSpaceRemitIframe();
+    }
+
+    // تبديل طريقة الدفع (بطاقة مصرفية / وسائل دفع ومحافظ)
+    function setPaymentWay(way) {
+      if (currentPaymentWay === way) return;
+      currentPaymentWay = way;
+
+      if (way === 'card') {
+        document.getElementById('tabCard').classList.add('active');
+        document.getElementById('tabLocal').classList.remove('active');
+      } else {
+        document.getElementById('tabCard').classList.remove('active');
+        document.getElementById('tabLocal').classList.add('active');
+      }
+
+      loadSpaceRemitIframe();
+    }
+
+    // بناء رابط إطار الدفع الرسمي لـ SpaceRemit
+    function loadSpaceRemitIframe() {
+      const loader = document.getElementById('spIframeLoader');
+      const iframe = document.getElementById('spPaymentIframe');
+
+      loader.style.opacity = '1';
+      loader.style.display = 'flex';
+
+      const activePublicKey = SPACEREMIT_CONFIG.isTestMode
+        ? SPACEREMIT_CONFIG.testPublicKey
+        : SPACEREMIT_CONFIG.livePublicKey;
+
+      const notesText = `${serviceNames[currentService] || currentService} - ${currentTelegramUser}`;
+
+      // تعديل ارتفاع الإطار بما يناسب البطاقة أو وسائل الدفع المتعددة
+      if (currentPaymentWay === 'card') {
+        iframe.style.height = '165px';
+      } else {
+        iframe.style.height = '340px';
+      }
+
+      const paymentUrl = `${SPACEREMIT_CONFIG.apiBaseUrl}?k=${encodeURIComponent(activePublicKey)}&way=${currentPaymentWay}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notesText)}&name=${encodeURIComponent(currentTelegramUser)}`;
+
+      console.log('تحميل بوابة SpaceRemit:', paymentUrl);
+      iframe.src = paymentUrl;
+    }
+
+    function handleIframeLoaded() {
+      const loader = document.getElementById('spIframeLoader');
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 300);
+    }
+
+    // بدء الدفع بإرسال إشارة للـ iframe (كما هو موضح في توثيق SpaceRemit)
+    function triggerSpaceRemitPayment() {
+      const iframe = document.getElementById('spPaymentIframe');
+      if (!iframe || !iframe.contentWindow) return;
+
+      const typeKey = currentPaymentWay === 'card' ? 'CARD' : 'LOCAL_METHODS';
+
+      console.log('إرسال أمر تأكيد الدفع لـ SpaceRemit...', typeKey);
+      iframe.contentWindow.postMessage({
+        origin: "SP_MARKET_API_SYSTEM",
+        action: "intialize_payment",
+        type: typeKey
+      }, "*");
+    }
+
+    // الاستماع لردود وإشعارات بوابة SpaceRemit
+    window.addEventListener('message', function (e) {
+      const data = e.data;
+      if (!data) return;
+
+      // إشعارات SpaceRemit
+      if (data.origin === "SPACEREMIT_API_SYSTEM") {
+        console.log('رسالة قادمة من SpaceRemit:', data);
+
+        if (data.action === 'payment_completed') {
+          handlePaymentSuccess(data.spaceremit_id);
+        } else if (data.action === 'payment_canceled') {
+          alert('تم إلغاء عملية الدفع.');
+        } else if (data.action === 'messege') {
+          if (data.text) alert(data.text);
+        }
+      }
+
+      // إشعارات paytabs_spaceremit
+      if (data.from === "paytabs_spaceremit") {
+        if (data.status === "completed") {
+          handlePaymentSuccess(data.key);
+        } else if (data.message) {
+          alert(data.message);
+        }
+      }
+    });
+
+    // معالجة الدفع الناجح
+    function handlePaymentSuccess(transactionId) {
+      console.log('🎉 نجاح الدفع! كود المعاملة:', transactionId);
+      
+      document.getElementById('spCheckoutFormView').style.display = 'none';
+      const successScreen = document.getElementById('spSuccessScreen');
+      successScreen.classList.add('active');
+      document.getElementById('spSuccessCodeBox').textContent = `رقم العملية: #${transactionId || 'SP-' + Date.now()}`;
+
+      // إرسال تنبيه خلفي للـ API في Vercel
+      try {
+        fetch('/api/callback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            spaceremit_id: transactionId,
+            service: currentService,
+            amount: currentPrice,
+            telegram: currentTelegramUser,
+            status: 'completed',
+            mode: SPACEREMIT_CONFIG.isTestMode ? 'test' : 'live'
+          })
+        }).catch(err => console.log('Callback notify silent err:', err));
+      } catch (e) {}
+    }
+
+    function closeSpaceRemitModal() {
+      const overlay = document.getElementById('spModalOverlay');
+      overlay.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        document.getElementById('spPaymentIframe').src = '';
+      }, 250);
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('spModalOverlay')) {
+        closeSpaceRemitModal();
+      }
     }
   </script>
 </body>
+
 </html>
