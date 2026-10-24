@@ -78,7 +78,7 @@ export default async function handler(req, res) {
     const serviceName = serviceTitles[serviceType] || 'خدمة مخصصة';
 
     const notes = `${serviceName} - ${cleanTelegram} (${invoiceNumber})`;
-    const paymentUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
+    paymentUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
 
     console.log('====================================================');
     console.log(`[Invoice Generated] تم إنشاء الفاتورة رقم ${invoiceNumber}:`);
