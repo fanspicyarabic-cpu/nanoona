@@ -935,106 +935,29 @@
       text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 
-    .sp-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .sp-tab-btn {
-      background: transparent;
-      border: none;
-      padding: 10px 8px;
-      border-radius: 9px;
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
+    .sp-whatsapp-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-    }
-
-    .sp-tab-btn.active {
-      background: var(--gold-gradient);
-      color: #07070b;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
-    }
-
-    .sp-iframe-box {
-      background: #ffffff;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(212, 175, 55, 0.3);
-      min-height: 165px;
-    }
-
-    #spaceremit-local-methods-pay {
-      position: relative !important;
-      min-height: 480px !important;
-      height: 480px !important;
-      background: #ffffff !important;
-      border-radius: 12px !important;
-      overflow: hidden !important;
-    }
-
-    #spaceremit-local-methods-pay iframe,
-    #sp_local_nethods_iframe {
-      width: 100% !important;
-      height: 480px !important;
-      min-height: 480px !important;
-      border: none !important;
-      display: block !important;
-    }
-
-    #spaceremit-card-pay {
-      display: none !important;
-    }
-
-    .sp-iframe-box iframe {
+      gap: 10px;
       width: 100%;
-      border: none;
-      display: block;
-      transition: height 0.3s ease;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4);
+      transition: var(--transition);
+      box-sizing: border-box;
     }
 
-    .sp-iframe-loader {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #11111c;
-      color: #ffd700;
-      font-size: 13px;
-      gap: 12px;
-      z-index: 5;
-      transition: opacity 0.3s ease;
-    }
-
-    .sp-spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid rgba(212, 175, 55, 0.2);
-      border-top-color: #ffd700;
-      border-radius: 50%;
-      animation: spSpin 0.8s linear infinite;
-    }
-
-    @keyframes spSpin {
-      to { transform: rotate(360deg); }
+    .sp-whatsapp-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
+      filter: brightness(1.05);
     }
 
     .sp-action-btn {
@@ -1615,53 +1538,34 @@
           <div class="sp-summary-price" id="spModalPrice">50.00 $</div>
         </div>
 
-        <!-- النموذج الرسمي المتوافق 100% مع معايير SpaceRemit API v2 -->
-        <form id="spaceremit-form" style="width: 100%; padding: 0px; margin-bottom: 12px;"> 
-            <!-- Hidden input fields for amount and currency -->
-            <input type="hidden" name="amount" id="sp_amount_field" value="50">
-            <input type="hidden" name="currency" id="sp_currency_field" value="USD">
-            
-            <!-- Hidden input fields for buyer information -->
-            <input type="hidden" name="fullname" id="sp_fullname_field" value="">
-            <input type="hidden" name="email" id="sp_email_field" value="customer@nanoona.app">
-            <input type="hidden" name="phone" id="sp_phone_field" value="0000000000">
-            <input type="hidden" name="notes" id="sp_notes_field" value="اشتراك VIP">
-            
-            <!-- Container for local payment methods -->
-            <div class="sp-one-type-select" style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(212,175,55,0.3); border-radius: 14px; padding: 12px; margin-bottom: 12px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                  <input type="radio" name="sp-pay-type-radio" value="local-methods-pay" id="sp_local_methods_radio" checked style="accent-color: #ffd700; transform: scale(1.2); cursor: pointer;">
-                  <label for="sp_local_methods_radio" style="color: #ffd700; font-weight: 700; cursor: pointer; font-size: 14px;">
-                    <div>⚡ طرق الدفع والمحافظ المحلية (Local payment methods)</div>
-                  </label>
-                </div>
-                <!-- Container for displaying local payment methods -->
-                <div id="spaceremit-local-methods-pay" style="min-height: 480px; background: #fff; border-radius: 10px; overflow: hidden; position: relative;"></div>
-            </div>
-           
-            <!-- Button to submit the form -->
-            <div style="margin-top: 14px; margin-bottom: 10px;">
-              <button type="submit" class="pay-btn" id="sp_submit_btn">
-                <span>تأكيد وسداد الفاتورة الآن 🔒</span>
-              </button>
-            </div>
-        </form>
+        <!-- إشعار فتح النافذة الخارجية -->
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 24px; flex-shrink: 0;">🚀</span>
+          <div style="font-size: 13px; line-height: 1.5; color: #e2e8f0;">
+            تم فتح <strong style="color: #34d399;">بوابة الدفع الخارجية SpaceRemit</strong> في نافذة جديدة لإتمام سداد الفاتورة بكل أمان.
+          </div>
+        </div>
 
-        <!-- زر فتح بوابة SpaceRemit في نافذة مستقلة كاملة -->
+        <!-- زر تأكيد الفاتورة المباشر عبر الواتساب (WhatsApp) -->
+        <a id="spDirectWhatsappBtn" class="sp-whatsapp-btn" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.213 8.213 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
+          <span>تأكيد الفاتورة وإرسال الإشعار عبر واتساب 💬</span>
+        </a>
+
+        <!-- زر إعادة فتح صفحة الدفع الخارجية لـ SpaceRemit -->
         <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--gold-gradient); color: #07070b; border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 800; text-decoration: none; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(212,175,55,0.35); transition: var(--transition);">
-          <span>فتح بوابة SpaceRemit في نافذة مستقلة ↗</span>
+          <span>إعادة فتح صفحة الدفع الخارجية (SpaceRemit) ↗</span>
         </a>
 
         <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
         <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(34, 158, 217, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: var(--transition);">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
-          <span>تأكيد الفاتورة المباشر مع الملكة نانو عبر التليجرام 💬</span>
+          <span>أو التأكيد عبر التليجرام الرسمي للملكة نانو</span>
         </a>
 
         <!-- زر إغلاق بسيط للنافذة المنبثقة -->
         <button type="button" onclick="closeSpaceRemitModal()" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>إلغاء وإغلاق النافذة</span>
-          <span>✕</span>
+          <span>العودة للموقع ✕</span>
         </button>
 
         <div class="sp-security-note" style="margin-top: 10px;">
@@ -1688,54 +1592,8 @@
     </div>
   </div>
 
-  <!-- كود تهيئة بوابة SpaceRemit الرسمي حرفياً من التوثيق -->
   <script>
-    const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5"; // Your website public key
-    const SP_FORM_ID = "#spaceremit-form"; // Identifier for the form
-    const SP_SELECT_RADIO_NAME = "sp-pay-type-radio"; // Name attribute of radio buttons
-
-    const LOCAL_METHODS_BOX_STATUS = true; // Status of local payment methods box
-    const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay"; // Identifier for the container of local payment methods
-
-    const CARD_BOX_STATUS = false; // تعطيل صندوق البطاقة البنكية لعدم ظهور رسالة المعطلة
-    const CARD_BOX_PARENT_ID = "#spaceremit-card-pay"; // Identifier for the container of card payment
-    let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = false; // We handle it via SP_SUCCESSFUL_PAYMENT
-
-    // Callback function for successful payment
-    function SP_SUCCESSFUL_PAYMENT(spaceremit_code) {
-      console.log('✅ [SpaceRemit] Payment completed with code:', spaceremit_code);
-      showPaymentSuccess(spaceremit_code);
-      // التحقق مع خادم الموقع رسمياً عبر API
-      fetch('/api/verify-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payment_id: spaceremit_code })
-      }).catch(err => console.error('Verification error:', err));
-    }
-
-    // Callback function for failed payment
-    function SP_FAILD_PAYMENT() {
-      alert('فشلت عملية الدفع أو تم إلغاؤها، يرجى المحاولة مرة أخرى.');
-    }
-
-    // Callback function for receiving message
-    function SP_RECIVED_MESSAGE(message) {
-      console.log('SpaceRemit Notice:', message);
-      if (message && message !== 'Choose one payment method') {
-        alert(message);
-      }
-    }
-
-    // Callback function for needing authentication
-    function SP_NEED_AUTH(target_auth_link) {
-      console.log('SpaceRemit 3D Auth Link:', target_auth_link);
-    }
-  </script>
-
-  <!-- تضمين مكتبة سبيس ريميت الرسمية -->
-  <script src="https://spaceremit.com/api/v2/js_script/spaceremit.js"></script>
-
-  <script>
+    const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5"; // Public Key
     let currentService = 'vip';
     let currentPrice = 50;
     let currentTelegramUser = '';
@@ -1802,23 +1660,6 @@
 
     function updateTotal() {
       document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
-      // تحديث قيمة حقل المبلغ في نموذج SpaceRemit
-      const amountField = document.getElementById('sp_amount_field');
-      if (amountField) {
-        amountField.value = currentPrice;
-      }
-    }
-
-    // تحديث إطارات الدفع ببيانات الفاتورة والعميل المعتمدة
-    function refreshSpaceRemitIframes(customPaymentUrl) {
-      const amount = currentPrice || 50;
-      const cleanNotes = `${currentService || 'vip'}_${amount}_${(currentInvoiceNumber || '').replace(/[^a-zA-Z0-9]/g, '')}`;
-      const cleanName = (currentTelegramUser || '').replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
-      
-      const queryParams = `k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${amount}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
-      
-      const localIframe = document.querySelector("#sp_local_nethods_iframe");
-      if (localIframe) localIframe.src = customPaymentUrl || `https://spaceremit.com/apipay-v2/&${queryParams}`;
     }
 
     // بدء عملية الدفع وعرض الـ Modal
@@ -1838,29 +1679,38 @@
       const cleanNotes = `${currentService || 'vip'}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
       const cleanName = currentTelegramUser.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
 
-      // تحديث بيانات النموذج الرسمي
-      document.getElementById('sp_amount_field').value = currentPrice;
-      document.getElementById('sp_fullname_field').value = cleanName;
-      document.getElementById('sp_notes_field').value = cleanNotes;
-
       // تحديث بيانات ملخص الفاتورة
       document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'الخدمة المختارة';
       document.getElementById('spModalTelegram').textContent = currentTelegramUser;
       document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
       document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${currentInvoiceNumber}`;
 
-      // تجهيز رابط التليجرام المباشر للتأكيد
+      // إعداد رابط الدفع المباشر لزر النافذة المستقلة
+      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
+      const fullBtn = document.getElementById('spFullWindowBtn');
+      if (fullBtn) {
+        fullBtn.href = directSpaceRemitUrl;
+      }
+
+      // تجهيز رابط الواتساب المباشر للتأكيد
+      const waMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${serviceNames[currentService]}) بقيمة ${currentPrice}$، معرّف التليجرام الخاص بي: ${currentTelegramUser}`;
+      const directWaBtn = document.getElementById('spDirectWhatsappBtn');
+      if (directWaBtn) {
+        directWaBtn.href = `https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`;
+      }
+
+      // تجهيز رابط التليجرام الاحتياطي للتأكيد
       const tgText = `مرحباً الملكة نانو، أود سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${serviceNames[currentService]}) بقيمة ${currentPrice}$، معرّف التليجرام الخاص بي: ${currentTelegramUser}`;
       const directTgBtn = document.getElementById('spDirectTelegramBtn');
       if (directTgBtn) {
         directTgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgText)}`;
       }
 
-      // إعداد رابط الدفع المباشر لزر النافذة المستقلة
-      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
-      const fullBtn = document.getElementById('spFullWindowBtn');
-      if (fullBtn) {
-        fullBtn.href = directSpaceRemitUrl;
+      // فتح نافذة الدفع الخارجية مباشرة في تبويب جديد فور النقر
+      try {
+        window.open(directSpaceRemitUrl, '_blank');
+      } catch (e) {
+        console.warn('Popup note:', e);
       }
 
       // استدعاء دالة السيرفر /api/create-payment لتسجيل جلسة الفاتورة
@@ -1889,10 +1739,7 @@
         console.warn('API fetch warning:', e);
       }
 
-      // تحديث عناوين إطارات الدفع ببيانات العميل الحالية
-      refreshSpaceRemitIframes(directSpaceRemitUrl);
-
-      // فتح النافذة المنبثقة (Modal) داخل الموقع
+      // عرض نافذة متابعة وتأكيد الفاتورة
       const overlay = document.getElementById('spModalOverlay');
       document.getElementById('spCheckoutFormView').style.display = 'block';
       document.getElementById('spSuccessScreen').classList.remove('active');
