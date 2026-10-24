@@ -88,29 +88,36 @@ export default async function handler(req, res) {
     const cleanNotes = `${serviceType || 'vip'}_${payAmount}_${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
     const cleanBuyerName = cleanTelegram.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
 
-    const params = new URLSearchParams({
+    // تجهيز معاملات رابط SpaceRemit v2 المعتمدة مع الحفاظ الكامل على الكريبتو والمحافظ والبطاقات
+    const baseParams = new URLSearchParams({
       k: publicKey,
       amount: payAmount.toString(),
       currency: 'USD',
       fullname: cleanBuyerName,
       email: 'customer@nanoona.app',
       phone: '0000000000',
-      notes: cleanNotes,
-      way: 'local_methods'
+      notes: cleanNotes
     });
 
-    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${params.toString()}`;
-    params.set('way', 'card');
-    const cardUrl = `https://spaceremit.com/apipay-v2/&${params.toString()}`;
+    const fullGatewayUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}`;
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
+    const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
     
-    paymentUrl = selectedWay === 'card' ? cardUrl : localMethodsUrl;
+    if (selectedWay === 'card') {
+      paymentUrl = cardUrl;
+    } else if (selectedWay === 'local_methods') {
+      paymentUrl = localMethodsUrl;
+    } else {
+      // الوضع الافتراضي أو الكريبتو: فتح بوابة SpaceRemit الشاملة لجميع الطرق (USDT، بينانس باي، البطاقات)
+      paymentUrl = fullGatewayUrl;
+    }
 
     console.log('====================================================');
     console.log(`[Invoice Generated] تم إنشاء الفاتورة رقم ${invoiceNumber}:`);
     console.log('العميل:', cleanTelegram);
     console.log('المبلغ:', payAmount, 'USD');
     console.log('الخدمة:', serviceName);
-    console.log('الوسيلة الافتراضية:', selectedWay);
+    console.log('الوسيلة:', selectedWay);
     console.log('رابط SpaceRemit المختار:', paymentUrl);
     console.log('====================================================');
 
@@ -129,12 +136,14 @@ export default async function handler(req, res) {
         paymentUrl: paymentUrl,
         cardUrl: cardUrl,
         localMethodsUrl: localMethodsUrl,
+        cryptoUrl: fullGatewayUrl,
         token: invoiceNumber
       },
       payment_url: paymentUrl,
       paymentUrl: paymentUrl,
       card_url: cardUrl,
       local_methods_url: localMethodsUrl,
+      crypto_url: fullGatewayUrl,
       invoice_number: invoiceNumber
     });
 
