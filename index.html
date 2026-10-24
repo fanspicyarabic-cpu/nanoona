@@ -1593,14 +1593,30 @@
           <div class="sp-summary-price" id="spModalPrice">50.00 $</div>
         </div>
 
+        <!-- أزرار تبديل وسيلة الدفع (المحافظ المحلية vs البطاقات) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; background: rgba(0,0,0,0.35); padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <button type="button" id="spTabLocal" class="sp-tab-btn active" onclick="switchPaymentTab('local')">
+            <span>⚡ المحافظ وطرق الدفع المحلية</span>
+          </button>
+          <button type="button" id="spTabCard" class="sp-tab-btn" onclick="switchPaymentTab('card')">
+            <span>💳 البطاقات البنكية</span>
+          </button>
+        </div>
+
         <!-- صندوق الـ iFrame المدمج الخاص ببوابة SpaceRemit -->
-        <div class="sp-iframe-box" style="position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: #ffffff; min-height: 380px; border: 1.5px solid rgba(212,175,55,0.35); margin-bottom: 14px;">
+        <div class="sp-iframe-box" style="position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: #ffffff; min-height: 440px; border: 1.5px solid rgba(212,175,55,0.35); margin-bottom: 12px;">
           <div id="spIframeLoader" class="sp-iframe-loader" style="position: absolute; inset: 0; background: #11111c; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 5; transition: opacity 0.3s ease;">
             <div class="sp-spinner"></div>
             <span style="color: #ffd700; font-size: 13px; font-weight: 600;">جاري تحميل بوابة الدفع SpaceRemit...</span>
           </div>
-          <iframe id="spPaymentIframe" src="" style="width: 100%; height: 380px; border: none; display: block;" allow="payment" onload="hideIframeLoader()"></iframe>
+          <iframe id="spPaymentIframe" src="" style="width: 100%; height: 440px; border: none; display: block;" allow="payment" onload="hideIframeLoader()"></iframe>
         </div>
+
+        <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
+        <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(34, 158, 217, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: var(--transition);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
+          <span>تأكيد الفاتورة المباشر مع الملكة نانو عبر التليجرام 💬</span>
+        </a>
 
         <!-- زر إغلاق بسيط للنافذة المنبثقة -->
         <button type="button" onclick="closeSpaceRemitModal()" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px;">
@@ -1646,6 +1662,8 @@
     let currentPrice = 50;
     let currentTelegramUser = '';
     let currentPaymentUrl = '';
+    let currentLocalUrl = '';
+    let currentCardUrl = '';
     let paymentPollTimer = null;
 
     const serviceNames = {
@@ -1653,6 +1671,28 @@
       'call': 'مكالمة فيديو مباشر 📹',
       'tip': 'إكرامية ودعم 💖'
     };
+
+    function switchPaymentTab(way) {
+      const tabLocal = document.getElementById('spTabLocal');
+      const tabCard = document.getElementById('spTabCard');
+      const iframe = document.getElementById('spPaymentIframe');
+      const loader = document.getElementById('spIframeLoader');
+
+      if (loader) {
+        loader.style.display = 'flex';
+        loader.style.opacity = '1';
+      }
+
+      if (way === 'local') {
+        if (tabLocal) tabLocal.classList.add('active');
+        if (tabCard) tabCard.classList.remove('active');
+        if (iframe && currentLocalUrl) iframe.src = currentLocalUrl;
+      } else {
+        if (tabCard) tabCard.classList.add('active');
+        if (tabLocal) tabLocal.classList.remove('active');
+        if (iframe && currentCardUrl) iframe.src = currentCardUrl;
+      }
+    }
 
     function selectService(element) {
       document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
@@ -1745,24 +1785,25 @@
 
         if (data && data.payment_url) {
           currentPaymentUrl = data.payment_url;
+          currentLocalUrl = data.local_methods_url || data.payment_url;
+          currentCardUrl = data.card_url || data.payment_url;
 
           // تحديث بيانات الفاتورة في النافذة المنبثقة
           document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'الخدمة المختارة';
           document.getElementById('spModalTelegram').textContent = currentTelegramUser;
           document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
-          if (data.invoice && data.invoice.number) {
-            document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${data.invoice.number}`;
+          const invNum = data.invoice && data.invoice.number ? data.invoice.number : `INV-${Date.now().toString().slice(-6)}`;
+          document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${invNum}`;
+
+          // تجهيز رابط التليجرام المباشر للتأكيد
+          const tgText = `مرحباً الملكة نانو، أود سداد الفاتورة رقم #${invNum} الخاصة بـ (${serviceNames[currentService]}) بقيمة ${currentPrice}$، معرّف التليجرام الخاص بي: ${currentTelegramUser}`;
+          const directTgBtn = document.getElementById('spDirectTelegramBtn');
+          if (directTgBtn) {
+            directTgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgText)}`;
           }
 
-          // إظهار مؤشر التحميل ثم تعيين src الخاص بالـ iframe
-          const loader = document.getElementById('spIframeLoader');
-          if (loader) {
-            loader.style.display = 'flex';
-            loader.style.opacity = '1';
-          }
-
-          const iframe = document.getElementById('spPaymentIframe');
-          iframe.src = currentPaymentUrl;
+          // تفعيل تبويب المحافظ المحلية كافتراضي (الوسيلة الفعالة على الحساب)
+          switchPaymentTab('local');
 
           // فتح النافذة المنبثقة (Modal) داخل الموقع دون مغادرة الصفحة
           const overlay = document.getElementById('spModalOverlay');
@@ -1772,7 +1813,7 @@
           setTimeout(() => overlay.classList.add('active'), 10);
 
           // بدء مراقبة حالة الدفع للتأكيد
-          startPaymentPolling(data.invoice ? data.invoice.number : null);
+          startPaymentPolling(invNum);
 
         } else {
           throw new Error((data && data.message) ? data.message : 'رابط الدفع غير متوفر');

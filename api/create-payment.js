@@ -85,14 +85,19 @@ export default async function handler(req, res) {
     const serviceName = serviceTitles[serviceType] || 'خدمة مخصصة';
 
     const notes = `${serviceName} - ${cleanTelegram} (${invoiceNumber})`;
-    paymentUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
+    const selectedWay = (body && body.paymentWay === 'card') ? 'card' : 'local_methods';
+    
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=local_methods&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
+    const cardUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
+    paymentUrl = selectedWay === 'card' ? cardUrl : localMethodsUrl;
 
     console.log('====================================================');
     console.log(`[Invoice Generated] تم إنشاء الفاتورة رقم ${invoiceNumber}:`);
     console.log('العميل:', cleanTelegram);
     console.log('المبلغ:', payAmount, 'USD');
     console.log('الخدمة:', serviceName);
-    console.log('رابط SpaceRemit:', paymentUrl);
+    console.log('الوسيلة الافتراضية:', selectedWay);
+    console.log('رابط SpaceRemit المختار:', paymentUrl);
     console.log('====================================================');
 
     return res.status(200).json({
@@ -107,9 +112,13 @@ export default async function handler(req, res) {
         amount: payAmount.toFixed(2),
         currency: 'USD',
         status: 'بانتظار السداد',
-        paymentUrl: paymentUrl
+        paymentUrl: paymentUrl,
+        cardUrl: cardUrl,
+        localMethodsUrl: localMethodsUrl
       },
-      payment_url: paymentUrl
+      payment_url: paymentUrl,
+      card_url: cardUrl,
+      local_methods_url: localMethodsUrl
     });
 
   } catch (error) {
