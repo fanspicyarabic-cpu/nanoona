@@ -84,18 +84,18 @@ export default async function handler(req, res) {
     };
     const serviceName = serviceTitles[serviceType] || 'خدمة مخصصة';
 
-    const notes = `${serviceName} - ${cleanTelegram} (${invoiceNumber})`;
-    const selectedWay = (body && body.paymentWay === 'card') ? 'card' : 'local_methods';
-    
-    // إعداد معاملات الرابط الكامل المعتمد لـ SpaceRemit v2
+    // تعقيم المعاملات إلى أحرف نظيفة لمنع جدار حماية SpaceRemit من التحويل للصفحة الرئيسية
+    const cleanNotes = `${serviceType || 'vip'}_${payAmount}_${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
+    const cleanBuyerName = cleanTelegram.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
+
     const params = new URLSearchParams({
       k: publicKey,
       amount: payAmount.toString(),
       currency: 'USD',
-      fullname: cleanTelegram,
+      fullname: cleanBuyerName,
       email: 'customer@nanoona.app',
       phone: '0000000000',
-      notes: notes,
+      notes: cleanNotes,
       way: 'local_methods'
     });
 

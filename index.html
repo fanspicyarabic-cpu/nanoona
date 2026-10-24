@@ -991,12 +991,9 @@
 
     #spaceremit-local-methods-pay iframe,
     #sp_local_nethods_iframe {
-      position: absolute !important;
-      top: -195px !important;
-      left: 0 !important;
       width: 100% !important;
-      height: calc(100% + 195px) !important;
-      min-height: calc(100% + 195px) !important;
+      height: 480px !important;
+      min-height: 480px !important;
       border: none !important;
       display: block !important;
     }
@@ -1815,16 +1812,13 @@
     // تحديث إطارات الدفع ببيانات الفاتورة والعميل المعتمدة
     function refreshSpaceRemitIframes(customPaymentUrl) {
       const amount = currentPrice || 50;
-      const notes = encodeURIComponent(`${serviceNames[currentService] || 'اشتراك VIP'} - ${currentTelegramUser} (#${currentInvoiceNumber})`);
-      const fullname = encodeURIComponent(currentTelegramUser);
+      const cleanNotes = `${currentService || 'vip'}_${amount}_${(currentInvoiceNumber || '').replace(/[^a-zA-Z0-9]/g, '')}`;
+      const cleanName = (currentTelegramUser || '').replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
       
-      const queryParams = `k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${amount}&currency=USD&fullname=${fullname}&email=customer%40nanoona.app&phone=0000000000&notes=${notes}`;
+      const queryParams = `k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${amount}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
       
-      const cardIframe = document.querySelector("#sp_iframe");
       const localIframe = document.querySelector("#sp_local_nethods_iframe");
-      
-      if (cardIframe) cardIframe.src = `https://spaceremit.com/apipay-v2/&way=card&${queryParams}`;
-      if (localIframe) localIframe.src = customPaymentUrl || `https://spaceremit.com/apipay-v2/&way=local_methods&${queryParams}`;
+      if (localIframe) localIframe.src = customPaymentUrl || `https://spaceremit.com/apipay-v2/&${queryParams}`;
     }
 
     // بدء عملية الدفع وعرض الـ Modal
@@ -1840,10 +1834,14 @@
       currentTelegramUser = telegram.startsWith('@') ? telegram : '@' + telegram;
       currentInvoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
 
+      // تعقيم المعاملات إلى أحرف نظيفة تماماً لمنع جدار حماية SpaceRemit من التحويل للصفحة الرئيسية
+      const cleanNotes = `${currentService || 'vip'}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
+      const cleanName = currentTelegramUser.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
+
       // تحديث بيانات النموذج الرسمي
       document.getElementById('sp_amount_field').value = currentPrice;
-      document.getElementById('sp_fullname_field').value = currentTelegramUser;
-      document.getElementById('sp_notes_field').value = `${serviceNames[currentService]} - ${currentTelegramUser} (#${currentInvoiceNumber})`;
+      document.getElementById('sp_fullname_field').value = cleanName;
+      document.getElementById('sp_notes_field').value = cleanNotes;
 
       // تحديث بيانات ملخص الفاتورة
       document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'الخدمة المختارة';
@@ -1859,8 +1857,7 @@
       }
 
       // إعداد رابط الدفع المباشر لزر النافذة المستقلة
-      const fullNotes = encodeURIComponent(`${serviceNames[currentService] || 'اشتراك VIP'} - ${currentTelegramUser} (#${currentInvoiceNumber})`);
-      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(currentTelegramUser)}&email=customer%40nanoona.app&phone=0000000000&notes=${fullNotes}&way=local_methods`;
+      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
       const fullBtn = document.getElementById('spFullWindowBtn');
       if (fullBtn) {
         fullBtn.href = directSpaceRemitUrl;
