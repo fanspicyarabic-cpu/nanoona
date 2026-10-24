@@ -981,34 +981,28 @@
     }
 
     #spaceremit-local-methods-pay {
+      position: relative !important;
       min-height: 480px !important;
-      background: #0d0f18 !important;
+      height: 480px !important;
+      background: #ffffff !important;
       border-radius: 12px !important;
       overflow: hidden !important;
     }
 
     #spaceremit-local-methods-pay iframe,
     #sp_local_nethods_iframe {
+      position: absolute !important;
+      top: -195px !important;
+      left: 0 !important;
       width: 100% !important;
-      height: 480px !important;
-      min-height: 480px !important;
+      height: calc(100% + 195px) !important;
+      min-height: calc(100% + 195px) !important;
       border: none !important;
       display: block !important;
     }
 
     #spaceremit-card-pay {
-      min-height: 140px !important;
-      background: #0d0f18 !important;
-      border-radius: 12px !important;
-      overflow: hidden !important;
-    }
-
-    #spaceremit-card-pay iframe,
-    #sp_iframe {
-      width: 100% !important;
-      height: 140px !important;
-      border: none !important;
-      display: block !important;
+      display: none !important;
     }
 
     .sp-iframe-box iframe {
@@ -1645,28 +1639,21 @@
                   </label>
                 </div>
                 <!-- Container for displaying local payment methods -->
-                <div id="spaceremit-local-methods-pay" style="min-height: 310px; background: #fff; border-radius: 10px; overflow: hidden;"></div>
-            </div>
-          
-            <!-- Container for card payment -->
-            <div class="sp-one-type-select" style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(212,175,55,0.3); border-radius: 14px; padding: 12px; margin-bottom: 12px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                  <input type="radio" name="sp-pay-type-radio" value="card-pay" id="sp_card_radio" style="accent-color: #ffd700; transform: scale(1.2); cursor: pointer;">
-                  <label for="sp_card_radio" style="color: #ffd700; font-weight: 700; cursor: pointer; font-size: 14px;">
-                    <div>💳 الدفع بالبطاقة البنكية (Card payment)</div>
-                  </label>
-                </div>
-                <!-- Container for card payment -->
-                <div id="spaceremit-card-pay" style="min-height: 140px; background: #fff; border-radius: 10px; overflow: hidden;"></div>
+                <div id="spaceremit-local-methods-pay" style="min-height: 480px; background: #fff; border-radius: 10px; overflow: hidden; position: relative;"></div>
             </div>
            
             <!-- Button to submit the form -->
-            <div style="margin-top: 14px;">
+            <div style="margin-top: 14px; margin-bottom: 10px;">
               <button type="submit" class="pay-btn" id="sp_submit_btn">
                 <span>تأكيد وسداد الفاتورة الآن 🔒</span>
               </button>
             </div>
         </form>
+
+        <!-- زر فتح بوابة SpaceRemit في نافذة مستقلة كاملة -->
+        <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--gold-gradient); color: #07070b; border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 800; text-decoration: none; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(212,175,55,0.35); transition: var(--transition);">
+          <span>فتح بوابة SpaceRemit في نافذة مستقلة ↗</span>
+        </a>
 
         <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
         <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: rgba(34, 158, 217, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 10px; transition: var(--transition);">
@@ -1713,7 +1700,7 @@
     const LOCAL_METHODS_BOX_STATUS = true; // Status of local payment methods box
     const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay"; // Identifier for the container of local payment methods
 
-    const CARD_BOX_STATUS = true; // Status of card payment box
+    const CARD_BOX_STATUS = false; // تعطيل صندوق البطاقة البنكية لعدم ظهور رسالة المعطلة
     const CARD_BOX_PARENT_ID = "#spaceremit-card-pay"; // Identifier for the container of card payment
     let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = false; // We handle it via SP_SUCCESSFUL_PAYMENT
 
@@ -1871,6 +1858,14 @@
         directTgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgText)}`;
       }
 
+      // إعداد رابط الدفع المباشر لزر النافذة المستقلة
+      const fullNotes = encodeURIComponent(`${serviceNames[currentService] || 'اشتراك VIP'} - ${currentTelegramUser} (#${currentInvoiceNumber})`);
+      const directSpaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(currentTelegramUser)}&email=customer%40nanoona.app&phone=0000000000&notes=${fullNotes}&way=local_methods`;
+      const fullBtn = document.getElementById('spFullWindowBtn');
+      if (fullBtn) {
+        fullBtn.href = directSpaceRemitUrl;
+      }
+
       // استدعاء دالة السيرفر /api/create-payment لتسجيل جلسة الفاتورة
       try {
         fetch('/api/create-payment', {
@@ -1888,6 +1883,9 @@
             if (data.invoice && data.invoice.number) {
               document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${data.invoice.number}`;
             }
+            if (fullBtn && data.payment_url) {
+              fullBtn.href = data.payment_url;
+            }
           }
         }).catch(err => console.warn('Payment API note:', err));
       } catch (e) {
@@ -1895,7 +1893,7 @@
       }
 
       // تحديث عناوين إطارات الدفع ببيانات العميل الحالية
-      refreshSpaceRemitIframes();
+      refreshSpaceRemitIframes(directSpaceRemitUrl);
 
       // فتح النافذة المنبثقة (Modal) داخل الموقع
       const overlay = document.getElementById('spModalOverlay');
