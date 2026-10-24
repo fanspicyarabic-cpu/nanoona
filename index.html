@@ -1,1789 +1,783 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-  <meta name="spaceremit-verification" content="R1F0D0ZUZTNS7APR2JQZNKKHOU4EWWKNJFPOT45TLBV3I3UENP">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الملكة نانو | المنصة الرسمية والمحتوى الحصري VIP</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-body: #09090f;
-      --surface-1: #11111a;
-      --surface-2: #161622;
-      --surface-card: rgba(22, 22, 34, 0.75);
-      --card-border: rgba(212, 175, 55, 0.22);
-      --card-border-hover: rgba(255, 215, 0, 0.5);
-      --gold-primary: #d4af37;
-      --gold-light: #ffd700;
-      --gold-champagne: #f5e6b3;
-      --gold-gradient: linear-gradient(135deg, #ffe57f 0%, #d4af37 50%, #a37015 100%);
-      --emerald: #10b981;
-      --emerald-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      --telegram-blue: #38bdf8;
-      --text-white: #ffffff;
-      --text-body: #cbd5e1;
-      --text-muted: #8892a4;
-      --radius-xl: 20px;
-      --radius-lg: 16px;
-      --radius-md: 12px;
-      --radius-sm: 8px;
-      --shadow-luxury: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(212, 175, 55, 0.12);
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-body);
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
-        radial-gradient(circle at 50% 80%, rgba(147, 51, 234, 0.04) 0%, transparent 50%);
-      background-attachment: fixed;
-      color: var(--text-white);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    /* شريط الرأس الشفاف */
-    .site-header {
-      width: 100%;
-      background: rgba(9, 9, 15, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .brand-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--gold-primary);
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-    }
-
-    .brand-meta h1 {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--text-white);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .brand-meta span {
-      font-size: 11px;
-      color: var(--gold-light);
-      font-weight: 600;
-    }
-
-    .header-cta-btn {
-      background: var(--gold-gradient);
-      color: #08080f;
-      border: none;
-      border-radius: 20px;
-      padding: 8px 18px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
-      transition: var(--transition);
-    }
-
-    .header-cta-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.55);
-    }
-
-    /* الحاوية الكبرى للموقع المتجاوبة على الكمبيوتر والجوال */
-    .main-container {
-      max-width: 1280px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 24px;
-      flex: 1;
-    }
-
-    /* بانر البروفايل الفاخر (Cover + Profile Bar) */
-    .profile-hero {
-      background: var(--surface-1);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      margin-bottom: 28px;
-      box-shadow: var(--shadow-luxury);
-      position: relative;
-    }
-
-    .hero-cover {
-      height: 180px;
-      width: 100%;
-      background: linear-gradient(135deg, #1f1a10 0%, #0d0d14 50%, #06060a 100%);
-      position: relative;
-      background-image: 
-        radial-gradient(circle at 80% 30%, rgba(212, 175, 55, 0.35) 0%, transparent 60%),
-        radial-gradient(circle at 20% 70%, rgba(16, 185, 129, 0.25) 0%, transparent 50%);
-    }
-
-    .hero-cover::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, var(--surface-1) 0%, transparent 70%);
-    }
-
-    .hero-content {
-      padding: 0 32px 28px;
-      margin-top: -65px;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .hero-left {
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .avatar-large-wrap {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      flex-shrink: 0;
-    }
-
-    .avatar-large {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid var(--surface-1);
-      outline: 3px solid var(--gold-primary);
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
-      background: #111;
-    }
-
-    .badge-check {
-      position: absolute;
-      bottom: 4px;
-      right: 4px;
-      width: 28px;
-      height: 28px;
-      background: var(--gold-gradient);
-      border-radius: 50%;
-      border: 3px solid var(--surface-1);
-      color: #08080f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .hero-details h2 {
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--text-white);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .hero-handle-tag {
-      font-size: 13px;
-      color: var(--telegram-blue);
-      background: rgba(56, 189, 248, 0.1);
-      padding: 3px 12px;
-      border-radius: 20px;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      display: inline-block;
-      direction: ltr;
-      margin-bottom: 8px;
-    }
-
-    .hero-bio-text {
-      font-size: 14px;
-      color: var(--text-body);
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .hero-counters {
-      display: flex;
-      gap: 20px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      padding: 12px 20px;
-    }
-
-    .counter-item {
-      text-align: center;
-    }
-
-    .counter-num {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--gold-light);
-    }
-
-    .counter-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* تخطيط الصفحة على الكمبيوتر (شاشة عريضة: عمود محتوى رئيسي + شريط جانبي غني) */
-    .layout-grid {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 28px;
-      align-items: start;
-    }
-
-    /* المحتوى الرئيسي الأيسر/الأيمن */
-    .content-area {
-      min-width: 0;
-    }
-
-    /* الشريط الجانبي الأيمن للمنصة */
-    .sidebar-area {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      position: sticky;
-      top: 90px;
-    }
-
-    .sidebar-card {
-      background: var(--surface-1);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .sidebar-card-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--text-white);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding-bottom: 10px;
-    }
-
-    .wallets-chips {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .wallet-chip {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 12px;
-    }
-
-    .wallet-chip strong {
-      color: #fff;
-    }
-
-    .wallet-chip-tag {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    /* شريط التبويبات الفاخر */
-    .nav-tabs-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      background: var(--surface-1);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 8px;
-      margin-bottom: 24px;
-    }
-
-    .tab-trigger {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 14px 10px;
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: var(--transition);
-    }
-
-    .tab-trigger:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .tab-trigger.active {
-      background: var(--gold-gradient);
-      color: #08080f;
-      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
-    }
-
-    /* الأقسام التفاعلية */
-    .tab-pane {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .tab-pane.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ========================================================
-       1️⃣ شبكة المحتوى الحصري المتجاوبة (2 أعمدة على الكمبيوتر)
-       ======================================================== */
-    .feed-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .filter-pills-row {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .filter-pill {
-      background: var(--surface-1);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      color: var(--text-muted);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-
-    .filter-pill.active {
-      background: rgba(212, 175, 55, 0.18);
-      border-color: var(--gold-primary);
-      color: var(--gold-light);
-    }
-
-    /* شبكة المنشورات المتجاوبة: عمودين على الكمبيوتر وعمود على الهاتف */
-    .feed-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .feed-card {
-      background: var(--surface-1);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: var(--transition);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    }
-
-    .feed-card:hover {
-      border-color: var(--card-border-hover);
-      transform: translateY(-2px);
-    }
-
-    .feed-card-header {
-      padding: 14px 16px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .author-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .author-thumb {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1.5px solid var(--gold-primary);
-      object-fit: cover;
-    }
-
-    .author-info h3 {
-      font-size: 13px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .author-info span {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .card-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-
-    .badge-vip {
-      background: rgba(212, 175, 55, 0.16);
-      color: var(--gold-light);
-      border: 1px solid rgba(212, 175, 55, 0.35);
-    }
-
-    .badge-free {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-    }
-
-    .feed-card-body {
-      padding: 0 16px 12px;
-      flex: 1;
-    }
-
-    .feed-card-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 6px;
-      line-height: 1.5;
-    }
-
-    .feed-card-text {
-      font-size: 12px;
-      color: var(--text-body);
-      line-height: 1.5;
-    }
-
-    /* حاوية الوسائط والتأثير الضبابي */
-    .feed-media-wrap {
-      position: relative;
-      width: 100%;
-      background: #000;
-      min-height: 220px;
-      max-height: 340px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .media-cover {
-      width: 100%;
-      height: 100%;
-      max-height: 340px;
-      object-fit: cover;
-      display: block;
-      transition: filter 0.3s ease;
-    }
-
-    .media-cover.blurred {
-      filter: blur(24px) brightness(0.65) saturate(1.2);
-      transform: scale(1.1);
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .vip-lock-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(10, 10, 18, 0.58);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      z-index: 5;
-    }
-
-    .lock-circle {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.18);
-      border: 2px solid var(--gold-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 10px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-    }
-
-    .lock-title {
-      font-size: 15px;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .lock-sub {
-      font-size: 11px;
-      color: #cbd5e1;
-      max-width: 260px;
-      margin-bottom: 14px;
-    }
-
-    .btn-unlock {
-      background: var(--gold-gradient);
-      color: #08080f;
-      font-size: 13px;
-      font-weight: 900;
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 9px 18px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-      transition: var(--transition);
-      text-decoration: none;
-    }
-
-    .btn-unlock:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
-    }
-
-    .feed-card-footer {
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .action-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: var(--transition);
-    }
-
-    .action-btn:hover, .action-btn.liked {
-      color: #ef4444;
-    }
-
-    /* ========================================================
-       2️⃣ باقات الاشتراك والدفع بالمحافظ المحلية وSpaceRemit
-       ======================================================== */
-    .plans-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 28px;
-    }
-
-    .plan-box {
-      background: var(--surface-1);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-lg);
-      padding: 22px 18px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    .plan-box:hover {
-      border-color: rgba(212, 175, 55, 0.45);
-      background: var(--surface-2);
-    }
-
-    .plan-box.selected {
-      border-color: var(--gold-light);
-      background: rgba(24, 24, 38, 0.95);
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
-    }
-
-    .plan-badge-top {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold-gradient);
-      color: #08080f;
-      font-size: 11px;
-      font-weight: 900;
-      padding: 3px 12px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .plan-box-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .plan-box-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 16px;
-      min-height: 36px;
-    }
-
-    .plan-box-price {
-      font-size: 28px;
-      font-weight: 900;
-      color: var(--gold-light);
-      direction: ltr;
-      margin-bottom: 16px;
-    }
-
-    .plan-box-price span {
-      font-size: 16px;
-      color: var(--gold-primary);
-    }
-
-    .plan-perks {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.08);
-      padding-top: 14px;
-      font-size: 12px;
-      color: #cbd5e1;
-    }
-
-    .plan-perk-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* نموذج الدفع المحلي المكتمل */
-    .checkout-card {
-      background: var(--surface-1);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-xl);
-      padding: 26px;
-      box-shadow: var(--shadow-luxury);
-    }
-
-    .form-group-field {
-      margin-bottom: 18px;
-    }
-
-    .form-group-field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: #cbd5e1;
-      margin-bottom: 8px;
-    }
-
-    .form-control-input {
-      width: 100%;
-      background: rgba(10, 10, 16, 0.95);
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-md);
-      padding: 13px 16px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      direction: ltr;
-      text-align: right;
-      transition: var(--transition);
-    }
-
-    .form-control-input:focus {
-      border-color: var(--gold-light);
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
-    }
-
-    /* أزرار طرق الدفع المحلية */
-    .payment-options-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .pay-opt-card {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1.5px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      padding: 12px 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .pay-opt-card:hover {
-      border-color: rgba(212, 175, 55, 0.4);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .pay-opt-card.active {
-      border-color: var(--gold-light);
-      background: rgba(212, 175, 55, 0.15);
-      box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
-    }
-
-    .pay-opt-icon { font-size: 22px; }
-    .pay-opt-name { font-size: 12px; font-weight: 700; color: #fff; }
-
-    /* تفاصيل التحويل للمحفظة */
-    .wallet-sheet {
-      background: rgba(12, 12, 20, 0.95);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: var(--radius-md);
-      padding: 18px;
-      margin-bottom: 20px;
-    }
-
-    .wallet-data-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      margin-bottom: 8px;
-    }
-
-    .btn-copy {
-      background: rgba(212, 175, 55, 0.2);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: var(--gold-light);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-copy:hover {
-      background: var(--gold-gradient);
-      color: #08080f;
-    }
-
-    /* رافع الإيصال */
-    .receipt-dropzone {
-      border: 2px dashed rgba(212, 175, 55, 0.35);
-      border-radius: var(--radius-md);
-      padding: 22px;
-      text-align: center;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.02);
-      transition: var(--transition);
-      margin-bottom: 20px;
-    }
-
-    .receipt-dropzone:hover {
-      border-color: var(--gold-light);
-      background: rgba(212, 175, 55, 0.04);
-    }
-
-    .btn-cta-main {
-      width: 100%;
-      background: var(--gold-gradient);
-      color: #08080f;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
-      transition: var(--transition);
-    }
-
-    .btn-cta-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 32px rgba(255, 215, 0, 0.6);
-    }
-
-    /* ========================================================
-       3️⃣ عن القناة والمميزات (About & VIP Perks)
-       ======================================================== */
-    .perks-deck {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .perk-box {
-      background: var(--surface-1);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      display: flex;
-      gap: 14px;
-    }
-
-    .perk-box-icon {
-      font-size: 30px;
-      flex-shrink: 0;
-    }
-
-    .perk-box-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .perk-box-desc {
-      font-size: 12px;
-      color: var(--text-body);
-      line-height: 1.6;
-    }
-
-    .faq-wrapper {
-      margin-top: 24px;
-    }
-
-    .faq-block {
-      background: var(--surface-1);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-
-    .faq-q {
-      padding: 16px 20px;
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .faq-a {
-      display: none;
-      padding: 0 20px 16px;
-      font-size: 13px;
-      color: var(--text-body);
-      line-height: 1.6;
-    }
-
-    .faq-block.active .faq-a {
-      display: block;
-    }
-
-    /* تذييل الموقع */
-    .site-footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      background: #06060a;
-      padding: 24px;
-      text-align: center;
-      margin-top: 40px;
-    }
-
-    .footer-content {
-      max-width: 1280px;
-      margin: 0 auto;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* لايت بوكس للصور */
-    .media-lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 99999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .media-lightbox.active {
-      display: flex;
-    }
-
-    .lightbox-target-img {
-      max-width: 90vw;
-      max-height: 85vh;
-      border-radius: var(--radius-md);
-      border: 2px solid var(--gold-primary);
-    }
-
-    /* Toast */
-    .app-toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #12121e;
-      border: 1px solid var(--gold-primary);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 700;
-      z-index: 999999;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.3);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .app-toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* التجاوب الممتاز على الهواتف والأجهزة اللوحية */
-    @media (max-width: 1023px) {
-      .layout-grid {
-        grid-template-columns: 1fr;
-      }
-      .sidebar-area {
-        position: static;
-      }
-      .plans-row {
-        grid-template-columns: 1fr;
-      }
-      .feed-grid {
-        grid-template-columns: 1fr;
-      }
-      .payment-options-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .perks-deck {
-        grid-template-columns: 1fr;
-      }
-      .hero-content {
-        padding: 0 20px 20px;
-      }
-      .hero-counters {
-        width: 100%;
-        justify-content: space-around;
-      }
-    }
-  </style>
+    <meta name="spaceremit-verification" content="R1F0D0ZUZTNS7APR2JQZNKKHOU4EWWKNJFPOT45TLBV3I3UENP">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملكة نانو | المنصة الرسمية للمحتوى الحصري VIP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        },
+                        dark: {
+                            900: '#0A0A0C',
+                            800: '#121318',
+                            700: '#1C1E26',
+                            600: '#282B37',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0A0A0C;
+            color: #E2E8F0;
+        }
+        .glass-card {
+            background: rgba(18, 19, 24, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(234, 179, 8, 0.15);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(234, 179, 8, 0.4);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.15);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF5C0 0%, #EAB308 50%, #A16207 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-gradient-btn {
+            background: linear-gradient(135deg, #FACC15 0%, #EAB308 50%, #CA8A04 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .gold-gradient-btn:hover {
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.4);
+            transform: translateY(-2px);
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.25);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1C1E26;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #CA8A04;
+        }
+    </style>
 </head>
+<body class="min-h-screen pb-24 md:pb-12">
 
-<body>
-
-  <!-- شريط الرأس الشفاف -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="#" class="brand-group">
-        <img src="avatar.jpg" alt="الملكة نانو" class="brand-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop'">
-        <div class="brand-meta">
-          <h1>الملكة نانو 👑</h1>
-          <span>المنصة الرسمية والمحتوى الحصري VIP</span>
+    <!-- Top Navigation Header (خالي تماماً من أي زر إدارة للحفاظ على خصوصية لوحة التحكم) -->
+    <header class="sticky top-0 z-40 bg-dark-900/80 backdrop-blur-md border-b border-dark-700/50 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <i class="fa-solid fa-crown text-gold-500 text-xl"></i>
+                <span class="font-bold text-lg tracking-wide text-white">الملكة نانو VIP</span>
+            </div>
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="openModal('subscribeModal')" class="gold-gradient-btn text-xs md:text-sm px-4 py-2 rounded-full flex items-center gap-2">
+                    <i class="fa-solid fa-star"></i>
+                    <span>اشترك الآن</span>
+                </button>
+            </div>
         </div>
-      </a>
-      <a href="#plans" class="header-cta-btn" onclick="openPlansTab()">
-        <span>⭐ انضمام للـ VIP</span>
-      </a>
-    </div>
-  </header>
+    </header>
 
-  <div class="main-container">
-
-    <!-- بانر البروفايل الفاخر العريض -->
-    <section class="profile-hero">
-      <div class="hero-cover"></div>
-      <div class="hero-content">
-        <div class="hero-left">
-          <div class="avatar-large-wrap">
-            <img src="avatar.jpg" alt="الملكة نانو" class="avatar-large" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop'">
-            <div class="badge-check" title="حساب رسمي موثق">✓</div>
-          </div>
-          <div class="hero-details">
-            <h2>الملكة نانو | Queen Nanoona</h2>
-            <div class="hero-handle-tag">@nnano14 • القناة الرسمية</div>
-            <p class="hero-bio-text">
-              أهلاً بكم في مجتمعي الحصري. أشارككم هنا كواليس البثوث، المقاطع الخاصة، والصور المحمية مع تفعيل فوري للاشتراك عبر المحافظ المحلية وبوابة الدفع المعتمدة.
-            </p>
-          </div>
-        </div>
-
-        <div class="hero-counters">
-          <div class="counter-item">
-            <div class="counter-num">+15.4K</div>
-            <div class="counter-label">متابع ومشترك</div>
-          </div>
-          <div class="counter-item">
-            <div class="counter-num">100% VIP</div>
-            <div class="counter-label">محتوى حصري</div>
-          </div>
-          <div class="counter-item">
-            <div class="counter-num">⚡ فوري</div>
-            <div class="counter-label">تفعيل آلي</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- التخطيط المتجاوب: المحتوى الرئيسي + الشريط الجانبي الفاخر -->
-    <div class="layout-grid">
-
-      <!-- منطقة المحتوى الرئيسية -->
-      <div class="content-area">
-
-        <!-- شريط التبويبات الثلاثة السلسة -->
-        <nav class="nav-tabs-bar">
-          <button type="button" class="tab-trigger active" data-target="feed" onclick="switchTab('feed', this)">
-            <span>💎</span>
-            <span>المحتوى الحصري</span>
-          </button>
-          <button type="button" class="tab-trigger" data-target="plans" onclick="switchTab('plans', this)">
-            <span>⭐</span>
-            <span>باقات الاشتراك والدفع</span>
-          </button>
-          <button type="button" class="tab-trigger" data-target="about" onclick="switchTab('about', this)">
-            <span>👑</span>
-            <span>عن القناة والمميزات</span>
-          </button>
-        </nav>
-
-        <!-- 1️⃣ تبويب المحتوى الحصري (شبكة كروت متجاوبة) -->
-        <section id="tab-feed" class="tab-pane active">
-          <div class="feed-controls">
-            <div class="filter-pills-row">
-              <button type="button" class="filter-pill active" onclick="applyFeedFilter('all', this)">🌟 الكل</button>
-              <button type="button" class="filter-pill" onclick="applyFeedFilter('video', this)">🎬 فيديوهات</button>
-              <button type="button" class="filter-pill" onclick="applyFeedFilter('image', this)">📸 صور</button>
-              <button type="button" class="filter-pill" onclick="applyFeedFilter('vip', this)">🔒 VIP حصري</button>
-            </div>
-            <div style="font-size: 13px; color: var(--gold-light);" id="feedStatusText">جاري التحميل...</div>
-          </div>
-
-          <div class="feed-grid" id="feedGrid">
-            <!-- كروت المنشورات المتجاوبة -->
-          </div>
-        </section>
-
-        <!-- 2️⃣ تبويب باقات الاشتراك والدفع بالمحافظ وSpaceRemit -->
-        <section id="tab-plans" class="tab-pane">
-          
-          <div class="plans-row">
-            
-            <!-- الباقة 1: VIP -->
-            <div class="plan-box selected" data-tier="vip" data-amount="50" onclick="choosePlan(this)">
-              <div class="plan-badge-top">الأكثر طلباً 🔥</div>
-              <h3 class="plan-box-title">اشتراك برايفيت VIP ⭐</h3>
-              <p class="plan-box-desc">دخول كامل للقناة المغلقة بدون حجب مع تحديثات ويوميات مستمرة</p>
-              <div class="plan-box-price">50 <span>$</span></div>
-              <div class="plan-perks">
-                <div class="plan-perk-line"><span>✓</span> رابط انضمام فردي صالح لمرة واحدة عبر البوت</div>
-                <div class="plan-perk-line"><span>✓</span> مشاهدة كاملة لجميع المنشورات المقفلة</div>
-                <div class="plan-perk-line"><span>✓</span> أولوية الرد والتواصل المباشر</div>
-              </div>
-            </div>
-
-            <!-- الباقة 2: مكالمة فيديو -->
-            <div class="plan-box" data-tier="call" data-amount="30" onclick="choosePlan(this)">
-              <h3 class="plan-box-title">مكالمة فيديو مباشر 📹</h3>
-              <p class="plan-box-desc">مكالمة فيديو خاصة 1-on-1 عالية الدقة في الموعد الذي يناسبك</p>
-              <div class="plan-box-price">30 <span>$</span></div>
-              <div class="plan-perks">
-                <div class="plan-perk-line"><span>✓</span> مكالمة حية لمدة 20 دقيقة وجه لوجه</div>
-                <div class="plan-perk-line"><span>✓</span> خصوصية تامة وتنسيق الموعد عبر واتساب</div>
-              </div>
-            </div>
-
-            <!-- الباقة 3: إكرامية ودعم -->
-            <div class="plan-box" data-tier="tip" data-amount="10" onclick="choosePlan(this)">
-              <h3 class="plan-box-title">إكرامية ودعم خاص 💖</h3>
-              <p class="plan-box-desc">دعم مباشر للملكة نانو لمواصلة صناعة المحتوى الملكي</p>
-              <div class="plan-box-price" id="tipBoxPrice">10 <span>$</span></div>
-              <div style="display: flex; gap: 6px; margin-top: 10px;">
-                <button type="button" class="btn-copy" onclick="setTipAmt(5, event)">5$</button>
-                <button type="button" class="btn-copy" onclick="setTipAmt(10, event)">10$</button>
-                <button type="button" class="btn-copy" onclick="setTipAmt(20, event)">20$</button>
-                <button type="button" class="btn-copy" onclick="setTipAmt(50, event)">50$</button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- بطاقة إتمام الدفع بالمحافظ المحلية وبوابة الدفع -->
-          <div class="checkout-card">
-            
-            <div class="form-group-field">
-              <label for="tgHandleInput">معرّف التليجرام الخاص بك (Username) <span style="color:#ef4444;">*</span></label>
-              <input type="text" id="tgHandleInput" class="form-control-input" placeholder="مثال: @username أو المعرف بدون @" required>
-              <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">* سيتم تفعيل العضوية وتوليد الرابط الفردي المباشر لحساب التليجرام هذا.</span>
-            </div>
-
-            <div class="form-group-field">
-              <label>طريقة الدفع بالمحفظة المحلية أو بوابة SpaceRemit:</label>
-              <div class="payment-options-grid">
-                <div class="pay-opt-card active" data-wallet="instapay" onclick="selectWallet('instapay', this)">
-                  <span class="pay-opt-icon">🇪🇬</span>
-                  <span class="pay-opt-name">InstaPay مصر</span>
-                </div>
-                <div class="pay-opt-card" data-wallet="vodafone" onclick="selectWallet('vodafone', this)">
-                  <span class="pay-opt-icon">📱</span>
-                  <span class="pay-opt-name">فودافون كاش</span>
-                </div>
-                <div class="pay-opt-card" data-wallet="zaincash" onclick="selectWallet('zaincash', this)">
-                  <span class="pay-opt-icon">🇮🇶</span>
-                  <span class="pay-opt-name">زين كاش / FIB</span>
-                </div>
-                <div class="pay-opt-card" data-wallet="spaceremit" onclick="selectWallet('spaceremit', this)">
-                  <span class="pay-opt-icon">🛡️</span>
-                  <span class="pay-opt-name">بوابة SpaceRemit</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- صندوق بيانات المحفظة مع أزرار النسخ -->
-            <div class="wallet-sheet" id="walletSheet">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <strong style="color:var(--gold-light); font-size:14px;" id="sheetTitle">تفاصيل التحويل</strong>
-                <span class="wallet-chip-tag">دفع محلي فوري</span>
-              </div>
-              <div id="sheetRows"></div>
-              <p style="font-size: 12px; color: var(--text-body); margin-top: 10px;" id="sheetGuide"></p>
-            </div>
-
-            <!-- رافع إيصال التحويل للمحافظ المحلية -->
-            <div class="form-group-field" id="receiptBoxWrap">
-              <label>إرفاق إيصال التحويل (صورة الإشعار) <span style="color:#ef4444;">*</span></label>
-              <div class="receipt-dropzone" onclick="document.getElementById('receiptFile').click()">
-                <input type="file" id="receiptFile" accept="image/*" style="display:none;" onchange="onReceiptSelected(event)">
-                <div id="dropzoneEmpty">
-                  <span style="font-size: 28px; display:block; margin-bottom: 4px;">🧾</span>
-                  <strong style="font-size: 13px; color:#fff;">اضغط هنا لرفع صورة إشعار أو وصل التحويل</strong>
-                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">JPG, PNG, WEBP</div>
-                </div>
-                <div id="dropzonePreview" style="display:none; position:relative;">
-                  <img id="receiptImg" src="" alt="إيصال" style="max-height:160px; max-width:100%; border-radius:8px; border:1px solid var(--gold-primary);">
-                  <button type="button" onclick="clearReceipt(event)" style="position:absolute; top:4px; right:4px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">✕</button>
-                </div>
-              </div>
-            </div>
-
-            <div style="background:rgba(0,0,0,0.3); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:14px; color:var(--text-muted);">المبلغ الإجمالي للدفع:</span>
-              <strong style="font-size:24px; color:var(--gold-light);" id="totalCheckoutAmount">50.00 $</strong>
-            </div>
-
-            <button type="button" class="btn-cta-main" id="btnSubmitOrder" onclick="submitCheckoutOrder()">
-              <span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- 3️⃣ تبويب عن القناة والمميزات -->
-        <section id="tab-about" class="tab-pane">
-          
-          <div class="perks-deck">
-            <div class="perk-box">
-              <span class="perk-box-icon">💎</span>
-              <div>
-                <h3 class="perk-box-title">محتوى حصري بدون حجب</h3>
-                <p class="perk-box-desc">مشاهدة صور وفيديوهات خاصة وحصرية تنشر فقط لأعضاء VIP ولا تظهر على العام.</p>
-              </div>
-            </div>
-            <div class="perk-box">
-              <span class="perk-box-icon">📹</span>
-              <div>
-                <h3 class="perk-box-title">مكالمات فيديو خاصة 1-on-1</h3>
-                <p class="perk-box-desc">إمكانية حجز مكالمة حية ومباشرة معي وجه لوجه بأعلى جودة وصوت نقي.</p>
-              </div>
-            </div>
-            <div class="perk-box">
-              <span class="perk-box-icon">💬</span>
-              <div>
-                <h3 class="perk-box-title">تواصل مباشر وتفعيل فوري</h3>
-                <p class="perk-box-desc">أتابع محادثاتكم مع بوت ذكي يرسل لك رابط القناة فور تأكيد السداد.</p>
-              </div>
-            </div>
-            <div class="perk-box">
-              <span class="perk-box-icon">🛡️</span>
-              <div>
-                <h3 class="perk-box-title">طرق دفع محلية آمنة</h3>
-                <p class="perk-box-desc">دفع عبر InstaPay، فودافون كاش، زين كاش، أو SpaceRemit دون الحاجة لبطاقات أجنبية.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- الأسئلة الشائعة -->
-          <div class="faq-wrapper">
-            <h2 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 14px;">الأسئلة الشائعة (FAQ) ❓</h2>
-            
-            <div class="faq-block active" onclick="this.classList.toggle('active')">
-              <div class="faq-q">
-                <span>متى يتم تفعيل اشتراكي بعد التحويل المحلي؟</span>
-                <span>▾</span>
-              </div>
-              <div class="faq-a">
-                يتم فحص إيصال التحويل وتأكيد الفاتورة سريعاً، ويقوم بوت التليجرام تلقائياً بإرسال رابط انضمام فردي وخاص بك للقناة المغلقة.
-              </div>
-            </div>
-
-            <div class="faq-block" onclick="this.classList.toggle('active')">
-              <div class="faq-q">
-                <span>هل يمكن استخدام رابط القناة أكثر من مرة؟</span>
-                <span>▾</span>
-              </div>
-              <div class="faq-a">
-                لا، روابط الانضمام مبرمجة أوتوماتيكياً لتكون فردية وتستخدم لمرة واحدة فقط (member_limit: 1) لحماية خصوصية المشتركين.
-              </div>
-            </div>
-
-            <div class="faq-block" onclick="this.classList.toggle('active')">
-              <div class="faq-q">
-                <span>هل تتوفر طرق دفع مثل فودافون كاش وزين كاش؟</span>
-                <span>▾</span>
-              </div>
-              <div class="faq-a">
-                نعم، نوفر محافظ محلية لدول مصر، العراق، والخليج بالإضافة إلى بوابة SpaceRemit المعتمدة دون الحاجة للعملات الرقمية.
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-      </div>
-
-      <!-- الشريط الجانبي الفاخر على الكمبيوتر -->
-      <aside class="sidebar-area">
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-3 sm:px-4 pt-3">
         
-        <!-- كارت الدعوة للانضمام السريع -->
-        <div class="sidebar-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(14,14,22,0.95) 100%);">
-          <div class="sidebar-card-title">
-            <span>⭐</span>
-            <span>انضمام فوري لمجتمع VIP</span>
-          </div>
-          <p style="font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6;">
-            احصل على كواليس حصرية، مكالمات فيديو خاصة، وروابط القناة المغلقة فور تأكيد اشتراكك.
-          </p>
-          <button type="button" class="btn-cta-main" style="padding: 12px;" onclick="openPlansTab()">
-            <span>اشترك الآن • 50$ 👑</span>
-          </button>
+        <!-- Profile Banner & Hero Header -->
+        <div class="relative rounded-3xl overflow-hidden glass-card border border-gold-500/20 shadow-2xl mb-6">
+            <!-- Cover Image -->
+            <div class="h-44 sm:h-64 w-full bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200');">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
+            </div>
+
+            <!-- Profile Info Box -->
+            <div class="relative px-4 sm:px-8 pb-6 -mt-16 sm:-mt-20 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 text-center sm:text-right">
+                
+                <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4">
+                    <!-- Avatar with Glowing Crown Badge -->
+                    <div class="relative">
+                        <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full p-1 bg-gradient-to-tr from-gold-600 via-gold-400 to-yellow-200 gold-border-glow shadow-xl">
+                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400'" alt="الملكة نانو" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <span class="absolute top-0 right-0 bg-gold-500 text-dark-900 p-2 rounded-full shadow-lg border-2 border-dark-900" title="موثق">
+                            <i class="fa-solid fa-crown text-sm"></i>
+                        </span>
+                    </div>
+
+                    <!-- Profile Titles -->
+                    <div class="mb-1">
+                        <div class="flex items-center justify-center sm:justify-start gap-2">
+                            <h1 class="text-2xl sm:text-3xl font-black text-white">الملكة نانو</h1>
+                            <i class="fa-solid fa-circle-check text-sky-400 text-lg" title="حساب توثيق رسمي"></i>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-400 mt-1">صانعة محتوى حصري | تجربة التواصل المباشر وVIP</p>
+                    </div>
+                </div>
+
+                <!-- Action Button Desktop -->
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="openModal('subscribeModal')" class="flex-1 sm:flex-initial gold-gradient-btn px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <span>الوصول الحصري كامل</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Stats Bar -->
+            <div class="grid grid-cols-3 border-t border-dark-700/60 bg-dark-800/50 py-3 text-center">
+                <div>
+                    <div class="text-lg sm:text-xl font-bold text-gold-400">1.2M</div>
+                    <div class="text-xs text-gray-400">متابع</div>
+                </div>
+                <div class="border-x border-dark-700/60">
+                    <div class="text-lg sm:text-xl font-bold text-gold-400">154K</div>
+                    <div class="text-xs text-gray-400">مشترك VIP</div>
+                </div>
+                <div>
+                    <div class="text-lg sm:text-xl font-bold text-gold-400">3.8M</div>
+                    <div class="text-xs text-gray-400">إعجاب</div>
+                </div>
+            </div>
+
+            <!-- Social Links Quick Bar -->
+            <div class="p-3 bg-dark-900/60 border-t border-dark-700/40 flex items-center justify-center gap-6 text-gray-400 text-lg">
+                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="قناة تليجرام الرسمية"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="واتساب مباشر"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="انستغرام"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="سناب شات"><i class="fa-brands fa-snapchat"></i></a>
+            </div>
         </div>
 
-        <!-- كارت المحافظ المحلية المقبولة -->
-        <div class="sidebar-card">
-          <div class="sidebar-card-title">
-            <span>💳</span>
-            <span>المحافظ وطرق الدفع المعتمدة</span>
-          </div>
-          <div class="wallets-chips">
-            <div class="wallet-chip">
-              <span>🇪🇬 InstaPay (مصر)</span>
-              <span class="wallet-chip-tag">فوري</span>
-            </div>
-            <div class="wallet-chip">
-              <span>📱 فودافون كاش (Vodafone)</span>
-              <span class="wallet-chip-tag">كاش فوري</span>
-            </div>
-            <div class="wallet-chip">
-              <span>🇮🇶 زين كاش ومصرف FIB (العراق)</span>
-              <span class="wallet-chip-tag">معتمد</span>
-            </div>
-            <div class="wallet-chip">
-              <span>🛡️ بوابة SpaceRemit API v2</span>
-              <span class="wallet-chip-tag">رسمي 🔒</span>
-            </div>
-          </div>
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-dark-700 mb-6 gap-2 overflow-x-auto">
+            <button id="tab-posts" onclick="switchTab('posts')" class="px-6 py-3 font-bold text-sm border-b-2 border-gold-500 text-gold-400 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>المحتوى الحصري</span>
+            </button>
+            <button id="tab-tiers" onclick="switchTab('tiers')" class="px-6 py-3 font-bold text-sm text-gray-400 hover:text-white border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-gem"></i>
+                <span>باقات الاشتراك</span>
+            </button>
+            <button id="tab-about" onclick="switchTab('about')" class="px-6 py-3 font-bold text-sm text-gray-400 hover:text-white border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>عن القناة</span>
+            </button>
         </div>
 
-        <!-- كارت التواصل المباشر -->
-        <div class="sidebar-card">
-          <div class="sidebar-card-title">
-            <span>💬</span>
-            <span>قنوات التواصل الرسمية</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <a href="https://t.me/nnano14" target="_blank" rel="noopener" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; border-radius: var(--radius-sm); padding: 10px; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
-              <span>✈️ القناة الرسمية بالتليجرام</span>
-            </a>
-            <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" style="background: rgba(37, 211, 102, 0.12); border: 1px solid rgba(37, 211, 102, 0.35); color: #25d366; border-radius: var(--radius-sm); padding: 10px; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
-              <span>💬 واتساب الملكة نانو المباشر</span>
-            </a>
-          </div>
+        <!-- TAB CONTENT 1: EXCLUSIVE POSTS FEED -->
+        <div id="section-posts" class="space-y-6">
+
+            <!-- Content Filter Badges -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                <button onclick="filterPosts('all', this)" class="feed-filter-btn bg-gold-500/10 text-gold-400 border border-gold-500/30 px-4 py-1.5 rounded-full text-xs font-semibold">الكل</button>
+                <button onclick="filterPosts('photos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">جلسات تصوير (12)</button>
+                <button onclick="filterPosts('videos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">فيديوهات خاصة (10)</button>
+                <button onclick="filterPosts('live', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">بث مباشر (6)</button>
+            </div>
+
+            <!-- Feed Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="feedPostsGrid">
+
+                <!-- Locked Post Card 1 (Video) -->
+                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="videos">
+                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
+                        <div class="flex items-center gap-3">
+                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">فيديو كواليس حصري 🎬</h4>
+                                <span class="text-xs text-gray-400">منذ ساعتين</span>
+                            </div>
+                        </div>
+                        <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-video"></i> فيديو VIP
+                        </span>
+                    </div>
+                    
+                    <!-- Blurred Preview Box -->
+                    <div class="relative h-64 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');">
+                        <!-- Heavy Blur overlay -->
+                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
+                            <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-white mb-1">المحتوى محمي للمشتركين</h3>
+                            <p class="text-xs text-gray-300 mb-4 max-w-xs">فيديو حصري بطول 8 دقائق خلف الكواليس متاح لـ باقة VIP الذهبية فقط.</p>
+                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i>
+                                <span>فتح الفيديو ($50 / شهر)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
+                        <div class="flex items-center gap-4">
+                            <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">1.4k</span></button>
+                            <span><i class="fa-regular fa-comment ml-1"></i> 89</span>
+                        </div>
+                        <span><i class="fa-solid fa-eye ml-1"></i> 4.2k مشاهدة</span>
+                    </div>
+                </div>
+
+                <!-- Locked Post Card 2 (Photo Set) -->
+                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="photos">
+                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
+                        <div class="flex items-center gap-3">
+                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">جلسة تصوير دبي 📸</h4>
+                                <span class="text-xs text-gray-400">أمس</span>
+                            </div>
+                        </div>
+                        <span class="bg-gold-500/20 text-gold-400 border border-gold-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-images"></i> 12 صورة
+                        </span>
+                    </div>
+                    
+                    <div class="relative h-64 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600');">
+                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
+                            <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-white mb-1">ألبوم صور حصري عالية الدقة</h3>
+                            <p class="text-xs text-gray-300 mb-4 max-w-xs">اشترك الآن لمشاهدة جميع الصور بالدقة الكاملة وتنزيلها.</p>
+                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
+                                <i class="fa-solid fa-unlock"></i>
+                                <span>فتح المحتوى الحصري</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
+                        <div class="flex items-center gap-4">
+                            <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">3.1k</span></button>
+                            <span><i class="fa-regular fa-comment ml-1"></i> 240</span>
+                        </div>
+                        <span><i class="fa-solid fa-eye ml-1"></i> 9.8k مشاهدة</span>
+                    </div>
+                </div>
+
+                <!-- Locked Post Card 3 (Live Stream Archive) -->
+                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700 md:col-span-2" data-category="live">
+                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
+                        <div class="flex items-center gap-3">
+                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">تسجيل البث المباشر الخاص 🎙️</h4>
+                                <span class="text-xs text-gray-400">منذ 3 أيام</span>
+                            </div>
+                        </div>
+                        <span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-headset"></i> بث مباشر مسجل (45 دقيقة)
+                        </span>
+                    </div>
+                    
+                    <div class="relative h-56 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800');">
+                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/70 flex flex-col items-center justify-center p-6 text-center">
+                            <i class="fa-solid fa-lock text-3xl text-gold-400 mb-2"></i>
+                            <h3 class="font-bold text-xl text-white">جلسة إجابة على الأسئلة الخاصة والتفاعل المباشر</h3>
+                            <p class="text-xs text-gray-300 mt-1 mb-4">هذا المحتوى مخصص فقط لأعضاء الفئة المتقدمة والدردشة المباشرة</p>
+                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-8 py-3 rounded-xl text-sm font-bold shadow-xl">
+                                اشترك للمشاهدة الآن
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-      </aside>
+        <!-- TAB CONTENT 2: SUBSCRIPTION TIERS -->
+        <div id="section-tiers" class="hidden space-y-6">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <h2 class="text-2xl font-black text-white mb-2">اختر الباقة المناسبة لك</h2>
+                <p class="text-gray-400 text-xs sm:text-sm">انضم الآن واحصل على وصول فوري ومباشر لجميع المحتويات والدردشة الحصرية مع الملكة نانو</p>
+            </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Tier 1: Bronze (Support) -->
+                <div class="glass-card rounded-2xl p-6 border border-dark-700 flex flex-col justify-between relative hover:border-gold-500/30 transition">
+                    <div>
+                        <div class="text-xs font-bold text-gray-400 mb-1">الوصول الأساسي</div>
+                        <h3 class="text-xl font-black text-white mb-3">داعم للقناة 💖</h3>
+                        <div class="text-3xl font-black text-gold-400 mb-4">$10.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
+                        <ul class="space-y-3 text-xs text-gray-300 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> مشاهدة المنشورات العامة بالحساب</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> شارة داعم مميزة بالتعليقات</li>
+                            <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-xmark"></i> مشاهدة الفيديوهات الخاصة</li>
+                            <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-xmark"></i> مكالمات وتواصل مباشر</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectTier('داعم للقناة', '10.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
+                        اشتراك الباقة
+                    </button>
+                </div>
+
+                <!-- Tier 2: VIP Gold (Featured) -->
+                <div class="glass-card rounded-2xl p-6 border-2 border-gold-500 relative flex flex-col justify-between gold-border-glow bg-gradient-to-b from-gold-500/10 to-dark-900">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-500 text-dark-900 font-bold text-[10px] px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                        الأكثر طلباً ⭐
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-gold-400 mb-1 mt-2">الباقة الأكثر شعبية</div>
+                        <h3 class="text-2xl font-black text-white mb-3">اشتراك VIP برايفيت 👑</h3>
+                        <div class="text-4xl font-black text-gold-400 mb-4">$50.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
+                        <ul class="space-y-3 text-xs text-gray-200 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> دخول حصري للقناة الخاصة والتليجرام VIP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> مشاهدة فتح الصور والفيديوهات الحصرية كاملاً</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> أولوية الرد بالرسائل الخاصة</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> روابط فردية صالحة لمرة واحدة عبر البوت</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl">
+                        اشترك الآن (VIP)
+                    </button>
+                </div>
+
+                <!-- Tier 3: Direct Video Call -->
+                <div class="glass-card rounded-2xl p-6 border border-dark-700 flex flex-col justify-between hover:border-gold-500/30 transition">
+                    <div>
+                        <div class="text-xs font-bold text-purple-400 mb-1">الفي آي بي المباشر</div>
+                        <h3 class="text-xl font-black text-white mb-3">مكالمة فيديو مباشر 📹</h3>
+                        <div class="text-3xl font-black text-gold-400 mb-4">$30.00 <span class="text-xs text-gray-400 font-normal">/ جلسة</span></div>
+                        <ul class="space-y-3 text-xs text-gray-300 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> مكالمة فيديو مرئي خاص ومباشر (20 دقيقة)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> حجز موعد خاص فوري والتنسيق عبر واتساب</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> خصوصية تامة وصوت نقي</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectTier('مكالمة فيديو مباشر', '30.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
+                        طلب المكالمة
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 3: ABOUT / BIO -->
+        <div id="section-about" class="hidden glass-card rounded-2xl p-6 border border-dark-700 space-y-4">
+            <h3 class="text-xl font-bold text-white mb-2">عن المنصة الرسمية للملكة نانو</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">
+                مرحباً بكم في العالم الخاص بالملكة نانو. تم إنشاء هذه المنصة لتوفير تجربة تواصل آمنة وحصرية مع المتابعين المميزين، بعيداً عن قيود منصات التواصل التقليدية.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-dark-700">
+                <div class="flex items-start gap-3">
+                    <div class="p-3 bg-gold-500/10 text-gold-400 rounded-xl"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">دفع محلي آمن ومعتمد 100%</h4>
+                        <p class="text-xs text-gray-400 mt-1">دعم المحافظ الإلكترونية في مصر والعراق والخليج وبوابة SpaceRemit الرسمية (دون عملات رقمية)</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="p-3 bg-gold-500/10 text-gold-400 rounded-xl"><i class="fa-solid fa-bolt text-xl"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">تفعيل فوري برابط فردي</h4>
+                        <p class="text-xs text-gray-400 mt-1">يتم تأكيد اشتراكك وإرسال رابط القناة الفردي المخصص لك فور مراجعة التحويل</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Sticky Mobile CTA Bar -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 p-3 bg-dark-900/95 border-t border-gold-500/20 backdrop-blur-lg z-30">
+        <button onclick="openModal('subscribeModal')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
+            <i class="fa-solid fa-crown"></i>
+            <span>اشترك الآن واستمتع بالمحتوى الحصري</span>
+        </button>
     </div>
 
-  </div>
+    <!-- CHECKOUT & PAYMENT MODAL (المحافظ المحلية وبوابة SpaceRemit بدون كريبتو) -->
+    <div id="subscribeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-dark-800 border border-gold-500/30 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-8">
+            
+            <!-- Modal Header -->
+            <div class="p-4 bg-dark-900 border-b border-dark-700 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-gold-400"></i>
+                    <span class="font-bold text-sm text-white">بوابة الدفع والمحافظ المحلية | SpaceRemit</span>
+                </div>
+                <button onclick="closeModal('subscribeModal')" class="text-gray-400 hover:text-white p-1 rounded-full">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-  <!-- تذييل الصفحة -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>© 2026 الملكة نانو | Queen Nanoona Official. جميع الحقوق محفوظة.</p>
-      <p style="margin-top: 4px; font-size: 11px;">منصة المحتوى الحصري والدفع المحلي المعتمد 👑</p>
-    </div>
-  </footer>
+            <!-- Modal Content Body -->
+            <div class="p-5 space-y-4">
 
-  <!-- لايت بوكس للصور -->
-  <div class="media-lightbox" id="lightbox" onclick="this.classList.remove('active')">
-    <img id="lightboxImg" src="" alt="عرض مكبر" class="lightbox-target-img">
-  </div>
+                <!-- Selected Tier Summary -->
+                <div class="bg-dark-900/80 p-3.5 rounded-2xl border border-gold-500/20 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block">الباقة المختارة</span>
+                        <h4 id="selected-tier-name" class="font-bold text-sm text-white">اشتراك برايفيت VIP ⭐</h4>
+                        <p class="text-[11px] text-gray-400" id="selected-invoice-id">فاتورة معتمدة: #INV-626507</p>
+                    </div>
+                    <div id="selected-tier-price" class="text-2xl font-black text-gold-400">$50.00</div>
+                </div>
 
-  <!-- إشعار Toast -->
-  <div class="app-toast" id="appToast">تمت العملية بنجاح! ✨</div>
+                <!-- Step 1: Country / Region Selector (محلي فقط) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-2">اختر الدولة لعرض المحافظ المحلية المتاحة:</label>
+                    <select id="countrySelect" onchange="updatePaymentMethods()" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500">
+                        <option value="EG">🇪🇬 مصر (InstaPay / فودافون كاش / تيلدا)</option>
+                        <option value="IQ">🇮🇶 العراق (زين كاش / المصرف العراقي FIB)</option>
+                        <option value="SA">🇸🇦 السعودية والخليج (STC Pay / مدى)</option>
+                        <option value="SP">🛡️ بوابة الدفع الإلكتروني المعتمدة SpaceRemit</option>
+                    </select>
+                </div>
 
-  <!-- المنطق البرمجي للواجهة الأمامية للمستخدم فقط -->
-  <script>
-    const WALLETS = {
-      instapay: {
-        title: '💳 تفاصيل التحويل عبر InstaPay مصر',
-        rows: [
-          { label: 'عنوان الدفع اللحظي (IPA):', val: 'nanoona@instapay' },
-          { label: 'اسم المستلم:', val: 'Queen Nanoona Official' },
-          { label: 'البنك:', val: 'البنك الأهلي المصري' }
-        ],
-        guide: 'حوّل المبلغ إلى عنوان الدفع اللحظي، ثم ارفع صورة إشعار التحويل لتفعيل اشتراكك فوراً.'
-      },
-      vodafone: {
-        title: '📱 تفاصيل التحويل عبر فودافون كاش',
-        rows: [
-          { label: 'رقم محفظة فودافون كاش:', val: '01023456789' },
-          { label: 'اسم الحساب:', val: 'نانو للمحتوى الرقمي' }
-        ],
-        guide: 'حوّل المبلغ إلى رقم الكاش أعلاه عبر كود *9*7*الرقم*المبلغ# أو تطبيق أنا فودافون، ثم ارفع الإيصال.'
-      },
-      zaincash: {
-        title: '🇮🇶 تفاصيل الدفع في العراق (زين كاش / FIB)',
-        rows: [
-          { label: 'رقم محفظة زين كاش:', val: '07812345678' },
-          { label: 'حساب المصرف العراقي الأول (FIB):', val: 'FIB-99214' }
-        ],
-        guide: 'حوّل المبلغ عبر تطبيق زين كاش أو FIB، ثم ارفع صورة وصل التحويل لتأكيد الفاتورة وتوليد الرابط الفردي.'
-      },
-      spaceremit: {
-        title: '🛡️ بوابة الدفع الرسمية SpaceRemit API v2',
-        rows: [
-          { label: 'حالة البوابة:', val: 'دفع معتمد رسمي 🔒' },
-          { label: 'العملة المدعومة:', val: 'USD (الدولار الأمريكي)' }
-        ],
-        guide: 'سيتم فتح صفحة الدفع الآمنة المعتمدة في نافذة جديدة لإتمام السداد، مع تأكيد الفاتورة المباشر عبر واتساب.'
-      }
-    };
+                <!-- Step 2: Payment Methods Grid -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-2">طريقة الدفع المختارة:</label>
+                    <div id="payment-methods-container" class="grid grid-cols-2 gap-2.5">
+                        <!-- Dynamic Payment Cards inserted by JS -->
+                    </div>
+                </div>
 
-    let selectedTier = 'vip';
-    let selectedAmount = 50;
-    let selectedWallet = 'instapay';
-    let receiptBase64 = null;
+                <!-- Box: Details of Selected Wallet (Account / Phone / Instructions) -->
+                <div id="walletInfoBox" class="bg-dark-900/90 border border-gold-500/30 rounded-2xl p-3.5 space-y-2 text-xs">
+                    <div class="flex items-center justify-between border-b border-dark-700/60 pb-2">
+                        <span class="font-bold text-gold-400" id="walletTitleText">بيانات التحويل عبر InstaPay</span>
+                        <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">دفع محلي فوري</span>
+                    </div>
+                    <div id="walletDetailsRows" class="space-y-1.5">
+                        <!-- Rows inserted by JS with copy buttons -->
+                    </div>
+                </div>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      renderWalletData('instapay');
-      fetchFeed();
-    });
+                <!-- Step 3: Receipt Upload Box (للمحافظ المحلية) -->
+                <div id="receiptUploadSection" class="space-y-2">
+                    <label class="block text-xs font-bold text-gray-300">إرفاق إيصال التحويل (صورة الإشعار): <span class="text-red-400">*</span></label>
+                    <div onclick="document.getElementById('receiptFileInput').click()" class="border-2 border-dashed border-dark-700 hover:border-gold-500/50 rounded-2xl p-3.5 text-center cursor-pointer bg-dark-900/50 transition">
+                        <input type="file" id="receiptFileInput" accept="image/*" class="hidden" onchange="onReceiptFileSelected(event)">
+                        <div id="receiptPlaceholder">
+                            <i class="fa-solid fa-receipt text-2xl text-gold-500/70 mb-1"></i>
+                            <div class="text-xs font-bold text-white">اضغط هنا لإرفاق صورة إشعار التحويل</div>
+                            <div class="text-[10px] text-gray-400">JPG, PNG, WEBP (حجم حتى 10MB)</div>
+                        </div>
+                        <div id="receiptPreviewBox" class="hidden relative">
+                            <img id="receiptPreviewImage" src="" class="max-h-32 mx-auto rounded-lg border border-gold-500/40">
+                            <button type="button" onclick="removeReceiptFile(event)" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">✕</button>
+                        </div>
+                    </div>
+                </div>
 
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.tab-trigger').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
+                <!-- Account / Telegram Handle Input -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">اسم المستخدم بالتليجرام (لتأكيد وتفعيل الاشتراك): <span class="text-red-400">*</span></label>
+                    <input type="text" id="userTelegramInput" placeholder="@username" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500" dir="ltr">
+                </div>
 
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      const target = document.getElementById(`tab-${tabId}`);
-      if (target) target.classList.add('active');
-    }
+                <!-- Security Note -->
+                <div class="flex items-center justify-center gap-2 text-[11px] text-emerald-400 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <span>عملية الدفع مشفرة ومعتمدة عبر المحافظ المحلية الرسمية</span>
+                </div>
 
-    function openPlansTab() {
-      const plansBtn = document.querySelector('.tab-trigger[data-target="plans"]');
-      if (plansBtn) switchTab('plans', plansBtn);
-      const plansSection = document.getElementById('tab-plans');
-      if (plansSection) plansSection.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function choosePlan(box) {
-      document.querySelectorAll('.plan-box').forEach(b => b.classList.remove('selected'));
-      box.classList.add('selected');
-      selectedTier = box.getAttribute('data-tier');
-      selectedAmount = selectedTier === 'tip' ? selectedAmount || 10 : parseFloat(box.getAttribute('data-amount')) || 50;
-      updateTotalDisplay();
-    }
-
-    function setTipAmt(val, event) {
-      if (event) event.stopPropagation();
-      selectedAmount = val;
-      document.getElementById('tipBoxPrice').innerHTML = `${val} <span>$</span>`;
-      updateTotalDisplay();
-    }
-
-    function updateTotalDisplay() {
-      document.getElementById('totalCheckoutAmount').textContent = selectedAmount.toFixed(2) + ' $';
-    }
-
-    function selectWallet(key, card) {
-      document.querySelectorAll('.pay-opt-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      selectedWallet = key;
-      renderWalletData(key);
-
-      const receiptBox = document.getElementById('receiptBoxWrap');
-      const submitBtn = document.getElementById('btnSubmitOrder');
-
-      if (key === 'spaceremit') {
-        receiptBox.style.display = 'none';
-        submitBtn.innerHTML = `<span>الانتقال للدفع المعتمد عبر SpaceRemit 🛡️</span>`;
-      } else {
-        receiptBox.style.display = 'block';
-        submitBtn.innerHTML = `<span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>`;
-      }
-    }
-
-    function renderWalletData(key) {
-      const data = WALLETS[key] || WALLETS.instapay;
-      document.getElementById('sheetTitle').textContent = data.title;
-      document.getElementById('sheetGuide').textContent = data.guide;
-
-      document.getElementById('sheetRows').innerHTML = data.rows.map(r => `
-        <div class="wallet-data-row">
-          <span style="font-size:12px; color:var(--text-muted);">${r.label}</span>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <strong style="font-size:13px; color:#fff; direction:ltr;">${r.val}</strong>
-            <button type="button" class="btn-copy" onclick="copyText('${r.val}')">نسخ</button>
-          </div>
+                <!-- Confirm Payment CTA Button -->
+                <button id="btnProceedPayment" onclick="processPayment()" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span id="btnProceedText">إرسال إيصال التحويل للمراجعة الفورية</span>
+                </button>
+            </div>
         </div>
-      `).join('');
-    }
+    </div>
 
-    function copyText(txt) {
-      navigator.clipboard.writeText(txt).then(() => toast('تم النسخ إلى الحافظة! 📋'));
-    }
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let currentTier = 'اشتراك VIP برايفيت';
+        let currentPrice = '50.00';
+        let activeMethodId = 'instapay';
+        let receiptDataUrl = null;
 
-    function onReceiptSelected(e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
+        // البيانات الحصرية للمحافظ المحلية
+        const paymentData = {
+            'EG': [
+                { id: 'instapay', name: 'InstaPay إنستا باي', icon: 'fa-solid fa-money-bill-transfer', title: 'تحويل عبر InstaPay مصر', val: 'nanoona@instapay', guide: 'حوّل إلى عنوان الدفع اللحظي (IPA)، ثم أرفق صورة الإيصال.' },
+                { id: 'vodafone', name: 'فودافون كاش', icon: 'fa-solid fa-mobile-screen-button', title: 'تحويل فودافون كاش', val: '01023456789', guide: 'حوّل إلى رقم فودافون كاش أعلاه، ثم أرفق إشعار الرسالة.' },
+                { id: 'telda', name: 'تطبيق تيلدا Telda', icon: 'fa-solid fa-credit-card', title: 'تحويل عبر Telda', val: 'telda.me/nanoona', guide: 'أرسل المبلغ إلى معرف تيلدا وارفع الإيصال.' }
+            ],
+            'IQ': [
+                { id: 'zaincash', name: 'زين كاش (ZainCash)', icon: 'fa-solid fa-wallet', title: 'تحويل زين كاش العراق', val: '07812345678', guide: 'حوّل إلى رقم محفظة زين كاش، ثم أرفق وصل التحويل.' },
+                { id: 'fib', name: 'المصرف العراقي FIB', icon: 'fa-solid fa-building-columns', title: 'حساب المصرف العراقي الأول', val: 'FIB-99214', guide: 'حوّل إلى رقم الحساب عبر تطبيق FIB ثم ارفع إشعار السداد.' }
+            ],
+            'SA': [
+                { id: 'stcpay', name: 'STC Pay', icon: 'fa-solid fa-mobile-retro', title: 'تحويل عبر STC Pay', val: '0501234567', guide: 'حوّل المبلغ إلى رقم STC Pay ثم أرفق صورة إشعار السداد.' },
+                { id: 'mada', name: 'تحويل بنكي / مدى', icon: 'fa-solid fa-credit-card', title: 'حساب بنكي معتمد', val: 'SA038000000000000000', guide: 'حوّل إلى رقم الآيبان ثم ارفع إيصال الحوالة.' }
+            ],
+            'SP': [
+                { id: 'spaceremit', name: 'بوابة SpaceRemit v2', icon: 'fa-solid fa-shield-halved', title: 'بوابة SpaceRemit API v2', val: 'دفع إلكتروني معتمد رسمي 🔒', guide: 'سيتم فتح صفحة الدفع الآمنة فوراً مع تأكيد الفاتورة عبر واتساب.' }
+            ]
+        };
 
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        receiptBase64 = evt.target.result;
-        document.getElementById('receiptImg').src = receiptBase64;
-        document.getElementById('dropzoneEmpty').style.display = 'none';
-        document.getElementById('dropzonePreview').style.display = 'block';
-        toast('تم إرفاق الإيصال بنجاح! 🧾');
-      };
-      reader.readAsDataURL(file);
-    }
+        // Tab Switcher Logic
+        function switchTab(tabName) {
+            const tabs = ['posts', 'tiers', 'about'];
+            tabs.forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                btn.classList.remove('border-gold-500', 'text-gold-400');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
 
-    function clearReceipt(event) {
-      if (event) event.stopPropagation();
-      receiptBase64 = null;
-      document.getElementById('receiptFile').value = '';
-      document.getElementById('receiptImg').src = '';
-      document.getElementById('dropzonePreview').style.display = 'none';
-      document.getElementById('dropzoneEmpty').style.display = 'block';
-    }
-
-    async function submitCheckoutOrder() {
-      const tg = document.getElementById('tgHandleInput').value.trim();
-      if (!tg) {
-        toast('يرجى إدخال معرّف التليجرام الخاص بك ⚠️');
-        document.getElementById('tgHandleInput').focus();
-        return;
-      }
-
-      if (selectedWallet === 'spaceremit') {
-        const cleanName = tg.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
-        const invNum = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
-        const cleanNotes = `${selectedTier}_${selectedAmount}_${invNum}`;
-        const spaceUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${selectedAmount}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}&way=local_methods`;
-
-        window.open(spaceUrl, '_blank');
-
-        fetch('/api/invoices', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            telegramUser: tg,
-            planType: selectedTier,
-            planName: selectedTier === 'vip' ? 'اشتراك برايفيت VIP ⭐' : (selectedTier === 'call' ? 'مكالمة فيديو مباشر 📹' : 'إكرامية ودعم 💖'),
-            amount: selectedAmount,
-            paymentMethod: 'spaceremit',
-            paymentMethodName: 'بوابة SpaceRemit API v2 (دفع معتمد)',
-            receiptUrl: null,
-            notes: 'تحويل عبر SpaceRemit'
-          })
-        }).catch(() => {});
-
-        const waMsg = `مرحباً الملكة نانو، سددت الفاتورة رقم #${invNum} (${selectedTier}) بقيمة ${selectedAmount}$ عبر SpaceRemit، معرّف التليجرام: ${tg}`;
-        window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
-        toast('تم فتح بوابة SpaceRemit وصفحة تأكيد الواتساب! 🛡️');
-        return;
-      }
-
-      if (!receiptBase64) {
-        toast('يرجى إرفاق صورة إشعار أو وصل التحويل للمتابعة 🧾');
-        return;
-      }
-
-      const btn = document.getElementById('btnSubmitOrder');
-      btn.disabled = true;
-      btn.innerHTML = `<span>جاري تسجيل الفاتورة... ⏳</span>`;
-
-      try {
-        const res = await fetch('/api/invoices', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            telegramUser: tg,
-            planType: selectedTier,
-            planName: selectedTier === 'vip' ? 'اشتراك برايفيت VIP ⭐' : (selectedTier === 'call' ? 'مكالمة فيديو مباشر 📹' : 'إكرامية ودعم 💖'),
-            amount: selectedAmount,
-            paymentMethod: selectedWallet,
-            paymentMethodName: document.querySelector('.pay-opt-card.active .pay-opt-name').textContent,
-            receiptUrl: receiptBase64,
-            notes: 'إيصال دفع محلي مرفق'
-          })
-        });
-
-        const data = await res.json();
-        const invId = data.invoice ? data.invoice.id : 'INV-CONFIRMED';
-        toast(`تم إرسال طلبك بنجاح برقم فاتورة: ${invId} 🎉`);
-
-        const waMsg = `مرحباً الملكة نانو، أرسلت إيصال تحويل الفاتورة رقم #${invId} بقيمة ${selectedAmount}$ عبر (${document.querySelector('.pay-opt-card.active .pay-opt-name').textContent})، معرّف التليجرام: ${tg}`;
-        setTimeout(() => {
-          window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
-        }, 600);
-
-        clearReceipt();
-        document.getElementById('tgHandleInput').value = '';
-      } catch (err) {
-        toast('تم استلام طلبك بنجاح وسيتم تفعيله فوراً!');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>إرسال إيصال التحويل للمراجعة الفورية 🚀</span>`;
-      }
-    }
-
-    async function fetchFeed(filter = 'all') {
-      const grid = document.getElementById('feedGrid');
-      grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">جاري تحميل المحتوى الحصري... ⏳</div>`;
-
-      try {
-        const res = await fetch(`/api/posts?type=${filter}`);
-        const data = await res.json();
-        const posts = (data && data.posts) || [];
-        document.getElementById('feedStatusText').textContent = `${posts.length} منشور حصري ✨`;
-        renderFeed(posts);
-      } catch (e) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#ef4444;">تعذر تحميل المنشورات حالياً.</div>`;
-      }
-    }
-
-    function renderFeed(posts) {
-      const grid = document.getElementById('feedGrid');
-      if (!posts || posts.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">لا توجد منشورات متاحة حالياً.</div>`;
-        return;
-      }
-
-      grid.innerHTML = posts.map(post => {
-        const isLocked = post.isVip;
-        return `
-          <div class="feed-card">
-            <div class="feed-card-header">
-              <div class="author-meta">
-                <img src="avatar.jpg" alt="نانو" class="author-thumb" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'">
-                <div class="author-info">
-                  <h3>الملكة نانو 👑</h3>
-                  <span>مؤخراً</span>
-                </div>
-              </div>
-              <span class="card-badge ${post.isVip ? 'badge-vip' : 'badge-free'}">
-                ${post.isVip ? '🔒 VIP حصري' : '✨ متاح'}
-              </span>
-            </div>
-
-            <div class="feed-card-body">
-              <h4 class="feed-card-title">${escape(post.title)}</h4>
-              ${post.content ? `<p class="feed-card-text">${escape(post.content)}</p>` : ''}
-            </div>
-
-            <div class="feed-media-wrap">
-              ${renderMedia(post, isLocked)}
-              ${isLocked ? `
-                <div class="vip-lock-overlay">
-                  <div class="lock-circle">🔒</div>
-                  <div class="lock-title">محتوى خاص لمشتركي VIP</div>
-                  <div class="lock-sub">اشترك الآن لفتح المشاهدة الفورية والانضمام للقناة الخاصة.</div>
-                  <button type="button" class="btn-unlock" onclick="openPlansTab()">
-                    <span>فتح المحتوى / اشترك الآن</span>
-                    <span>⭐</span>
-                  </button>
-                </div>
-              ` : ''}
-            </div>
-
-            <div class="feed-card-footer">
-              <button type="button" class="action-btn" onclick="this.classList.toggle('liked');">
-                <span>❤️</span>
-                <span>${post.likes || 120}</span>
-                <span>إعجاب</span>
-              </button>
-              <div style="display:flex; gap:10px; font-size:11px; color:var(--text-muted);">
-                <span>👁️ ${post.views || 350} مشاهدة</span>
-                <button type="button" class="action-btn" onclick="shareMe('${escape(post.title)}')">🔗 مشاركة</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderMedia(post, locked) {
-      const url = post.mediaUrl || '';
-      const type = post.mediaType || 'image';
-
-      if (!url) return '';
-
-      if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
-        const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
-        const yt = m ? m[1] : null;
-        if (yt && !locked) {
-          return `<iframe src="https://www.youtube-nocookie.com/embed/${yt}" style="width:100%; height:260px; border:none;"></iframe>`;
+            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.add('border-gold-500', 'text-gold-400');
+            activeBtn.classList.remove('border-transparent', 'text-gray-400');
         }
-        const thumb = yt ? `https://img.youtube.com/vi/${yt}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=800';
-        return `<img src="${thumb}" alt="فيديو" class="media-cover ${locked ? 'blurred' : ''}">`;
-      }
 
-      if (type === 'video' || url.match(/\.(mp4|webm|mov)$/i)) {
-        if (!locked) {
-          return `<video src="${url}" controls playsinline style="width:100%; max-height:300px; background:#000;"></video>`;
+        function filterPosts(cat, btn) {
+            document.querySelectorAll('.feed-filter-btn').forEach(b => {
+                b.classList.remove('bg-gold-500/10', 'text-gold-400', 'border-gold-500/30');
+                b.classList.add('bg-dark-800', 'text-gray-400');
+            });
+            btn.classList.add('bg-gold-500/10', 'text-gold-400', 'border', 'border-gold-500/30');
+            btn.classList.remove('bg-dark-800', 'text-gray-400');
+
+            const cards = document.querySelectorAll('.post-item-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
-        return `<video src="${url}" class="media-cover blurred"></video>`;
-      }
 
-      return `<img src="${url}" alt="صورة" class="media-cover ${locked ? 'blurred' : ''}" loading="lazy" onclick="${!locked ? `viewImg('${url}')` : ''}">`;
-    }
+        function toggleLike(btn) {
+            btn.classList.toggle('text-red-400');
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-solid');
+            icon.classList.toggle('fa-regular');
+        }
 
-    function applyFeedFilter(type, btn) {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      fetchFeed(type);
-    }
+        // Modal Handler
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            updatePaymentMethods();
+        }
 
-    function viewImg(url) {
-      document.getElementById('lightboxImg').src = url;
-      document.getElementById('lightbox').classList.add('active');
-    }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
 
-    function shareMe(title) {
-      if (navigator.share) navigator.share({ title: title, url: window.location.href }).catch(() => {});
-      else copyText(window.location.href);
-    }
+        function selectTier(name, price) {
+            currentTier = name;
+            currentPrice = price;
+            document.getElementById('selected-tier-name').innerText = name;
+            document.getElementById('selected-tier-price').innerText = `$${price}`;
+            document.getElementById('selected-invoice-id').innerText = `فاتورة معتمدة: #INV-${Math.floor(100000 + Math.random() * 900000)}`;
+            openModal('subscribeModal');
+        }
 
-    function toast(msg) {
-      const t = document.getElementById('appToast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3500);
-    }
+        // Dynamic Payment Method Render based on Selected Country
+        function updatePaymentMethods() {
+            const country = document.getElementById('countrySelect').value;
+            const container = document.getElementById('payment-methods-container');
+            container.innerHTML = '';
 
-    function escape(s) {
-      if (!s) return '';
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-  </script>
+            const methods = paymentData[country] || paymentData['EG'];
+            methods.forEach((method, idx) => {
+                const isSelected = idx === 0 ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-dark-700 bg-dark-900 text-gray-300';
+                container.innerHTML += `
+                    <div onclick="highlightPayment(this, '${method.id}')" data-method-id="${method.id}" class="payment-card cursor-pointer border ${isSelected} hover:border-gold-500/60 p-3 rounded-2xl flex flex-col items-center justify-center text-center transition">
+                        <i class="${method.icon} text-lg mb-1.5 text-gold-500"></i>
+                        <span class="text-[11px] font-bold">${method.name}</span>
+                    </div>
+                `;
+            });
+
+            if (methods.length > 0) {
+                activeMethodId = methods[0].id;
+                renderSelectedWalletSheet(methods[0]);
+            }
+        }
+
+        function highlightPayment(element, methodId) {
+            document.querySelectorAll('.payment-card').forEach(card => {
+                card.classList.remove('border-gold-500', 'bg-gold-500/10', 'text-gold-400');
+                card.classList.add('border-dark-700', 'bg-dark-900', 'text-gray-300');
+            });
+            element.classList.add('border-gold-500', 'bg-gold-500/10', 'text-gold-400');
+            element.classList.remove('border-dark-700', 'bg-dark-900', 'text-gray-300');
+
+            activeMethodId = methodId;
+            const country = document.getElementById('countrySelect').value;
+            const methods = paymentData[country] || paymentData['EG'];
+            const found = methods.find(m => m.id === methodId);
+            if (found) renderSelectedWalletSheet(found);
+        }
+
+        function renderSelectedWalletSheet(method) {
+            document.getElementById('walletTitleText').innerText = method.title;
+            const isSpaceRemit = method.id === 'spaceremit';
+
+            const receiptSec = document.getElementById('receiptUploadSection');
+            const btnText = document.getElementById('btnProceedText');
+
+            if (isSpaceRemit) {
+                receiptSec.classList.add('hidden');
+                btnText.innerText = 'الانتقال للدفع المعتمد عبر SpaceRemit';
+                document.getElementById('walletDetailsRows').innerHTML = `
+                    <div class="text-gray-300 text-[11px] leading-relaxed">
+                        سيتم فتح بوابة الدفع الآمنة لـ SpaceRemit لإتمام السداد، مع تأكيد الفاتورة المباشر عبر واتساب.
+                    </div>
+                `;
+            } else {
+                receiptSec.classList.remove('hidden');
+                btnText.innerText = 'إرسال إيصال التحويل للمراجعة الفورية';
+                document.getElementById('walletDetailsRows').innerHTML = `
+                    <div class="flex items-center justify-between bg-dark-800/80 p-2 rounded-xl border border-dark-700">
+                        <span class="text-gray-400 text-[11px]">بيانات الحساب / الرقم:</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-white text-xs" dir="ltr">${method.val}</span>
+                            <button type="button" onclick="navigator.clipboard.writeText('${method.val}'); alert('تم نسخ الرقم: ${method.val}');" class="bg-gold-500/20 text-gold-400 hover:bg-gold-500 hover:text-dark-900 px-2 py-0.5 rounded text-[10px] font-bold transition">نسخ</button>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-[10px] mt-1">${method.guide}</p>
+                `;
+            }
+        }
+
+        // التعامل مع ملف الإيصال
+        function onReceiptFileSelected(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                receiptDataUrl = evt.target.result;
+                document.getElementById('receiptPreviewImage').src = receiptDataUrl;
+                document.getElementById('receiptPlaceholder').classList.add('hidden');
+                document.getElementById('receiptPreviewBox').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeReceiptFile(event) {
+            if (event) event.stopPropagation();
+            receiptDataUrl = null;
+            document.getElementById('receiptFileInput').value = '';
+            document.getElementById('receiptPreviewBox').classList.add('hidden');
+            document.getElementById('receiptPlaceholder').classList.remove('hidden');
+        }
+
+        // إتمام عملية الدفع
+        async function processPayment() {
+            const tg = document.getElementById('userTelegramInput').value.trim();
+            if (!tg) {
+                alert('يرجى إدخال اسم المستخدم بالتليجرام لتأكيد اشتراكك وتفعيل حسابك.');
+                document.getElementById('userTelegramInput').focus();
+                return;
+            }
+
+            const cleanName = tg.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
+            const invNum = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+
+            // حالة SpaceRemit
+            if (activeMethodId === 'spaceremit') {
+                const spaceUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(currentTier + '_' + invNum)}&way=local_methods`;
+                
+                window.open(spaceUrl, '_blank');
+
+                fetch('/api/invoices', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        telegramUser: tg,
+                        planType: currentTier,
+                        planName: currentTier,
+                        amount: currentPrice,
+                        paymentMethod: 'spaceremit',
+                        paymentMethodName: 'بوابة SpaceRemit API v2 (دفع معتمد)',
+                        receiptUrl: null,
+                        notes: 'تحويل عبر SpaceRemit'
+                    })
+                }).catch(() => {});
+
+                const waMsg = `مرحباً الملكة نانو، لقد سددت الفاتورة رقم #${invNum} (${currentTier}) بقيمة ${currentPrice}$ عبر SpaceRemit، معرّف التليجرام: ${tg}`;
+                setTimeout(() => {
+                    window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
+                }, 500);
+
+                closeModal('subscribeModal');
+                return;
+            }
+
+            // حالة المحافظ المحلية (تتطلب إيصال)
+            if (!receiptDataUrl) {
+                alert('يرجى إرفاق صورة إشعار أو إيصال التحويل لإتمام الطلب.');
+                return;
+            }
+
+            const btn = document.getElementById('btnProceedPayment');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري تسجيل الفاتورة وإرسال الإشعار...</span>`;
+
+            try {
+                const res = await fetch('/api/invoices', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        telegramUser: tg,
+                        planType: currentTier,
+                        planName: currentTier,
+                        amount: currentPrice,
+                        paymentMethod: activeMethodId,
+                        paymentMethodName: document.getElementById('walletTitleText').innerText,
+                        receiptUrl: receiptDataUrl,
+                        notes: 'إيصال دفع محلي مرفق'
+                    })
+                });
+
+                const data = await res.json();
+                const invId = data.invoice ? data.invoice.id : invNum;
+
+                alert(`تم استلام طلبك بنجاح برقم فاتورة: ${invId}\nسيتم فحص الإيصال وتفعيل رابط الانضمام الفردي فوراً!`);
+
+                const waMsg = `مرحباً الملكة نانو، أرسلت إيصال تحويل الفاتورة رقم #${invId} بقيمة ${currentPrice}$ عبر (${document.getElementById('walletTitleText').innerText})، معرّف التليجرام: ${tg}`;
+                window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
+
+                removeReceiptFile();
+                document.getElementById('userTelegramInput').value = '';
+                closeModal('subscribeModal');
+
+            } catch (err) {
+                alert('تم تسجيل طلبك بنجاح وسيتم تفعيل حسابك فور مراجعة التحويل!');
+                closeModal('subscribeModal');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-bolt"></i> <span>إرسال إيصال التحويل للمراجعة الفورية</span>`;
+            }
+        }
+    </script>
 </body>
-
 </html>
