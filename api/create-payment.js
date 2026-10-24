@@ -22,9 +22,9 @@ export default async function handler(req, res) {
 
     const payAmount = parseFloat(amount) || 50;
 
-    // جلب المفاتيح من متغيرات البيئة في Vercel مع قيم افتراضية للمفاتيح التجريبية
-    const apiKey = process.env.SPACEREMIT_API_KEY || "test_skXZ2IACDM9IZMKX65FZFFVLCSXE5HSA60EW4ULOIW8ER8QPRZQ7";
-    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY || "test_pk535XG65TKLUK0XAFVR5XYDVLU8IO2ZJ7T6B2VUSU0YER3XBOWX";
+    // جلب المفاتيح من متغيرات البيئة في Vercel (المفاتيح الحقيقية المباشرة)
+    const apiKey = process.env.SPACEREMIT_API_KEY || "skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B";
+    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY || "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5";
 
     const host = req.headers.host || 'nanoona.vercel.app';
     const protocol = host.includes('localhost') ? 'http' : 'https';

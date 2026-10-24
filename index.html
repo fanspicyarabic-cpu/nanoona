@@ -1578,7 +1578,7 @@
         <div class="sp-modal-header">
           <div class="sp-modal-title">
             <span>🛡️ بوابة الدفع SpaceRemit</span>
-            <span class="sp-mode-badge" id="spModeBadge">وضع تجريبي 🧪</span>
+            <span class="sp-mode-badge" id="spModeBadge" style="color: #10b981; border-color: rgba(16, 185, 129, 0.4);">دفع مباشر آمن 🔒</span>
           </div>
           <button type="button" class="sp-modal-close" onclick="closeSpaceRemitModal()" title="إغلاق">✕</button>
         </div>
@@ -1642,7 +1642,7 @@
     // إعدادات وبيانات بوابة SpaceRemit
     // ==========================================
     const SPACEREMIT_CONFIG = {
-      isTestMode: true,
+      isTestMode: false,
       testPublicKey: "test_pk535XG65TKLUK0XAFVR5XYDVLU8IO2ZJ7T6B2VUSU0YER3XBOWX",
       livePublicKey: "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5"
     };
@@ -1651,7 +1651,6 @@
     let currentPrice = 50;
     let currentTelegramUser = '';
     let currentPaymentUrl = '';
-    let redirectTimer = null;
 
     const serviceNames = {
       'vip': 'اشتراك برايفيت VIP ⭐',
@@ -1716,7 +1715,7 @@
       document.getElementById('totalDisplay').textContent = currentPrice.toFixed(2) + ' $';
     }
 
-    // بدء عملية الدفع عبر الاتصال بـ api/create-payment
+    // بدء عملية الدفع عبر التحويل المباشر لبوابة SpaceRemit الرسمية
     async function handlePaymentSubmit() {
       const telegram = document.getElementById('telegramUsername').value.trim();
 
@@ -1728,13 +1727,13 @@
 
       currentTelegramUser = telegram.startsWith('@') ? telegram : '@' + telegram;
       const payBtn = document.getElementById('payButton');
-      const originalBtnText = payBtn.innerHTML;
+      const originalBtnContent = payBtn.innerHTML;
 
       try {
-        payBtn.innerHTML = `<span>جاري تهيئة جلسة الدفع...</span> <span>⏳</span>`;
+        payBtn.innerHTML = `<span>جاري تحويلك لبوابة الدفع الآمنة...</span> <span>⏳</span>`;
         payBtn.disabled = true;
 
-        // استدعاء دالة السيرفر create-payment
+        // الاتصال بدالة السيرفر لإنشاء رابط الدفع
         const response = await fetch('/api/create-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1748,75 +1747,36 @@
 
         const data = await response.json();
 
-        if (!data || !data.payment_url) {
-          throw new Error(data.message || 'لم نتمكن من الحصول على رابط الدفع.');
-        }
-
-        currentPaymentUrl = data.payment_url;
-
-        // تحديث بيانات نافذة الدفع
-        document.getElementById('spModalServiceTitle').textContent = serviceNames[currentService] || 'خدمة مخصصة';
-        document.getElementById('spModalTelegram').textContent = currentTelegramUser;
-        document.getElementById('spModalPrice').textContent = currentPrice.toFixed(2) + ' $';
-
-        // تحديث شارة الوضع
-        const badge = document.getElementById('spModeBadge');
-        if (SPACEREMIT_CONFIG.isTestMode) {
-          badge.textContent = 'وضع تجريبي 🧪';
-          badge.style.color = '#ffd700';
-          badge.style.borderColor = 'rgba(245, 196, 68, 0.4)';
+        if (data && data.payment_url) {
+          // توجيه العميل فوراً وبشكل مباشر لصفحة الدفع
+          window.location.href = data.payment_url;
+          return;
         } else {
-          badge.textContent = 'دفع حقيقي 🔒';
-          badge.style.color = '#10b981';
-          badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+          throw new Error('رابط الدفع غير متوفر');
         }
-
-        // إظهار نافذة التأكيد
-        document.getElementById('spCheckoutFormView').style.display = 'block';
-        document.getElementById('spSuccessScreen').classList.remove('active');
-
-        const overlay = document.getElementById('spModalOverlay');
-        overlay.style.display = 'flex';
-        setTimeout(() => overlay.classList.add('active'), 10);
-
-        // عداد التوجيه التلقائي
-        let timeLeft = 3;
-        const countdownEl = document.getElementById('spCountdown');
-        countdownEl.textContent = timeLeft;
-
-        if (redirectTimer) clearInterval(redirectTimer);
-        redirectTimer = setInterval(() => {
-          timeLeft--;
-          if (countdownEl) countdownEl.textContent = timeLeft;
-          if (timeLeft <= 0) {
-            clearInterval(redirectTimer);
-            openDirectPayment();
-          }
-        }, 1000);
 
       } catch (err) {
-        console.error('Payment initialization error:', err);
-        // Fallback: إنشاء الرابط المباشر لبوابة SpaceRemit فوراً
-        const pubKey = SPACEREMIT_CONFIG.isTestMode ? SPACEREMIT_CONFIG.testPublicKey : SPACEREMIT_CONFIG.livePublicKey;
+        console.warn('استخدام الرابط المباشر للبوابة:', err);
+        // Fallback فوري ومباشر
+        const pubKey = SPACEREMIT_CONFIG.livePublicKey;
         const notes = `${serviceNames[currentService] || currentService} - ${currentTelegramUser}`;
-        currentPaymentUrl = `https://spaceremit.com/apipay-v2/?k=${encodeURIComponent(pubKey)}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(currentTelegramUser)}`;
-        openDirectPayment();
+        const directUrl = `https://spaceremit.com/apipay-v2/?k=${encodeURIComponent(pubKey)}&amount=${encodeURIComponent(currentPrice)}&currency=USD&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(currentTelegramUser)}`;
+        window.location.href = directUrl;
       } finally {
-        payBtn.innerHTML = originalBtnText;
-        payBtn.disabled = false;
+        setTimeout(() => {
+          payBtn.innerHTML = originalBtnContent;
+          payBtn.disabled = false;
+        }, 4000);
       }
     }
 
-    // فتح صفحة الدفع الرسمية لـ SpaceRemit مباشرة
     function openDirectPayment() {
-      if (redirectTimer) clearInterval(redirectTimer);
       if (currentPaymentUrl) {
         window.location.href = currentPaymentUrl;
       }
     }
 
     function closeSpaceRemitModal() {
-      if (redirectTimer) clearInterval(redirectTimer);
       const overlay = document.getElementById('spModalOverlay');
       overlay.classList.remove('active');
       setTimeout(() => {
