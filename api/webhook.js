@@ -1,3 +1,6 @@
+// ذاكرة مؤقتة لتخزين آخر العمليات المكتملة
+const completedPayments = new Map();
+
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,6 +11,32 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // GET request (فحص حالة الدفع أو فحص صحة الـ Endpoint)
+  if (req.method === 'GET') {
+    const { check, user } = req.query || {};
+    if (check && user) {
+      const cleanUser = decodeURIComponent(user).toLowerCase().trim().replace('@', '');
+      const matched = completedPayments.get(cleanUser);
+      if (matched) {
+        return res.status(200).json({
+          status: 'completed',
+          transactionId: matched.paymentId,
+          amount: matched.amount,
+          serviceType: matched.serviceType,
+          timestamp: matched.timestamp
+        });
+      }
+      return res.status(200).json({ status: 'pending' });
+    }
+
+    return res.status(200).json({
+      status: 'active',
+      endpoint: '/api/webhook',
+      service: 'SpaceRemit Webhook Handler for nanoona.vercel.app',
+      timestamp: new Date().toISOString()
+    });
+  }
+
   if (req.method === 'POST') {
     try {
       const payload = req.body || {};
@@ -15,11 +44,11 @@ export default async function handler(req, res) {
 
       // استخراج بيانات الدفع من الـ Webhook
       const status = payload.status || payload.payment_status || 'unknown';
-      const paymentId = payload.payment_id || payload.SP_payment_code || payload.spaceremit_id || payload.id;
+      const paymentId = payload.payment_id || payload.SP_payment_code || payload.spaceremit_id || payload.id || `TX-${Date.now()}`;
       const customData = payload.custom_data || payload.notes || {};
 
       // استخراج معرّف التليجرام ونوع الخدمة
-      const userId = customData.userId || customData.telegramUsername || payload.telegram || 'غير محدد';
+      const userId = (customData.userId || customData.telegramUsername || payload.telegram || payload.name || '').trim();
       const serviceType = customData.serviceType || payload.service || 'اشتراك';
       const amount = payload.amount || customData.amount || '0';
 
@@ -34,8 +63,15 @@ export default async function handler(req, res) {
       if (['paid', 'completed', 'successful', 'success'].includes(status.toLowerCase())) {
         console.log(`🎉 [تأكيد التفعيل]: تم استلام الدفع بنجاح للمستخدم (${userId}). سيتم تفعيل الخدمة (${serviceType}).`);
         
-        // هنا يمكنك إضافة إرسال رسالة تليجرام للبوت الخاص بك أو تخزينها بقاعدة بيانات:
-        // await notifyTelegramBot(userId, serviceType, amount);
+        if (userId) {
+          const cleanKey = userId.toLowerCase().trim().replace('@', '');
+          completedPayments.set(cleanKey, {
+            paymentId,
+            amount,
+            serviceType,
+            timestamp: Date.now()
+          });
+        }
       } else {
         console.log(`⚠️ حالة الدفع غير مكتملة حالياً: ${status}`);
       }
@@ -58,11 +94,5 @@ export default async function handler(req, res) {
     }
   }
 
-  // GET request (فحص صحة نقطة النهاية في المتصفح)
-  return res.status(200).json({
-    status: 'active',
-    endpoint: '/api/webhook',
-    service: 'SpaceRemit Webhook Handler for nanoona.vercel.app',
-    timestamp: new Date().toISOString()
-  });
+  return res.status(405).json({ message: 'Method Not Allowed' });
 }

@@ -58,78 +58,59 @@ export default async function handler(req, res) {
     console.log('====================================================');
 
     let paymentUrl = null;
-    let rawApiResponse = null;
-    let apiStatus = null;
 
-    // 1. إرسال الطلب لنقطة نهاية SpaceRemit API v2
-    try {
-      const response = await fetch('https://spaceremit.com/api/v2/payment/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(requestPayload)
-      });
+    // إنشاء رقم فاتورة فريد وتوثيقي
+    const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
+    const nowFormatted = new Date().toLocaleString('ar-EG', {
+      timeZone: 'Asia/Riyadh',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
 
-      apiStatus = response.status;
-      const responseText = await response.text();
+    const serviceTitles = {
+      'vip': 'اشتراك برايفيت VIP ⭐',
+      'call': 'مكالمة فيديو مباشر 📹',
+      'tip': 'إكرامية ودعم للملكة نانو 💖'
+    };
+    const serviceName = serviceTitles[serviceType] || 'خدمة مخصصة';
 
-      // طباعة الاستجابة بالكامل في سجلات Vercel كما طلبت تماماً
-      console.log('====================================================');
-      console.log(`[SpaceRemit API Response] كود الحالة: ${apiStatus}`);
-      console.log('نص الاستجابة بالكامل (Raw Response):', responseText);
-      console.log('====================================================');
-
-      try {
-        rawApiResponse = JSON.parse(responseText);
-        
-        // فحص كافة الحقول المحتملة التي قد تحمل رابط الفاتورة الفريد
-        paymentUrl = rawApiResponse.payment_url || 
-                     rawApiResponse.checkout_url || 
-                     rawApiResponse.invoice_url || 
-                     rawApiResponse.url || 
-                     rawApiResponse.link || 
-                     (rawApiResponse.data && (rawApiResponse.data.payment_url || rawApiResponse.data.url || rawApiResponse.data.link || rawApiResponse.data.checkout_url));
-
-      } catch (jsonErr) {
-        console.warn('[SpaceRemit Notice] الاستجابة لم تكن JSON (قد تكون صفحة توجيه HTML):', responseText.substring(0, 200));
-      }
-
-    } catch (fetchErr) {
-      console.error('[SpaceRemit API Error] فشل الاتصال بالبوابة:', fetchErr.message);
-    }
-
-    // 2. إذا لم ترجع البوابة رابط فاتورة JSON فريد (مثل نظام الـ Embedded Checkout الرسمي للبوابة):
-    if (!paymentUrl) {
-      console.warn('[SpaceRemit Fallback] استخدام الرابط المباشر للبوابة.');
-      const notes = `${serviceType || 'vip'} - ${cleanTelegram}`;
-      paymentUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
-    }
+    const notes = `${serviceName} - ${cleanTelegram} (${invoiceNumber})`;
+    const paymentUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
 
     console.log('====================================================');
-    console.log('[Final Payment URL] الرابط المرسل للمستخدم:', paymentUrl);
+    console.log(`[Invoice Generated] تم إنشاء الفاتورة رقم ${invoiceNumber}:`);
+    console.log('العميل:', cleanTelegram);
+    console.log('المبلغ:', payAmount, 'USD');
+    console.log('الخدمة:', serviceName);
+    console.log('رابط SpaceRemit:', paymentUrl);
     console.log('====================================================');
 
     return res.status(200).json({
       success: true,
-      payment_url: paymentUrl,
-      order_id: `SP-${Date.now()}`,
-      amount: payAmount,
-      currency: 'USD',
-      telegram: cleanTelegram,
-      debug: {
-        api_status: apiStatus,
-        response: rawApiResponse
-      }
+      invoice: {
+        number: invoiceNumber,
+        date: nowFormatted,
+        merchant: 'الملكة نانو | Almalika Nano',
+        client: cleanTelegram,
+        service: serviceName,
+        serviceType: serviceType || 'vip',
+        amount: payAmount.toFixed(2),
+        currency: 'USD',
+        status: 'بانتظار السداد',
+        paymentUrl: paymentUrl
+      },
+      payment_url: paymentUrl
     });
 
   } catch (error) {
     console.error('Server error creating SpaceRemit payment:', error);
     return res.status(500).json({
       success: false,
-      message: 'حدث خطأ في الخادم أثناء إنشاء الدفع: ' + error.message
+      message: 'حدث خطأ في الخادم أثناء إنشاء الفاتورة: ' + error.message
     });
   }
 }
+
