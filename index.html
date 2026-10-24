@@ -980,6 +980,37 @@
       min-height: 165px;
     }
 
+    #spaceremit-local-methods-pay {
+      min-height: 480px !important;
+      background: #0d0f18 !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+    }
+
+    #spaceremit-local-methods-pay iframe,
+    #sp_local_nethods_iframe {
+      width: 100% !important;
+      height: 480px !important;
+      min-height: 480px !important;
+      border: none !important;
+      display: block !important;
+    }
+
+    #spaceremit-card-pay {
+      min-height: 140px !important;
+      background: #0d0f18 !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+    }
+
+    #spaceremit-card-pay iframe,
+    #sp_iframe {
+      width: 100% !important;
+      height: 140px !important;
+      border: none !important;
+      display: block !important;
+    }
+
     .sp-iframe-box iframe {
       width: 100%;
       border: none;
@@ -1794,19 +1825,19 @@
       }
     }
 
-    // تحديث إطارات الدفع في حال تغيير الباقة أو معرّف التليجرام
-    function refreshSpaceRemitIframes() {
-      const form = document.querySelector("#spaceremit-form");
-      if (!form) return;
-      const formData = new URLSearchParams(new FormData(form)).toString();
-      const notes = encodeURIComponent(document.querySelector("#sp_notes_field")?.value || '');
-      const base = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(SP_PUBLIC_KEY)}&notes=${notes}&way=`;
+    // تحديث إطارات الدفع ببيانات الفاتورة والعميل المعتمدة
+    function refreshSpaceRemitIframes(customPaymentUrl) {
+      const amount = currentPrice || 50;
+      const notes = encodeURIComponent(`${serviceNames[currentService] || 'اشتراك VIP'} - ${currentTelegramUser} (#${currentInvoiceNumber})`);
+      const fullname = encodeURIComponent(currentTelegramUser);
+      
+      const queryParams = `k=${encodeURIComponent(SP_PUBLIC_KEY)}&amount=${amount}&currency=USD&fullname=${fullname}&email=customer%40nanoona.app&phone=0000000000&notes=${notes}`;
       
       const cardIframe = document.querySelector("#sp_iframe");
       const localIframe = document.querySelector("#sp_local_nethods_iframe");
       
-      if (cardIframe) cardIframe.src = `${base}card&${formData}`;
-      if (localIframe) localIframe.src = `${base}local_methods&${formData}`;
+      if (cardIframe) cardIframe.src = `https://spaceremit.com/apipay-v2/&way=card&${queryParams}`;
+      if (localIframe) localIframe.src = customPaymentUrl || `https://spaceremit.com/apipay-v2/&way=local_methods&${queryParams}`;
     }
 
     // بدء عملية الدفع وعرض الـ Modal
@@ -1838,6 +1869,29 @@
       const directTgBtn = document.getElementById('spDirectTelegramBtn');
       if (directTgBtn) {
         directTgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgText)}`;
+      }
+
+      // استدعاء دالة السيرفر /api/create-payment لتسجيل جلسة الفاتورة
+      try {
+        fetch('/api/create-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentTelegramUser,
+            telegramUsername: currentTelegramUser,
+            amount: currentPrice,
+            serviceType: currentService
+          })
+        }).then(res => res.json()).then(data => {
+          if (data && data.success && data.payment_url) {
+            console.log('[SpaceRemit Invoice Created]:', data);
+            if (data.invoice && data.invoice.number) {
+              document.getElementById('spModalInvoiceNumber').textContent = `فاتورة رقم: #${data.invoice.number}`;
+            }
+          }
+        }).catch(err => console.warn('Payment API note:', err));
+      } catch (e) {
+        console.warn('API fetch warning:', e);
       }
 
       // تحديث عناوين إطارات الدفع ببيانات العميل الحالية

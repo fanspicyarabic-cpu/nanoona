@@ -87,8 +87,22 @@ export default async function handler(req, res) {
     const notes = `${serviceName} - ${cleanTelegram} (${invoiceNumber})`;
     const selectedWay = (body && body.paymentWay === 'card') ? 'card' : 'local_methods';
     
-    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=local_methods&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
-    const cardUrl = `https://spaceremit.com/apipay-v2/&k=${encodeURIComponent(publicKey)}&amount=${encodeURIComponent(payAmount)}&currency=USD&way=card&notes=${encodeURIComponent(notes)}&name=${encodeURIComponent(cleanTelegram)}`;
+    // إعداد معاملات الرابط الكامل المعتمد لـ SpaceRemit v2
+    const params = new URLSearchParams({
+      k: publicKey,
+      amount: payAmount.toString(),
+      currency: 'USD',
+      fullname: cleanTelegram,
+      email: 'customer@nanoona.app',
+      phone: '0000000000',
+      notes: notes,
+      way: 'local_methods'
+    });
+
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${params.toString()}`;
+    params.set('way', 'card');
+    const cardUrl = `https://spaceremit.com/apipay-v2/&${params.toString()}`;
+    
     paymentUrl = selectedWay === 'card' ? cardUrl : localMethodsUrl;
 
     console.log('====================================================');
@@ -114,11 +128,14 @@ export default async function handler(req, res) {
         status: 'بانتظار السداد',
         paymentUrl: paymentUrl,
         cardUrl: cardUrl,
-        localMethodsUrl: localMethodsUrl
+        localMethodsUrl: localMethodsUrl,
+        token: invoiceNumber
       },
       payment_url: paymentUrl,
+      paymentUrl: paymentUrl,
       card_url: cardUrl,
-      local_methods_url: localMethodsUrl
+      local_methods_url: localMethodsUrl,
+      invoice_number: invoiceNumber
     });
 
   } catch (error) {
