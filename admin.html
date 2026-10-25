@@ -465,8 +465,16 @@
             <input type="text" id="postCategoryCustom" class="text-input" placeholder="اسم القسم الجديد..." style="display: none; margin-top: 6px;">
           </div>
           <div>
-            <label class="form-label">صورة غلاف الفيديو (Thumbnail / Poster):</label>
-            <input type="url" id="postThumbnail" class="text-input" placeholder="https://... رابط صورة الغلاف (اختياري)" style="direction: ltr;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" style="margin-bottom: 0;">صورة غلاف الفيديو أو المنشور (Cover / Thumbnail):</label>
+              <button type="button" onclick="document.getElementById('coverFileInput').click()" style="background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: var(--gold-light); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px;">📁 رفع صورة من جهازك</button>
+            </div>
+            <input type="file" id="coverFileInput" accept="image/*" style="display:none" onchange="handleCoverUpload(this, 'postThumbnail', 'postThumbnailPreview')">
+            <input type="url" id="postThumbnail" class="text-input" placeholder="https://... رابط الغلاف (يدعم ibb.co و postimg أو رفع مباشر)" style="direction: ltr;" oninput="onThumbnailChange(this.value, 'postThumbnailPreview')">
+            <div id="postThumbnailPreview" style="display:none; margin-top:8px; align-items:center; gap:10px; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+              <img id="postThumbnailPreviewImg" src="" style="width:50px; height:50px; object-fit:cover; border-radius:6px; border:1px solid var(--gold-primary);">
+              <div style="font-size:12px; color:var(--text-muted);"><span style="color:#10b981; font-weight:bold;">✓ تم تحديد صورة الغلاف بنجاح</span><div id="postThumbnailResolvedText" style="font-size:11px; color:#fff; word-break:break-all;"></div></div>
+            </div>
           </div>
         </div>
 
@@ -926,8 +934,16 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">صورة غلاف الفيديو (Thumbnail / Poster):</label>
-        <input type="url" id="editPostThumbnail" class="text-input" placeholder="https://... رابط صورة الغلاف (اختياري)" style="direction: ltr;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label class="form-label" style="margin-bottom: 0;">صورة غلاف الفيديو (Thumbnail / Poster):</label>
+          <button type="button" onclick="document.getElementById('editCoverFileInput').click()" style="background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: var(--gold-light); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: bold; cursor: pointer;">📁 رفع صورة جديدة</button>
+        </div>
+        <input type="file" id="editCoverFileInput" accept="image/*" style="display:none" onchange="handleCoverUpload(this, 'editPostThumbnail', 'editPostThumbnailPreview')">
+        <input type="url" id="editPostThumbnail" class="text-input" placeholder="https://... رابط صورة الغلاف (اختياري)" style="direction: ltr;" oninput="onThumbnailChange(this.value, 'editPostThumbnailPreview')">
+        <div id="editPostThumbnailPreview" style="display:none; margin-top:8px; align-items:center; gap:10px; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
+          <img id="editPostThumbnailPreviewImg" src="" style="width:50px; height:50px; object-fit:cover; border-radius:6px; border:1px solid var(--gold-primary);">
+          <div style="font-size:12px; color:#10b981; font-weight:bold;">✓ تم تحديد صورة الغلاف بنجاح</div>
+        </div>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
         <div class="form-group">
@@ -1398,6 +1414,86 @@
       return map[cat] || `📁 ${cat}`;
     }
 
+    // رفع صورة غلاف من الجهاز مباشرة إلى السحابة الدائمة
+    async function handleCoverUpload(input, targetInputId, previewContainerId) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const previewBox = document.getElementById(previewContainerId);
+      const targetInput = document.getElementById(targetInputId);
+      
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64Data = e.target.result;
+        
+        if (previewBox) {
+          previewBox.style.display = 'flex';
+          const img = previewBox.querySelector('img');
+          if (img) img.src = base64Data;
+          const statusText = previewBox.querySelector('span');
+          if (statusText) statusText.textContent = '⏳ جاري رفع الغلاف للسحابة...';
+        }
+
+        try {
+          const res = await fetch('/api/posts?action=upload', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-admin-token': sessionStorage.getItem('admin_token') || ''
+            },
+            body: JSON.stringify({
+              fileData: base64Data,
+              fileName: file.name,
+              contentType: file.type
+            })
+          });
+          const data = await res.json();
+          if (data && data.success && data.url) {
+            targetInput.value = data.url;
+            if (previewBox) {
+              const statusText = previewBox.querySelector('span');
+              if (statusText) statusText.textContent = '✓ تم رفع الغلاف وحفظه سحابياً بنجاح!';
+            }
+          } else {
+            alert('فشل رفع الغلاف: ' + (data.message || 'خطأ غير معروف'));
+          }
+        } catch (err) {
+          alert('تعذر رفع صورة الغلاف: ' + err.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // كشف رابط الغلاف وتحديث المعاينة تلقائياً
+    function onThumbnailChange(url, previewContainerId) {
+      const val = (url || '').trim();
+      const previewBox = document.getElementById(previewContainerId);
+      if (!previewBox) return;
+
+      if (!val) {
+        previewBox.style.display = 'none';
+        return;
+      }
+
+      previewBox.style.display = 'flex';
+      const img = previewBox.querySelector('img');
+      const statusText = previewBox.querySelector('span');
+
+      if (val.includes('ibb.co/') || val.includes('postimg.cc/')) {
+        if (statusText) statusText.textContent = '✓ تم التعرف على رابط موقع خارجي (سيتم استخراجه تلقائياً كغلاف دائم)';
+        if (img) {
+          img.src = val.replace('ibb.co/', 'i.ibb.co/');
+          img.onerror = () => { img.src = 'avatar.jpg'; };
+        }
+      } else {
+        if (statusText) statusText.textContent = '✓ تم تحديد صورة الغلاف بنجاح';
+        if (img) {
+          img.src = val;
+          img.onerror = () => { img.src = 'avatar.jpg'; };
+        }
+      }
+    }
+
     // نشر المنشور مع الزر التفاعلي المخصص ودعم فيديوهات Videy والأقسام والغلاف
     async function publishPost(dual) {
       const title = document.getElementById('postTitle').value.trim();
@@ -1492,7 +1588,7 @@
           const isYt = p.mediaType === 'youtube' || (p.mediaUrl && (p.mediaUrl.includes('youtube.com') || p.mediaUrl.includes('youtu.be')));
 
           return `
-          <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
+          <div class="post-item-card post-card-${p.id}" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
               ${p.thumbnail ? `
                 <div style="width:52px; height:52px; border-radius:8px; border:1px solid var(--gold-primary); overflow:hidden; position:relative; flex-shrink:0;">
@@ -1525,7 +1621,7 @@
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button type="button" style="background:rgba(56, 189, 248, 0.15); border:1px solid rgba(56, 189, 248, 0.4); color:#38bdf8; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="copyPostShareLink('${p.id}')" title="نسخ رابط معاينة تويتر وتليجرام">🔗 مشاركة الرابط</button>
               <button type="button" style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4); color:var(--gold-light); border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="openEditModal('${p.id}')">✏️ تعديل</button>
-              <button type="button" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="deletePost('${p.id}')">🗑️ حذف</button>
+              <button type="button" class="del-btn-${p.id}" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="deletePost('${p.id}', this)">🗑️ حذف</button>
             </div>
           </div>
         `;
@@ -1666,23 +1762,64 @@
       }
     }
 
-    async function deletePost(id) {
-      if (!confirm('هل أنت متأكد من حذف هذا المنشور نهائياً من المنصة؟')) return;
+    async function deletePost(id, btn) {
+      if (!confirm('هل أنت متأكد من حذف هذا المنشور نهائياً من المنصة وسحابة التخزين؟')) return;
+      
+      const cardEl = btn ? btn.closest('.post-item-card') : document.querySelector(`.post-card-${id}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ جاري الحذف...';
+        btn.style.opacity = '0.6';
+      }
+      if (cardEl) {
+        cardEl.style.transition = 'all 0.3s ease';
+        cardEl.style.opacity = '0.5';
+      }
+
       try {
-        const res = await fetch(`/api/posts?id=${id}`, {
+        const token = sessionStorage.getItem('admin_token') || '';
+        const res = await fetch(`/api/posts?id=${encodeURIComponent(id)}`, {
           method: 'DELETE',
           headers: {
-            'x-admin-token': sessionStorage.getItem('admin_token') || ''
-          }
+            'Content-Type': 'application/json',
+            'x-admin-token': token
+          },
+          body: JSON.stringify({ id })
         });
         const data = await res.json();
         if (data && data.success) {
-          loadPosts();
+          // إزالة فورية من بطاقات المتصفح
+          if (cardEl) {
+            cardEl.style.transform = 'scale(0.95)';
+            cardEl.style.opacity = '0';
+            setTimeout(() => cardEl.remove(), 300);
+          }
+          // تنظيف الكاش المحلي فوراً حتى لا يعود نهائياً
+          try {
+            let cached = JSON.parse(localStorage.getItem('nanoona_admin_posts_cache') || '[]');
+            cached = cached.filter(p => p.id !== id);
+            localStorage.setItem('nanoona_admin_posts_cache', JSON.stringify(cached));
+          } catch (e) {}
+
+          // تحديث السيرفر مع كسر الكاش
+          setTimeout(() => loadPosts(), 400);
         } else {
-          alert(data.message || 'فشل حذف المنشور');
+          alert(`فشل الحذف: ${data.message || 'حدث خطأ في السيرفر'}`);
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '🗑️ حذف';
+            btn.style.opacity = '1';
+          }
+          if (cardEl) cardEl.style.opacity = '1';
         }
       } catch (e) {
-        alert('حدث خطأ أثناء حذف المنشور');
+        alert('حدث خطأ أثناء حذف المنشور: ' + e.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '🗑️ حذف';
+          btn.style.opacity = '1';
+        }
+        if (cardEl) cardEl.style.opacity = '1';
       }
     }
 

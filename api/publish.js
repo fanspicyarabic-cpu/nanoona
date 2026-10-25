@@ -1,5 +1,5 @@
 // api/publish.js - أتمتة النشر المزدوج إلى قناة تليجرام عبر Telegram Bot API مع معالجة ذكية للأخطاء
-import { loadSiteConfig } from '../lib/storage.js';
+import { loadSiteConfig, resolveDirectImageUrl } from '../lib/storage.js';
 
 function escapeHtml(text) {
   return String(text || '')
@@ -36,7 +36,8 @@ export default async function handler(req, res) {
       botToken: customBotToken,
       channelId: customChannelId,
       buttonText,
-      buttonUrl
+      buttonUrl,
+      thumbnail
     } = body || {};
 
     // جلب إعدادات الموقع المحفوظة تلقائياً إذا لم يتم تمرير الرمز في الطلب
@@ -82,54 +83,84 @@ export default async function handler(req, res) {
     let targetMediaUrl = (mediaUrl || '').trim();
     let targetMediaType = mediaType || 'image';
 
+    // فحص وتحويل روابط الفيديو وروابط الصور الخارجية
     const videyMatch = targetMediaUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
     if (videyMatch) {
       targetMediaUrl = `https://cdn.videy.co/${videyMatch[1]}.mp4`;
       targetMediaType = 'video';
     } else if (targetMediaUrl.match(/\.(mp4|mov|webm|m4v)$/i)) {
       targetMediaType = 'video';
+    } else if (targetMediaType === 'image' && targetMediaUrl) {
+      targetMediaUrl = await resolveDirectImageUrl(targetMediaUrl);
     }
 
-    // 1. محاولة الإرسال كصورة
-    if (targetMediaType === 'image' && targetMediaUrl && targetMediaUrl.startsWith('http')) {
-      try {
-        const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: channelId,
-            photo: targetMediaUrl,
-            caption: caption.slice(0, 1024),
-            parse_mode: 'HTML',
-            reply_markup: replyMarkup
-          })
-        });
-        broadcastResult = await tgRes.json();
-      } catch (err) {
-        console.warn('[SendPhoto Failed, falling back to message]:', err.message);
+    let targetThumbnail = thumbnail ? await resolveDirectImageUrl(thumbnail) : '';
+
+    // 1. محاولة الإرسال كصورة (إذا كان نوع الوسائط صورة، أو توفر غلاف ولم يكن هناك فيديو مباشر)
+    if (targetMediaType === 'image' && (targetMediaUrl || targetThumbnail)) {
+      const photoToSend = targetMediaUrl || targetThumbnail;
+      if (photoToSend && photoToSend.startsWith('http')) {
+        try {
+          const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: channelId,
+              photo: photoToSend,
+              caption: caption.slice(0, 1024),
+              parse_mode: 'HTML',
+              reply_markup: replyMarkup
+            })
+          });
+          broadcastResult = await tgRes.json();
+        } catch (err) {
+          console.warn('[SendPhoto Failed]:', err.message);
+        }
       }
     }
     // 2. محاولة الإرسال كفيديو مباشر
     else if (targetMediaType === 'video' && targetMediaUrl && targetMediaUrl.match(/\.(mp4|mov|webm)$/i)) {
       try {
+        const payload = {
+          chat_id: channelId,
+          video: targetMediaUrl,
+          caption: caption.slice(0, 1024),
+          parse_mode: 'HTML',
+          reply_markup: replyMarkup
+        };
+        if (targetThumbnail && targetThumbnail.startsWith('http')) {
+          payload.cover = targetThumbnail;
+        }
         const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendVideo`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        broadcastResult = await tgRes.json();
+      } catch (err) {
+        console.warn('[SendVideo Failed]:', err.message);
+      }
+    }
+
+    // 3. إذا فشل إرسال الفيديو المباشر أو كان رابط فيديو خارجي، ولكن يوجد صورة غلاف: إرسال الغلاف مع رابط الفيديو
+    if ((!broadcastResult || !broadcastResult.ok) && targetThumbnail && targetThumbnail.startsWith('http')) {
+      try {
+        const tgPhotoRes = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: channelId,
-            video: targetMediaUrl,
-            caption: caption.slice(0, 1024),
+            photo: targetThumbnail,
+            caption: `${caption}\n\n🎬 <b>لمشاهدة الفيديو بالكامل:</b> <a href="${targetMediaUrl || btnLink}">اضغط هنا للمشاهدة</a>`.slice(0, 1024),
             parse_mode: 'HTML',
             reply_markup: replyMarkup
           })
         });
-        broadcastResult = await tgRes.json();
-      } catch (err) {
-        console.warn('[SendVideo Failed, falling back to message]:', err.message);
-      }
+        broadcastResult = await tgPhotoRes.json();
+      } catch (photoErr) {}
     }
 
-    // 3. إذا لم يتم الإرسال أو فشلت الصورة/الفيديو (مثلاً الرابط خارجي)، يتم إرسال رسالة نصية مدعمة برابط المعاينة
+    // 4. إذا لم يتم الإرسال حتى الآن، يتم إرسال رسالة نصية مدعمة برابط المعاينة
     if (!broadcastResult || !broadcastResult.ok) {
       const textWithMedia = mediaUrl ? `${caption}\n\n🎬 <b>رابط الوسائط:</b> <a href="${mediaUrl}">${mediaUrl}</a>` : caption;
       const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {

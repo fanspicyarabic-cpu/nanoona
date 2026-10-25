@@ -5,3 +5,5 @@
 !.env.example
 .env*
 node_modules/
+
+.env*

@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": "post-1792925422947",
+    "title": "دلعت مشتركين",
+    "content": "تجربتي الاولى مع الصناعي فيديو 15 دقيقة من برايفت مشتركين",
+    "mediaUrl": "https://cdn.videy.co/6tThFyE81.mp4",
+    "mediaType": "video",
+    "isVip": true,
+    "likes": "354",
+    "views": "650",
+    "createdAt": "2026-10-25T10:50:22.947Z",
+    "thumbnail": "https://i.ibb.co/svt5DT5F/7228104866-3d09b3de.jpg",
+    "category": "live",
+    "updatedAt": "2026-10-25T11:41:42.048Z"
+  },
+  {
+    "id": "post-1792925314846",
+    "title": "اول فيديو برايفت للمشتركين 15 دقيقة",
+    "content": "اول مرة جرب الصناعي",
+    "mediaUrl": "https://cdn.videy.co/6tThFyE81.mp4",
+    "mediaType": "video",
+    "isVip": true,
+    "likes": "274",
+    "views": "750",
+    "createdAt": "2026-10-25T10:48:34.846Z",
+    "thumbnail": "https://i.ibb.co/svt5DT5F/7228104866-3d09b3de.jpg",
+    "category": "videos",
+    "updatedAt": "2026-10-25T11:38:52.481Z"
+  }
+]

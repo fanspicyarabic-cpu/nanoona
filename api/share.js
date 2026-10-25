@@ -1,5 +1,5 @@
 // api/share.js - مسار مشاركة المنشورات مع دعم كامل لمعاينة الروابط في تويتر (X)، تليجرام، وواتساب
-import { loadPosts } from '../lib/storage.js';
+import { loadPosts, resolveDirectImageUrl } from '../lib/storage.js';
 
 function escapeHtml(text) {
   if (!text) return '';
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   let post = null;
   if (postId) {
     try {
-      const posts = await loadPosts();
+      const posts = await loadPosts({ fresh: true });
       post = posts.find(p => String(p.id) === postId);
     } catch (e) {
       console.warn('[Share Handler Error]:', e.message);
@@ -46,12 +46,12 @@ export default async function handler(req, res) {
       isVideo = true;
       videoUrl = rawUrl;
     } else if (rawUrl.startsWith('http')) {
-      previewImage = rawUrl;
+      previewImage = await resolveDirectImageUrl(rawUrl);
     }
   }
 
   if (post && post.thumbnail && post.thumbnail.startsWith('http')) {
-    previewImage = post.thumbnail.trim();
+    previewImage = await resolveDirectImageUrl(post.thumbnail.trim());
   }
 
   const imageUrl = previewImage;

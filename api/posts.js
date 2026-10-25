@@ -1,6 +1,7 @@
 // api/posts.js - إدارة محتوى التغذية الحصرية وتصنيف الوسائط مع دعم التخزين الدائم
-import { loadPosts, savePosts } from '../lib/storage.js';
+import { loadPosts, savePosts, resolveDirectImageUrl } from '../lib/storage.js';
 import { isValidAdminToken } from './admin-auth.js';
+import { put } from '@vercel/blob';
 
 function normalizeMedia(url, type) {
   let finalMediaUrl = (url || '').trim();
@@ -39,8 +40,9 @@ export default async function handler(req, res) {
   // GET: جلب المنشورات
   if (req.method === 'GET') {
     try {
-      const { type, isVip, category } = req.query || {};
-      let posts = await loadPosts();
+      const { type, isVip, category, _t } = req.query || {};
+      const forceFresh = Boolean(_t);
+      let posts = await loadPosts({ fresh: forceFresh });
 
       if (category && category !== 'all') {
         posts = posts.filter(p => (p.category || 'photos') === category);
@@ -69,39 +71,74 @@ export default async function handler(req, res) {
     }
   }
 
-  // التحقق من صلاحيات الأدمن لأي عملية تعديل/حذف/إضافة
+  // التحقق من صلاحيات الأدمن لأي عملية تعديل/حذف/إضافة/رفع
   const token = req.headers['x-admin-token'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null);
   if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
-    // إذا تم تمرير توكن غير صالح
     if (token && !isValidAdminToken(token)) {
       return res.status(403).json({ success: false, message: 'انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً' });
+    }
+  }
+
+  // مسار رفع صور الأغلفة والوسائط مباشرة إلى Vercel Blob
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch (e) { body = {}; }
+  }
+
+  if (req.method === 'POST' && ((req.query && req.query.action === 'upload') || (body && body.action === 'upload'))) {
+    try {
+      const { fileData, fileName, contentType } = body || {};
+      if (!fileData) {
+        return res.status(400).json({ success: false, message: 'بيانات الملف مطلوبة للرفع' });
+      }
+
+      const matches = fileData.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+      const buffer = matches ? Buffer.from(matches[2], 'base64') : Buffer.from(fileData, 'base64');
+      const mime = (matches && matches[1]) || contentType || 'image/jpeg';
+      const cleanName = (fileName || `cover-${Date.now()}.jpg`).replace(/[^a-zA-Z0-9._-]/g, '_');
+      const blobPath = `covers/${Date.now()}-${cleanName}`;
+
+      const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+      const blobRes = await put(blobPath, buffer, {
+        token: blobToken,
+        access: 'public',
+        contentType: mime,
+        addRandomSuffix: true
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: 'تم رفع الغلاف بنجاح وتوليد رابط دائم',
+        url: blobRes.url
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: 'فشل رفع الملف: ' + e.message });
     }
   }
 
   // POST: إضافة منشور جديد
   if (req.method === 'POST') {
     try {
-      let body = req.body;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch (e) { body = {}; }
-      }
-
       const { title, content, mediaUrl, mediaType, isVip, category, thumbnail } = body || {};
 
       if (!title) {
         return res.status(400).json({ success: false, message: 'عنوان المنشور مطلوب' });
       }
 
-      const normalized = normalizeMedia(mediaUrl, mediaType);
+      // تحويل الروابط الخارجية (مثل ibb.co) تلقائياً إلى روابط صور مباشرة
+      const resolvedMediaUrl = mediaUrl ? await resolveDirectImageUrl(mediaUrl) : '';
+      const resolvedThumbnail = thumbnail ? await resolveDirectImageUrl(thumbnail) : '';
 
-      const currentPosts = await loadPosts();
+      const normalized = normalizeMedia(resolvedMediaUrl, mediaType);
+
+      const currentPosts = await loadPosts({ fresh: true });
       const newPost = {
         id: `post-${Date.now()}`,
         title: title.trim(),
         content: (content || '').trim(),
         mediaUrl: normalized.mediaUrl,
         mediaType: normalized.mediaType,
-        thumbnail: (thumbnail || '').trim(),
+        thumbnail: (resolvedThumbnail || '').trim(),
         category: (category || 'photos').trim(),
         isVip: Boolean(isVip),
         likes: 0,
@@ -125,15 +162,11 @@ export default async function handler(req, res) {
   // PUT: تعديل منشور موجود
   if (req.method === 'PUT') {
     try {
-      let body = req.body;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch (e) { body = {}; }
-      }
       const { id, title, content, mediaUrl, mediaType, isVip, views, likes, category, thumbnail } = body || {};
       if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
 
-      let currentPosts = await loadPosts();
-      const idx = currentPosts.findIndex(p => p.id === id);
+      let currentPosts = await loadPosts({ fresh: true });
+      const idx = currentPosts.findIndex(p => String(p.id) === String(id));
       if (idx === -1) {
         return res.status(404).json({ success: false, message: 'المنشور غير موجود' });
       }
@@ -142,9 +175,15 @@ export default async function handler(req, res) {
       let updatedMediaType = mediaType !== undefined ? mediaType : currentPosts[idx].mediaType;
 
       if (mediaUrl !== undefined) {
-        const norm = normalizeMedia(updatedMediaUrl, updatedMediaType);
+        const resolved = await resolveDirectImageUrl(updatedMediaUrl);
+        const norm = normalizeMedia(resolved, updatedMediaType);
         updatedMediaUrl = norm.mediaUrl;
         updatedMediaType = norm.mediaType;
+      }
+
+      let updatedThumbnail = currentPosts[idx].thumbnail || '';
+      if (thumbnail !== undefined) {
+        updatedThumbnail = await resolveDirectImageUrl(thumbnail.trim());
       }
 
       currentPosts[idx] = {
@@ -153,7 +192,7 @@ export default async function handler(req, res) {
         content: content !== undefined ? content.trim() : currentPosts[idx].content,
         mediaUrl: updatedMediaUrl,
         mediaType: updatedMediaType,
-        thumbnail: thumbnail !== undefined ? thumbnail.trim() : (currentPosts[idx].thumbnail || ''),
+        thumbnail: updatedThumbnail,
         category: category !== undefined ? category.trim() : (currentPosts[idx].category || 'photos'),
         isVip: isVip !== undefined ? Boolean(isVip) : currentPosts[idx].isVip,
         views: views !== undefined ? views : currentPosts[idx].views,
@@ -176,16 +215,18 @@ export default async function handler(req, res) {
   // DELETE: حذف منشور
   if (req.method === 'DELETE') {
     try {
-      const { id } = req.query || {};
-      if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
+      const id = (req.query && req.query.id) || (body && body.id);
+      if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب للحذف' });
 
-      let currentPosts = await loadPosts();
-      const filtered = currentPosts.filter(p => p.id !== id);
+      let currentPosts = await loadPosts({ fresh: true });
+      const filtered = currentPosts.filter(p => String(p.id).trim() !== String(id).trim());
       await savePosts(filtered);
 
       return res.status(200).json({
         success: true,
-        message: 'تم حذف المنشور بنجاح وتحديث القائمة'
+        message: 'تم حذف المنشور بنجاح وتحديث القائمة نهائياً',
+        deletedId: id,
+        remainingCount: filtered.length
       });
     } catch (e) {
       return res.status(500).json({ success: false, message: e.message });

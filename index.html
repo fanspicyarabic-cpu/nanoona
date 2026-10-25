@@ -1158,7 +1158,10 @@
                 const mediaType = info.type;
                 const directMediaUrl = info.directUrl;
                 const cat = p.category || (mediaType === 'video' || mediaType === 'youtube' ? 'videos' : 'photos');
-                const thumbnail = (p.thumbnail || '').trim();
+                let thumbnail = (p.thumbnail || '').trim();
+                if (thumbnail.includes('ibb.co/') && !thumbnail.includes('i.ibb.co/')) {
+                    thumbnail = thumbnail.replace('ibb.co/', 'i.ibb.co/');
+                }
                 const previewImg = thumbnail || ((mediaType === 'image' && directMediaUrl) ? directMediaUrl : 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
 
                 if (isVip) {
@@ -1182,7 +1185,7 @@
                         
                         <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer" onclick="selectTier(currentTier, currentPrice, 'vip')">
                             ${thumbnail ? `
-                                <img src="${thumbnail}" class="w-full h-full object-cover filter blur-sm" alt="غلاف المنشور">
+                                <img src="${thumbnail}" onerror="this.src='avatar.jpg'" class="w-full h-full object-cover filter blur-sm" alt="غلاف المنشور">
                             ` : (mediaType === 'video' && directMediaUrl ? `
                                 <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover filter blur-sm"></video>
                             ` : `
@@ -1234,7 +1237,7 @@
                         
                         <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer group" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}', '${thumbnail.replace(/'/g, "\\'")}')">
                             ${thumbnail ? `
-                                <img src="${thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.title}">
+                                <img src="${thumbnail}" onerror="this.src='avatar.jpg'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.title}">
                             ` : (mediaType === 'video' && directMediaUrl ? `
                                 <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-500"></video>
                             ` : `
