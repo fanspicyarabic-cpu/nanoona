@@ -1,5 +1,16 @@
+// api/create-payment.js - إنشاء جلسة دفع مشفرة وآمنة لبوابة SpaceRemit مع التحقق الصارم من الخادم (Server-Side Validation)
+import { registerInvoice } from './invoices.js';
+
+// قوائم الأسعار والخدمات المعتمدة في السيرفر لمنع أي تلاعب عبر أدوات المطور (F12)
+const VERIFIED_SERVICES = {
+  'basic': { name: 'اشتراك المحتوى الأساسي', price: 20.00 },
+  'vip': { name: 'اشتراك برايفيت VIP ⭐️', price: 50.00 },
+  'call': { name: 'مكالمة فيديو مباشر 📹', price: 150.00 },
+  'tip': { name: 'إكرامية ودعم للملكة نانو 💖', price: 10.00 }
+};
+
 export default async function handler(req, res) {
-  // إعداد ترويسات CORS للسماح بالطلبات
+  // إعداد ترويسات CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -11,6 +22,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Method Not Allowed. يرجى استخدام طريقة POST.' });
   }
+
   try {
     let body = req.body;
     if (typeof body === 'string') {
@@ -20,51 +32,61 @@ export default async function handler(req, res) {
         body = {};
       }
     }
-    const { userId, telegramUsername, amount, serviceType } = body || {};
+
+    const { userId, telegramUsername, amount, serviceType, paymentWay } = body || {};
 
     const cleanTelegram = (telegramUsername || userId || '').trim();
     if (!cleanTelegram) {
       return res.status(400).json({ success: false, message: 'معرّف التليجرام مطلوب للمتابعة.' });
     }
 
-    const payAmount = parseFloat(amount) || 50;
+    // 1. التحقق الصارم من السيرفر (Server-Side Validation)
+    // تحديد نوع الخدمة والمبلغ الحقيقي في السيرفر دون الاعتماد على مدخلات المتصفح
+    let cleanServiceKey = (serviceType || 'vip').toLowerCase().trim();
+    let verifiedService = VERIFIED_SERVICES[cleanServiceKey];
 
-    // جلب المفاتيح من متغيرات البيئة في Vercel
-    const apiKey = process.env.SPACEREMIT_API_KEY || "skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B";
-    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY || "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5";
+    // مطابقة الأسماء البديلة
+    if (!verifiedService) {
+      if (cleanServiceKey.includes('vip') || cleanServiceKey.includes('برايفيت')) {
+        cleanServiceKey = 'vip';
+        verifiedService = VERIFIED_SERVICES['vip'];
+      } else if (cleanServiceKey.includes('call') || cleanServiceKey.includes('مكالمة')) {
+        cleanServiceKey = 'call';
+        verifiedService = VERIFIED_SERVICES['call'];
+      } else if (cleanServiceKey.includes('basic') || cleanServiceKey.includes('اساسي') || cleanServiceKey.includes('أساسي') || cleanServiceKey.includes('داعم')) {
+        cleanServiceKey = 'basic';
+        verifiedService = VERIFIED_SERVICES['basic'];
+      } else {
+        cleanServiceKey = 'vip';
+        verifiedService = VERIFIED_SERVICES['vip'];
+      }
+    }
+
+    // للمكافآت التقديرية أو التبرع، يتم التحقق من الحد الأدنى
+    let payAmount = verifiedService.price;
+    if (cleanServiceKey === 'tip' && amount) {
+      const parsedAmount = parseFloat(amount);
+      if (!isNaN(parsedAmount) && parsedAmount >= 5.00) {
+        payAmount = parsedAmount;
+      }
+    }
+
+    // 2. قراءة المفاتيح حصراً من متغيرات البيئة في السيرفر (Environment Variables)
+    // لا يتم تضمين أي مفاتيح في الكود المصدري
+    const apiKey = process.env.SPACEREMIT_API_KEY;
+    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY;
+
+    if (!publicKey) {
+      console.error('[Configuration Error]: SPACEREMIT_PUBLIC_KEY is not defined in environment variables.');
+      return res.status(500).json({
+        success: false,
+        message: 'خطأ في إعدادات بوابة الدفع (المفاتيح غير معرفة في متغيرات بيئة Vercel).'
+      });
+    }
 
     const host = req.headers.host || 'nanoona.vercel.app';
     const protocol = host.includes('localhost') ? 'http' : 'https';
     const baseUrl = `${protocol}://${host}`;
-
-    // تجهيز الـ Payload المطلوب لمعايير SpaceRemit API v2
-    const requestPayload = {
-      amount: payAmount,
-      currency: 'USD',
-      private_key: apiKey,
-      secret_key: apiKey,
-      success_url: `${baseUrl}/?payment=success&telegram=${encodeURIComponent(cleanTelegram)}`,
-      cancel_url: `${baseUrl}/?payment=canceled`,
-      webhook_url: `${baseUrl}/api/webhook`,
-      customer: {
-        name: cleanTelegram,
-        telegram: cleanTelegram,
-        service: serviceType || 'vip'
-      },
-      custom_data: {
-        userId: cleanTelegram,
-        telegramUsername: cleanTelegram,
-        serviceType: serviceType || 'vip',
-        timestamp: new Date().toISOString()
-      }
-    };
-
-    console.log('====================================================');
-    console.log('[SpaceRemit API Request] إرسال طلب إنشاء الدفع:');
-    console.log('Payload:', JSON.stringify(requestPayload, null, 2));
-    console.log('====================================================');
-
-    let paymentUrl = null;
 
     // إنشاء رقم فاتورة فريد وتوثيقي
     const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
@@ -77,21 +99,16 @@ export default async function handler(req, res) {
       minute: '2-digit'
     });
 
-    const serviceTitles = {
-      'vip': 'اشتراك برايفيت VIP ⭐',
-      'call': 'مكالمة فيديو مباشر 📹',
-      'tip': 'إكرامية ودعم للملكة نانو 💖'
-    };
-    const serviceName = serviceTitles[serviceType] || 'خدمة مخصصة';
+    const serviceName = verifiedService.name;
 
     // تعقيم المعاملات إلى أحرف نظيفة لمنع جدار حماية SpaceRemit من التحويل للصفحة الرئيسية
-    const cleanNotes = `${serviceType || 'vip'}_${payAmount}_${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
+    const cleanNotes = `${cleanServiceKey}_${payAmount}_${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
     const cleanBuyerName = cleanTelegram.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
 
-    // تجهيز معاملات رابط SpaceRemit v2 المعتمدة مع الحفاظ الكامل على الكريبتو والمحافظ والبطاقات
+    // تجهيز معاملات رابط SpaceRemit v2 المعتمدة
     const baseParams = new URLSearchParams({
       k: publicKey,
-      amount: payAmount.toString(),
+      amount: payAmount.toFixed(2),
       currency: 'USD',
       fullname: cleanBuyerName,
       email: 'customer@nanoona.app',
@@ -102,24 +119,37 @@ export default async function handler(req, res) {
     const fullGatewayUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}`;
     const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
     const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
-    
+
+    const selectedWay = paymentWay || 'all';
+    let paymentUrl = fullGatewayUrl;
+
     if (selectedWay === 'card') {
       paymentUrl = cardUrl;
     } else if (selectedWay === 'local_methods') {
       paymentUrl = localMethodsUrl;
     } else {
-      // الوضع الافتراضي أو الكريبتو: فتح بوابة SpaceRemit الشاملة لجميع الطرق (USDT، بينانس باي، البطاقات)
       paymentUrl = fullGatewayUrl;
     }
 
-    console.log('====================================================');
-    console.log(`[Invoice Generated] تم إنشاء الفاتورة رقم ${invoiceNumber}:`);
-    console.log('العميل:', cleanTelegram);
-    console.log('المبلغ:', payAmount, 'USD');
-    console.log('الخدمة:', serviceName);
-    console.log('الوسيلة:', selectedWay);
-    console.log('رابط SpaceRemit المختار:', paymentUrl);
-    console.log('====================================================');
+    // تسجيل الفاتورة في السيرفر كفاتورة جديدة بانتظار السداد
+    const registered = registerInvoice({
+      id: invoiceNumber,
+      telegramUser: cleanTelegram.startsWith('@') ? cleanTelegram : '@' + cleanTelegram,
+      planType: cleanServiceKey,
+      planName: serviceName,
+      amount: payAmount,
+      currency: 'USD',
+      paymentMethod: 'spaceremit',
+      paymentMethodName: 'بوابة SpaceRemit API v2 (دفع مشفر معتمد)',
+      status: 'pending',
+      receiptUrl: null,
+      notes: `بوابة SpaceRemit: ${cleanNotes}`,
+      inviteLink: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    console.log(`[Invoice Generated Server-Side] فاتورة #${invoiceNumber} - العميل: ${cleanTelegram} - المبلغ: ${payAmount}$`);
 
     return res.status(200).json({
       success: true,
@@ -129,7 +159,7 @@ export default async function handler(req, res) {
         merchant: 'الملكة نانو | Almalika Nano',
         client: cleanTelegram,
         service: serviceName,
-        serviceType: serviceType || 'vip',
+        serviceType: cleanServiceKey,
         amount: payAmount.toFixed(2),
         currency: 'USD',
         status: 'بانتظار السداد',
@@ -155,4 +185,3 @@ export default async function handler(req, res) {
     });
   }
 }
-

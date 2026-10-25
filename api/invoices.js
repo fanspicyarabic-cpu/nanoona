@@ -48,6 +48,23 @@ let memoryInvoices = [
   }
 ];
 
+export function registerInvoice(newInvoice) {
+  memoryInvoices.unshift(newInvoice);
+  return newInvoice;
+}
+
+export function updateInvoiceStatus(idOrUser, status, details = {}) {
+  const clean = (idOrUser || '').replace('@', '').toLowerCase();
+  const inv = memoryInvoices.find(i => i.id === idOrUser || i.telegramUser.replace('@', '').toLowerCase() === clean);
+  if (inv) {
+    inv.status = status;
+    Object.assign(inv, details);
+    inv.updatedAt = new Date().toISOString();
+    return inv;
+  }
+  return null;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');

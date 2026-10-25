@@ -379,7 +379,10 @@
       <button type="button" class="admin-tab-btn" onclick="switchTab('settings', this)">⚙️ تفعيل البوت والمحافظ</button>
     </div>
 
-    <a href="/" target="_blank" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 20px; padding: 6px 14px; font-size: 12px; text-decoration: none;">زيارة الموقع ↗</a>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <a href="/" target="_blank" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 20px; padding: 6px 14px; font-size: 12px; text-decoration: none;">زيارة الموقع ↗</a>
+      <button type="button" onclick="logoutAdmin()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer;">خروج 🚪</button>
+    </div>
   </nav>
 
   <main class="admin-container">
@@ -642,6 +645,33 @@
 
         <button type="button" class="btn-gold" onclick="saveSettings()">حفظ الإعدادات والمحافظ 💾</button>
       </div>
+
+      <!-- لوحة تغيير كلمة سر لوحة التحكم -->
+      <div class="form-panel" style="margin-top: 24px; border: 1px solid rgba(212, 175, 55, 0.4);">
+        <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">🔐 تغيير كلمة سر لوحة التحكم</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          يمكنك تعيين كلمة سر جديدة للوحة التحكم في أي وقت لحماية المنصة من أي وصول غير مصرح به.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">كلمة السر الحالية:</label>
+          <input type="password" id="currAdminPass" class="text-input" placeholder="أدخل كلمة السر الحالية" style="direction: ltr;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">كلمة السر الجديدة:</label>
+          <input type="password" id="newAdminPass" class="text-input" placeholder="أدخل كلمة السر الجديدة (6 خانات على الأقل)" style="direction: ltr;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">تأكيد كلمة السر الجديدة:</label>
+          <input type="password" id="confirmAdminPass" class="text-input" placeholder="أعد إدخال كلمة السر الجديدة للتأكيد" style="direction: ltr;">
+        </div>
+
+        <button type="button" class="btn-gold" onclick="changeAdminPassword()">تحديث وحفظ كلمة السر الجديدة 🔒</button>
+        
+        <div id="passChangeMsg" style="display: none; margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); font-size: 13px;"></div>
+      </div>
     </section>
 
   </main>
@@ -696,25 +726,142 @@
   <script>
     let loadedPostsCache = [];
 
-    // التحقق من رمز PIN للدخول
-    function verifyAdminPin() {
-      const pin = document.getElementById('adminPinInput').value.trim();
-      if (pin === 'nanoona2026' || pin === 'admin') {
-        document.getElementById('authScreen').style.display = 'none';
-        sessionStorage.setItem('admin_auth', 'true');
-        loadInvoices();
-        loadSiteConfig();
-      } else {
-        document.getElementById('authErrorMsg').style.display = 'block';
+    // التحقق من كلمة السر عبر السيرفر وحفظ التوكن
+    async function verifyAdminPin() {
+      const pinInput = document.getElementById('adminPinInput');
+      const errorMsg = document.getElementById('authErrorMsg');
+      const pin = pinInput.value.trim();
+      if (!pin) return;
+
+      errorMsg.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', password: pin })
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          sessionStorage.setItem('admin_token', data.token);
+          document.getElementById('authScreen').style.display = 'none';
+          pinInput.value = '';
+          loadInvoices();
+          loadSiteConfig();
+        } else {
+          errorMsg.textContent = data.message || 'رمز المرور غير صحيح!';
+          errorMsg.style.display = 'block';
+        }
+      } catch (err) {
+        errorMsg.textContent = 'خطأ في الاتصال بالسيرفر: ' + err.message;
+        errorMsg.style.display = 'block';
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('admin_auth') === 'true') {
-        document.getElementById('authScreen').style.display = 'none';
-        loadInvoices();
-        loadSiteConfig();
+    // تسجيل الخروج الآمن
+    function logoutAdmin() {
+      sessionStorage.removeItem('admin_token');
+      document.getElementById('authScreen').style.display = 'flex';
+      document.getElementById('adminPinInput').value = '';
+    }
+
+    // تغيير كلمة سر لوحة التحكم
+    async function changeAdminPassword() {
+      const currentPassword = document.getElementById('currAdminPass').value;
+      const newPassword = document.getElementById('newAdminPass').value;
+      const confirmPassword = document.getElementById('confirmAdminPass').value;
+      const msgEl = document.getElementById('passChangeMsg');
+      const token = sessionStorage.getItem('admin_token');
+
+      msgEl.style.display = 'none';
+
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        msgEl.style.display = 'block';
+        msgEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        msgEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        msgEl.style.color = '#ef4444';
+        msgEl.textContent = 'يرجى ملء كافة حقول كلمة السر.';
+        return;
       }
+
+      if (newPassword !== confirmPassword) {
+        msgEl.style.display = 'block';
+        msgEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        msgEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        msgEl.style.color = '#ef4444';
+        msgEl.textContent = 'كلمة السر الجديدة وتأكيدها غير متطابقين!';
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        msgEl.style.display = 'block';
+        msgEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        msgEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        msgEl.style.color = '#ef4444';
+        msgEl.textContent = 'يجب ألا تقل كلمة السر الجديدة عن 6 خانات.';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': token
+          },
+          body: JSON.stringify({
+            action: 'change-password',
+            oldPassword: currentPassword,
+            newPassword: newPassword,
+            token: token
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          if (data.token) sessionStorage.setItem('admin_token', data.token);
+          document.getElementById('currAdminPass').value = '';
+          document.getElementById('newAdminPass').value = '';
+          document.getElementById('confirmAdminPass').value = '';
+
+          msgEl.style.display = 'block';
+          msgEl.style.background = 'rgba(16, 185, 129, 0.15)';
+          msgEl.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+          msgEl.style.color = '#10b981';
+          msgEl.textContent = '✅ ' + (data.message || 'تم تحديث كلمة السر بنجاح!');
+        } else {
+          msgEl.style.display = 'block';
+          msgEl.style.background = 'rgba(239, 68, 68, 0.15)';
+          msgEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = '❌ ' + (data.message || 'تعذر تغيير كلمة السر.');
+        }
+      } catch (err) {
+        msgEl.style.display = 'block';
+        msgEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        msgEl.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        msgEl.style.color = '#ef4444';
+        msgEl.textContent = 'خطأ في الاتصال: ' + err.message;
+      }
+    }
+
+    // التحقق من الجلسة عند تحميل الصفحة
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = sessionStorage.getItem('admin_token');
+      if (token) {
+        try {
+          const res = await fetch(`/api/admin-auth?token=${encodeURIComponent(token)}`);
+          const data = await res.json();
+          if (data.authenticated) {
+            document.getElementById('authScreen').style.display = 'none';
+            loadInvoices();
+            loadSiteConfig();
+            return;
+          }
+        } catch (e) {}
+        sessionStorage.removeItem('admin_token');
+      }
+      document.getElementById('authScreen').style.display = 'flex';
     });
 
     // تبديل التبويبات
@@ -1107,7 +1254,10 @@
       try {
         const res = await fetch('/api/site-config', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': sessionStorage.getItem('admin_token') || ''
+          },
           body: JSON.stringify(config)
         });
         const data = await res.json();
@@ -1186,7 +1336,10 @@
 
       await fetch('/api/site-config', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': sessionStorage.getItem('admin_token') || ''
+        },
         body: JSON.stringify(config)
       });
 

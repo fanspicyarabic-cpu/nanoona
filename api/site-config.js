@@ -1,4 +1,6 @@
-// api/site-config.js - إدارة وتخصيص واجهة الموقع وإعدادات البوت بالكامل
+// api/site-config.js - إدارة وتخصيص واجهة الموقع وإعدادات البوت بأمان
+import { isValidAdminToken } from './admin-auth.js';
+
 let siteConfig = {
   // بيانات المشهورة والبروفايل
   celebrityName: "الملكة نانو",
@@ -12,7 +14,7 @@ let siteConfig = {
   subscribersCount: "154K",
   likesCount: "3.8M",
   
-  // أسعار وتفاصيل باقات الاشتراك
+  // أسعار وتفاصيل باقات الاشتراك المعتمدة
   tierBasicName: "اشتراك المحتوى الأساسي",
   tierBasicPrice: "20.00",
   tierVipName: "اشتراك برايفيت VIP ⭐️",
@@ -27,7 +29,7 @@ let siteConfig = {
   instagramUrl: "https://t.me/nnano14",
   snapchatUrl: "https://t.me/nnano14",
 
-  // إعدادات بوت وتليجرام
+  // إعدادات بوت وتليجرام (لا يتم كشفها للواجهة الأمامية في GET)
   telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || "",
   telegramChannelId: process.env.TELEGRAM_CHANNEL_ID || "@nnano14",
   
@@ -40,40 +42,65 @@ let siteConfig = {
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // GET: إرجاع إعدادات الموقع الحالية
+  // GET: إرجاع إعدادات الموقع بعد حجب المفاتيح والتوكنات السرية تماماً لمنع فحصها عبر F12
   if (req.method === 'GET') {
+    const safeConfig = { ...siteConfig };
+    safeConfig.hasBotToken = Boolean(siteConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN);
+    // حجب التوكن الحساس لمنع كشفه في أدوات المطور للمتصفح
+    delete safeConfig.telegramBotToken;
+
     return res.status(200).json({
       success: true,
-      config: siteConfig
+      config: safeConfig
     });
   }
 
-  // POST: تحديث إعدادات الموقع من لوحة التحكم
+  // POST: تحديث إعدادات الموقع (حصرياً للأدمن المعتمد مع التحقق من توكن الجلسة)
   if (req.method === 'POST') {
     try {
+      const token = req.headers['x-admin-token'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null);
+      if (!isValidAdminToken(token)) {
+        return res.status(403).json({
+          success: false,
+          message: 'جلسة العمل غير صالحة أو غير مصرح لك بتعديل الإعدادات.'
+        });
+      }
+
       let body = req.body;
       if (typeof body === 'string') {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
 
-      // دمج الإعدادات الجديدة مع القديمة
+      // الحفاظ على توكن البوت القديم إذا لم يرسل المستخدم توكناً جديداً
+      const incomingBotToken = body.telegramBotToken ? body.telegramBotToken.trim() : null;
+
       siteConfig = {
         ...siteConfig,
         ...(body || {})
       };
 
-      console.log('[Site Config Updated]:', JSON.stringify(body));
+      if (!incomingBotToken) {
+        siteConfig.telegramBotToken = siteConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN || "";
+      } else {
+        siteConfig.telegramBotToken = incomingBotToken;
+      }
+
+      console.log('[Site Config Updated Securely]');
+
+      const safeConfig = { ...siteConfig };
+      safeConfig.hasBotToken = Boolean(siteConfig.telegramBotToken);
+      delete safeConfig.telegramBotToken;
 
       return res.status(200).json({
         success: true,
         message: 'تم تحديث إعدادات واجهة الموقع بنجاح',
-        config: siteConfig
+        config: safeConfig
       });
     } catch (e) {
       return res.status(500).json({ success: false, message: e.message });

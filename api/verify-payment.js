@@ -1,3 +1,6 @@
+// api/verify-payment.js - التحقق المباشر من صحة المدفوعات مع خوادم SpaceRemit API v2
+import { updateInvoiceStatus } from './invoices.js';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -22,11 +25,22 @@ export default async function handler(req, res) {
     }
 
     const paymentId = body.payment_id || body.paymentId || body.SP_payment_code;
+    const invoiceId = body.invoiceId || body.invoice_number;
+    const telegramUser = body.telegramUser || body.userId;
+
     if (!paymentId) {
       return res.status(400).json({ success: false, message: 'معرّف الدفع (Payment ID) مطلوب للتحقق.' });
     }
 
-    const secretKey = process.env.SPACEREMIT_API_KEY || "skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B";
+    // جلب المفتاح السري حصراً من متغيرات البيئة
+    const secretKey = process.env.SPACEREMIT_API_KEY;
+    if (!secretKey) {
+      console.error('[Verify Error]: SPACEREMIT_API_KEY is missing from environment variables.');
+      return res.status(500).json({
+        success: false,
+        message: 'إعدادات المفتاح السري غير مكتملة في السيرفر.'
+      });
+    }
 
     console.log(`[SpaceRemit Verification] التحقق من العملية ${paymentId} عبر payment_info...`);
 
@@ -44,7 +58,18 @@ export default async function handler(req, res) {
     const data = await response.json();
     console.log('[SpaceRemit Verification Response]:', JSON.stringify(data));
 
+    // حالات السداد المؤكدة في SpaceRemit: A (مقبول), B (تم الدفع), D (مكتمل), E, T
     const isSuccess = data && (data.response_status === 'success' || (data.data && ['A', 'B', 'D', 'E', 'T'].includes(data.data.status_tag)));
+
+    if (isSuccess) {
+      // تحديث حالة الفاتورة في السيرفر لتكون معتمدة
+      if (invoiceId || telegramUser) {
+        updateInvoiceStatus(invoiceId || telegramUser, 'approved', {
+          paymentId: paymentId,
+          verifiedAt: new Date().toISOString()
+        });
+      }
+    }
 
     return res.status(200).json({
       success: isSuccess,

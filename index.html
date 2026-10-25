@@ -588,8 +588,9 @@
     <script>
         let currentTier = 'اشتراك برايفيت VIP ⭐️';
         let currentPrice = '50.00';
+        let currentServiceType = 'vip';
         let currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
-        const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5";
+        let paymentDebounceTimer = null;
 
         // Tab Switcher Logic
         function switchTab(tabName) {
@@ -724,10 +725,19 @@
             }
         });
 
-        function selectTier(name, price) {
-            currentTier = name;
-            currentPrice = price;
-            currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+        function selectTier(name, price, serviceType) {
+            currentTier = name || 'اشتراك برايفيت VIP ⭐️';
+            currentPrice = price || '50.00';
+
+            if (serviceType) {
+                currentServiceType = serviceType;
+            } else if (name && (name.includes('مكالمة') || name.includes('call'))) {
+                currentServiceType = 'call';
+            } else if (name && (name.includes('اساسي') || name.includes('أساسي') || name.includes('داعم'))) {
+                currentServiceType = 'basic';
+            } else {
+                currentServiceType = 'vip';
+            }
 
             const nameEl = document.getElementById('selected-tier-name');
             const priceEl = document.getElementById('selected-tier-price');
@@ -735,7 +745,7 @@
 
             if (nameEl) nameEl.innerText = name;
             if (priceEl) priceEl.innerText = `$${price}`;
-            if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+            if (invEl) invEl.innerText = 'جاري التوثيق...';
 
             // إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
@@ -744,39 +754,48 @@
             if (successView) successView.classList.add('hidden');
 
             openModal('subscribeModal');
+            requestSecurePaymentSession();
         }
 
-        // تحديث جلسة ورابط واجهة SpaceRemit الرسمية المعتمدة
-        function updateSpaceRemitPayment() {
+        // طلب جلسة دفع مؤمنة حصراً من السيرفر الخلفي (Serverless Functions)
+        async function requestSecurePaymentSession() {
             const userHandleInput = document.getElementById('userTelegramInput');
             const userHandle = (userHandleInput ? userHandleInput.value.trim() : '') || 'customer';
-            const cleanName = userHandle.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
-            const cleanNotes = `${currentTier.replace(/[^a-zA-Z0-9]/g, '')}_${currentPrice}_${currentInvoiceNumber}`;
-
-            // رابط واجهة SpaceRemit الرسمية المباشرة
-            const spaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${SP_PUBLIC_KEY}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}`;
-
-            // تحديث إطار الواجهة المباشرة
             const iframe = document.getElementById('sp_payment_iframe');
-            if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentTier}_${currentPrice}_${cleanName}`) {
-                iframe.src = spaceRemitUrl;
-                iframe.setAttribute('data-loaded-for', `${currentTier}_${currentPrice}_${cleanName}`);
-            }
+            const invEl = document.getElementById('selected-invoice-id');
 
-            // تسجيل وحفظ الفاتورة في النظام
-            fetch('/api/invoices', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    telegramUser: userHandle,
-                    planType: currentTier,
-                    planName: currentTier,
-                    amount: currentPrice,
-                    paymentMethod: 'spaceremit',
-                    paymentMethodName: 'بوابة SpaceRemit الرسمية (الواجهة المعتمدة)',
-                    notes: `فاتورة رسمية عبر SpaceRemit v2`
-                })
-            }).catch(() => {});
+            try {
+                const res = await fetch('/api/create-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        serviceType: currentServiceType,
+                        telegramUsername: userHandle
+                    })
+                });
+
+                const data = await res.json();
+                if (data && data.success && data.paymentUrl) {
+                    currentInvoiceNumber = data.invoice_number || (data.invoice && data.invoice.number) || currentInvoiceNumber;
+                    if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+                    if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentServiceType}_${userHandle}`) {
+                        iframe.src = data.paymentUrl;
+                        iframe.setAttribute('data-loaded-for', `${currentServiceType}_${userHandle}`);
+                    }
+                } else {
+                    console.warn('Secure payment generation warning:', data);
+                }
+            } catch (err) {
+                console.error('Error generating secure payment session:', err);
+            }
+        }
+
+        // تحديث جلسة الدفع عند تعديل المعرّف مع تقنين الطلبات (Debounce)
+        function updateSpaceRemitPayment() {
+            clearTimeout(paymentDebounceTimer);
+            paymentDebounceTimer = setTimeout(() => {
+                requestSecurePaymentSession();
+            }, 500);
         }
 
         // إرسال الفاتورة وعرض شاشة النجاح حصرياً بعد اكتمال الدفع
