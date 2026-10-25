@@ -119,12 +119,12 @@ export default async function handler(req, res) {
       notes: cleanNotes
     });
 
-    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
+    const cryptoUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods&sp_selected_local_method=21`;
     const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
-    const fullGatewayUrl = localMethodsUrl;
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
 
-    const selectedWay = paymentWay || 'local_methods';
-    let paymentUrl = selectedWay === 'card' ? cardUrl : localMethodsUrl;
+    const selectedWay = paymentWay || 'crypto';
+    let paymentUrl = selectedWay === 'card' ? cardUrl : (selectedWay === 'all' ? localMethodsUrl : cryptoUrl);
 
     // تسجيل الفاتورة في السيرفر كفاتورة جديدة بانتظار السداد
     const registered = registerInvoice({
@@ -161,14 +161,14 @@ export default async function handler(req, res) {
         paymentUrl: paymentUrl,
         cardUrl: cardUrl,
         localMethodsUrl: localMethodsUrl,
-        cryptoUrl: fullGatewayUrl,
+        cryptoUrl: cryptoUrl,
         token: invoiceNumber
       },
       payment_url: paymentUrl,
       paymentUrl: paymentUrl,
       card_url: cardUrl,
       local_methods_url: localMethodsUrl,
-      crypto_url: fullGatewayUrl,
+      crypto_url: cryptoUrl,
       invoice_number: invoiceNumber
     });
 

@@ -486,14 +486,24 @@
                         </div>
 
                         <!-- أزرار فتح البوابة بالنافذة الكاملة -->
-                        <div class="space-y-2 pt-1">
-                            <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                <span>فتح بوابة الدفع SpaceRemit الآن (نافذة كاملة) ↗</span>
+                        <div class="space-y-2.5 pt-1">
+                            <a id="spCryptoWindowBtn" href="#" target="_blank" rel="noopener" class="w-full gold-gradient-btn py-3.5 px-4 rounded-xl font-black text-sm shadow-xl flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <i class="fa-brands fa-bitcoin text-base"></i>
+                                    <span>دفع بالعملات الرقمية USDT (TRC20) / بينانس ⚡</span>
+                                </div>
+                                <span class="bg-black/20 text-black text-[10px] px-2 py-0.5 rounded-full font-bold">مباشر ومفعّل ↗</span>
                             </a>
-                            <a id="spCardWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900 hover:bg-dark-700 text-white border border-gold-500/30 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-md">
-                                <i class="fa-regular fa-credit-card text-gold-400"></i>
-                                <span>الدفع المباشر بالبطاقة البنكية (Visa / MasterCard) 💳</span>
+                            <a id="spCardWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900 hover:bg-dark-700 text-white border border-gold-500/30 py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md">
+                                <div class="flex items-center gap-2.5">
+                                    <i class="fa-regular fa-credit-card text-gold-400 text-base"></i>
+                                    <span>دفع بالبطاقة البنكية (Visa / MasterCard) 💳</span>
+                                </div>
+                                <span class="text-gold-400 text-[10px] font-bold">آمن ومباشر ↗</span>
+                            </a>
+                            <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/60 hover:bg-dark-700 text-gray-300 border border-dark-700 py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-globe text-gray-400"></i>
+                                <span>بوابة SpaceRemit الشاملة (جميع المحافظ وويسترن يونيون) ↗</span>
                             </a>
                         </div>
                     </div>
@@ -748,12 +758,13 @@
             }
 
             const cleanNotes = `${currentServiceType}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
-            const directGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods`;
+            const cryptoGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods&sp_selected_local_method=21`;
             const cardGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=card`;
+            const fullGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods`;
 
-            // 1. فتح نافذة كاملة فوراً بدون حجب من المتصفح استجابة لنقر المستخدم
+            // 1. فتح نافذة الدفع المباشرة بالعملات الرقمية فوراً وبدون أي حجب
             try {
-                window.open(directGatewayUrl, '_blank');
+                window.open(cryptoGatewayUrl, '_blank');
             } catch (e) {
                 console.warn('Popup window notice:', e);
             }
@@ -762,14 +773,16 @@
             const nameEl = document.getElementById('selected-tier-name');
             const priceEl = document.getElementById('selected-tier-price');
             const invEl = document.getElementById('selected-invoice-id');
-            const fullBtn = document.getElementById('spFullWindowBtn');
+            const cryptoBtn = document.getElementById('spCryptoWindowBtn');
             const cardBtn = document.getElementById('spCardWindowBtn');
+            const fullBtn = document.getElementById('spFullWindowBtn');
 
             if (nameEl) nameEl.innerText = currentTier;
             if (priceEl) priceEl.innerText = `$${currentPrice}`;
             if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
-            if (fullBtn) fullBtn.href = directGatewayUrl;
+            if (cryptoBtn) cryptoBtn.href = cryptoGatewayUrl;
             if (cardBtn) cardBtn.href = cardGatewayUrl;
+            if (fullBtn) fullBtn.href = fullGatewayUrl;
 
             // إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
@@ -786,7 +799,7 @@
                 body: JSON.stringify({
                     serviceType: currentServiceType,
                     telegramUsername: 'مشترك VIP',
-                    paymentWay: 'local_methods'
+                    paymentWay: 'crypto'
                 })
             }).then(r => r.json()).then(data => {
                 if (data && data.success) {
@@ -794,8 +807,9 @@
                         currentInvoiceNumber = data.invoice_number;
                         if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
                     }
-                    if (data.local_methods_url && fullBtn) fullBtn.href = data.local_methods_url;
+                    if (data.crypto_url && cryptoBtn) cryptoBtn.href = data.crypto_url;
                     if (data.card_url && cardBtn) cardBtn.href = data.card_url;
+                    if (data.local_methods_url && fullBtn) fullBtn.href = data.local_methods_url;
                 }
             }).catch(() => {});
         }
