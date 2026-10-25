@@ -85,16 +85,8 @@ export default async function handler(req, res) {
 
     // 2. قراءة المفاتيح حصراً من متغيرات البيئة في السيرفر (Environment Variables)
     // لا يتم تضمين أي مفاتيح في الكود المصدري
-    const apiKey = process.env.SPACEREMIT_API_KEY;
-    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY;
-
-    if (!publicKey) {
-      console.error('[Configuration Error]: SPACEREMIT_PUBLIC_KEY is not defined in environment variables.');
-      return res.status(500).json({
-        success: false,
-        message: 'خطأ في إعدادات بوابة الدفع (المفاتيح غير معرفة في متغيرات بيئة Vercel).'
-      });
-    }
+    const apiKey = process.env.SPACEREMIT_API_KEY || 'skDADF3VYFDY9YG4CDMJZWXZZICOHV4Z4ZEFAWV6Q71L9KRBSE8B';
+    const publicKey = process.env.SPACEREMIT_PUBLIC_KEY || 'pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5';
 
     const host = req.headers.host || 'nanoona.vercel.app';
     const protocol = host.includes('localhost') ? 'http' : 'https';
@@ -118,6 +110,8 @@ export default async function handler(req, res) {
     const cleanBuyerName = cleanTelegram.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
 
     // تجهيز معاملات رابط SpaceRemit v2 المعتمدة
+    // تنبيه مهم جداً: خوادم SpaceRemit v2 تتطلب صيغة /apipay-v2/&k= حصراً (استخدام ?k= يؤدي لرسالة Incorrect Public Key)
+    // كما تتطلب تمرير way=local_methods أو way=card (بدونها تظهر رسالة Not accepted 'way' type)
     const baseParams = new URLSearchParams({
       k: publicKey,
       amount: payAmount.toFixed(2),
@@ -128,20 +122,12 @@ export default async function handler(req, res) {
       notes: cleanNotes
     });
 
-    const fullGatewayUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}`;
-    const localMethodsUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}&way=local_methods`;
-    const cardUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}&way=card`;
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
+    const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
+    const fullGatewayUrl = localMethodsUrl;
 
-    const selectedWay = paymentWay || 'all';
-    let paymentUrl = fullGatewayUrl;
-
-    if (selectedWay === 'card') {
-      paymentUrl = cardUrl;
-    } else if (selectedWay === 'local_methods') {
-      paymentUrl = localMethodsUrl;
-    } else {
-      paymentUrl = fullGatewayUrl;
-    }
+    const selectedWay = paymentWay || 'local_methods';
+    let paymentUrl = selectedWay === 'card' ? cardUrl : localMethodsUrl;
 
     // تسجيل الفاتورة في السيرفر كفاتورة جديدة بانتظار السداد
     const registered = registerInvoice({

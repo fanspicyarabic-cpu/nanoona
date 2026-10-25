@@ -496,6 +496,19 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- وسائل الدفع داخل البوابة: العملات الرقمية والمحافظ أو البطاقات -->
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <button type="button" id="tabLocalMethods" onclick="switchGatewayWay('local_methods')" class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition bg-gold-500/15 border-gold-500 text-gold-400 shadow-sm">
+                                <i class="fa-solid fa-wallet"></i>
+                                <span>العملات الرقمية والمحافظ</span>
+                            </button>
+                            <button type="button" id="tabCardMethods" onclick="switchGatewayWay('card')" class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition bg-dark-900 border-dark-700 text-gray-400 hover:text-white">
+                                <i class="fa-regular fa-credit-card"></i>
+                                <span>البطاقة البنكية (Visa / Master)</span>
+                            </button>
+                        </div>
+
                         <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 500px; height: 510px;">
                             <div id="iframeLoader" class="absolute inset-0 bg-dark-900 flex flex-col items-center justify-center text-center p-4 z-10 transition-opacity duration-300">
                                 <div class="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin mb-2"></div>
@@ -773,6 +786,50 @@
             requestSecurePaymentSession();
         }
 
+        let currentLocalMethodsUrl = '';
+        let currentCardUrl = '';
+        let currentGatewayWay = 'local_methods';
+
+        // التبديل بين وسائل الدفع في واجهة SpaceRemit (عملات رقمية ومحافظ أو بطاقات بنكية)
+        function switchGatewayWay(way) {
+            currentGatewayWay = way;
+            const iframe = document.getElementById('sp_payment_iframe');
+            const tabLocal = document.getElementById('tabLocalMethods');
+            const tabCard = document.getElementById('tabCardMethods');
+            const extLink = document.getElementById('spExternalLink');
+            const loader = document.getElementById('iframeLoader');
+
+            if (way === 'card') {
+                if (tabLocal) {
+                    tabLocal.classList.remove('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
+                    tabLocal.classList.add('bg-dark-900', 'border-dark-700', 'text-gray-400');
+                }
+                if (tabCard) {
+                    tabCard.classList.add('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
+                    tabCard.classList.remove('bg-dark-900', 'border-dark-700', 'text-gray-400');
+                }
+                if (currentCardUrl && iframe) {
+                    if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
+                    iframe.src = currentCardUrl;
+                    if (extLink) extLink.href = currentCardUrl;
+                }
+            } else {
+                if (tabCard) {
+                    tabCard.classList.remove('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
+                    tabCard.classList.add('bg-dark-900', 'border-dark-700', 'text-gray-400');
+                }
+                if (tabLocal) {
+                    tabLocal.classList.add('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
+                    tabLocal.classList.remove('bg-dark-900', 'border-dark-700', 'text-gray-400');
+                }
+                if (currentLocalMethodsUrl && iframe) {
+                    if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
+                    iframe.src = currentLocalMethodsUrl;
+                    if (extLink) extLink.href = currentLocalMethodsUrl;
+                }
+            }
+        }
+
         // طلب جلسة دفع مؤمنة حصراً من السيرفر الخلفي (Serverless Functions)
         async function requestSecurePaymentSession() {
             const userHandleInput = document.getElementById('userTelegramInput');
@@ -786,23 +843,29 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         serviceType: currentServiceType,
-                        telegramUsername: userHandle
+                        telegramUsername: userHandle,
+                        paymentWay: currentGatewayWay
                     })
                 });
 
                 const data = await res.json();
-                if (data && data.success && data.paymentUrl) {
+                if (data && data.success) {
                     currentInvoiceNumber = data.invoice_number || (data.invoice && data.invoice.number) || currentInvoiceNumber;
                     if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
 
-                    const extLink = document.getElementById('spExternalLink');
-                    if (extLink) extLink.href = data.paymentUrl;
+                    currentLocalMethodsUrl = data.local_methods_url || data.localMethodsUrl || data.paymentUrl;
+                    currentCardUrl = data.card_url || data.cardUrl || '';
 
-                    if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentServiceType}_${userHandle}`) {
+                    const activeTargetUrl = currentGatewayWay === 'card' && currentCardUrl ? currentCardUrl : currentLocalMethodsUrl;
+
+                    const extLink = document.getElementById('spExternalLink');
+                    if (extLink) extLink.href = activeTargetUrl;
+
+                    if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentServiceType}_${userHandle}_${currentGatewayWay}`) {
                         const loader = document.getElementById('iframeLoader');
                         if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
-                        iframe.src = data.paymentUrl;
-                        iframe.setAttribute('data-loaded-for', `${currentServiceType}_${userHandle}`);
+                        iframe.src = activeTargetUrl;
+                        iframe.setAttribute('data-loaded-for', `${currentServiceType}_${userHandle}_${currentGatewayWay}`);
                     }
                 } else {
                     console.warn('Secure payment generation warning:', data);
@@ -836,7 +899,12 @@
 ━━━━━━━━━━━━━━━
 يرجى إرسال رابط الانضمام الفردي المباشر للقناة وتفعيل اشتراكي.`;
 
-            const waUrl = `https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`;
+            let waBase = 'https://wa.me/qr/6SUMEKHOZNDUK1';
+            if (window.currentSiteConfig && window.currentSiteConfig.whatsappNumber) {
+                const num = window.currentSiteConfig.whatsappNumber.replace(/[^0-9]/g, '');
+                if (num) waBase = `https://wa.me/${num}`;
+            }
+            const waUrl = `${waBase}?text=${encodeURIComponent(waMsg)}`;
 
             // تحديث بيانات شاشة النجاح
             const invNumEl = document.getElementById('succInvoiceNum');
@@ -905,6 +973,7 @@
         }
 
         function applySiteConfig(cfg) {
+            window.currentSiteConfig = cfg;
             if (cfg.celebrityName) {
                 const el = document.getElementById('celebrityNameDisplay');
                 if (el) el.innerText = cfg.celebrityName;
