@@ -802,8 +802,6 @@
 
         // إرسال الفاتورة وعرض شاشة النجاح حصرياً بعد اكتمال الدفع
         function triggerPaymentSuccess(paymentCode) {
-            const userHandleInput = document.getElementById('userTelegramInput');
-            const userHandle = (userHandleInput ? userHandleInput.value.trim() : '') || 'مشترك VIP';
             const invId = paymentCode || currentInvoiceNumber;
 
             const waMsg = `👑 مرحباً الملكة نانو، لقد أتممت وسددت الفاتورة بنجاح عبر بوابة SpaceRemit:
@@ -811,10 +809,9 @@
 🧾 رقم الفاتورة: #${invId}
 ⭐ الباقة: ${currentTier}
 💰 المبلغ المسدد: $${currentPrice}
-👤 اسم المستخدم: ${userHandle}
 🔒 حالة السداد: مكتمل ومعتمد (Paid)
 ━━━━━━━━━━━━━━━
-يرجى إرسال رابط الانضمام الفردي المباشر للقناة وتفعيل اشتراكي.`;
+يرجى إرسال رابط الانضمام الفردي المباشر للقناة وتفعيل اشتراكي فوراً.`;
 
             let waBase = 'https://wa.me/qr/6SUMEKHOZNDUK1';
             if (window.currentSiteConfig && window.currentSiteConfig.whatsappNumber) {
