@@ -1129,6 +1129,10 @@
                             <div class="flex items-center gap-4">
                                 <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">${p.likes || 120}</span></button>
                                 <span><i class="fa-regular fa-comment ml-1"></i> ${Math.floor((p.likes || 100) / 4)}</span>
+                                <button onclick="sharePost('${p.id}', '${p.title.replace(/'/g, "\\'")}')" class="hover:text-gold-400 transition flex items-center gap-1 text-gray-400" title="مشاركة رابط المنشور مع معاينة تويتر وتليجرام">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                    <span>مشاركة</span>
+                                </button>
                             </div>
                             <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 1050} مشاهدة</span>
                         </div>
@@ -1158,21 +1162,45 @@
                         </div>
 
                         <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-3">
                                 <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">${p.likes || 350}</span></button>
                                 <span><i class="fa-regular fa-comment ml-1"></i> ${Math.floor((p.likes || 350) / 3)}</span>
-                                <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 2400} مشاهدة</span>
+                                <button onclick="sharePost('${p.id}', '${p.title.replace(/'/g, "\\'")}')" class="hover:text-gold-400 transition flex items-center gap-1 text-gray-400" title="مشاركة رابط المنشور مع معاينة تويتر وتليجرام">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                    <span>مشاركة</span>
+                                </button>
                             </div>
-                            <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
-                                <span>مشاهدة كاملة</span>
-                                <i class="fa-solid fa-arrow-left text-[10px]"></i>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 2400} مشاهدة</span>
+                                <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
+                                    <span>مشاهدة</span>
+                                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>`;
                 }
             }).join('');
 
             grid.innerHTML = cardsHtml;
+        }
+
+        // مشاركة رابط المنشور مع المعاينة الرسمية في تويتر وتليجرام
+        function sharePost(id, title) {
+            const shareUrl = `https://nanoona.vercel.app/p/${id}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: `${title} | الملكة نانو VIP`,
+                    text: `${title} 👑 شاهد الآن على المنصة الرسمية للملكة نانو:`,
+                    url: shareUrl
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert(`تم نسخ رابط المنشور بنجاح! 📋✨\n${shareUrl}\n\nعند لصق هذا الرابط في تويتر (X)، تليجرام، أو واتساب، ستظهر بطاقة المعاينة الكبيرة والصورة التلقائية.`);
+                }).catch(() => {
+                    prompt('انسخ رابط المنشور:', shareUrl);
+                });
+            }
         }
 
         // تشغيل التحميل التلقائي فور تحميل الصفحة

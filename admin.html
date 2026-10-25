@@ -482,12 +482,15 @@
 
     <!-- 3️⃣ قسم المحتوى المنشور مع التعديل والحذف -->
     <section id="sec-posts" class="admin-sec">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
         <div>
           <h2 style="font-size: 16px; font-weight: 800; color: #fff;">المنشورات الحالية في المنصة:</h2>
-          <p style="font-size: 11px; color: var(--text-muted);">إمكانية تعديل نصوص وصور المنشور وحذفها بنقرة واحدة</p>
+          <p style="font-size: 11px; color: var(--text-muted);">إمكانية تعديل نصوص وصور المنشور، حذفها، ومشاركة روابطها المباشرة للمعاينة في تويتر وتليجرام</p>
         </div>
-        <button type="button" onclick="loadPosts()" style="background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--gold-light); border-radius: 12px; padding: 6px 12px; font-size: 12px; cursor: pointer;">تحديث 🔄</button>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" onclick="restoreFromLocalCache()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer;" title="استرجاع المنشورات في حال فُقدت">📥 استرجاع من الذاكرة المحلية</button>
+          <button type="button" onclick="loadPosts()" style="background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--gold-light); border-radius: 8px; padding: 6px 12px; font-size: 11px; cursor: pointer;">تحديث 🔄</button>
+        </div>
       </div>
 
       <div id="postsList" style="display: flex; flex-direction: column; gap: 10px;">
@@ -1259,7 +1262,7 @@
       else if (mediaUrl.match(/\.(mp4|webm|mov)$/i)) mediaType = 'video';
 
       try {
-        await fetch('/api/posts', {
+        const postRes = await fetch('/api/posts', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1267,32 +1270,49 @@
           },
           body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip })
         });
-
-        if (dual) {
-          const botToken = document.getElementById('cfgBotToken').value.trim();
-          const channelId = document.getElementById('cfgChannelId').value.trim();
-          await fetch('/api/publish', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-admin-token': sessionStorage.getItem('admin_token') || ''
-            },
-            body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl })
-          });
+        const postData = await postRes.json();
+        if (!postData.success) {
+          alert('تعذر حفظ المنشور في المنصة: ' + (postData.message || 'خطأ غير معروف'));
+          return;
         }
 
-        alert(dual ? 'تم النشر بنجاح على الموقع وقناة تليجرام مع الزر المخصص! 🚀' : 'تم النشر بنجاح على الموقع! ✨');
+        let tgMsg = '';
+        if (dual) {
+          const botToken = document.getElementById('cfgBotToken') ? document.getElementById('cfgBotToken').value.trim() : '';
+          const channelId = document.getElementById('cfgChannelId') ? document.getElementById('cfgChannelId').value.trim() : '';
+          
+          try {
+            const pubRes = await fetch('/api/publish', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-admin-token': sessionStorage.getItem('admin_token') || ''
+              },
+              body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl })
+            });
+            const pubData = await pubRes.json();
+            if (pubData && pubData.success && pubData.broadcastStatus === 'sent_successfully') {
+              tgMsg = '\n\n✓ تم البث بنجاح إلى قناة تليجرام مع الزر التفاعلي! 🚀';
+            } else {
+              tgMsg = `\n\n⚠️ تنبيه تليجرام: ${pubData.message || 'تعذر البث إلى القناة، تأكد من إضافة البوت مشرفاً في القناة'}`;
+            }
+          } catch (pubErr) {
+            tgMsg = `\n\n⚠️ تعذر إرسال الطلب لبوت تليجرام: ${pubErr.message}`;
+          }
+        }
+
+        alert(`تم نشر وحفظ المنشور على المنصة والتخزين السحابي الدائم بنجاح! ✨${tgMsg}`);
         document.getElementById('postTitle').value = '';
         document.getElementById('postContent').value = '';
         document.getElementById('postMediaUrl').value = '';
         onMediaUrlChange('');
         loadPosts();
       } catch (e) {
-        alert('حدث خطأ أثناء النشر');
+        alert('حدث خطأ أثناء النشر: ' + e.message);
       }
     }
 
-    // إدارة المنشورات (عرض مع إمكانية التعديل والحذف)
+    // إدارة المنشورات (عرض مع إمكانية التعديل والحذف ومشاركة الروابط)
     async function loadPosts() {
       const box = document.getElementById('postsList');
       box.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">جاري التحميل...</div>`;
@@ -1302,9 +1322,16 @@
         const posts = (data && data.posts) || [];
         loadedPostsCache = posts;
 
+        // حفظ نسخة احتياطية في ذاكرة المتصفح تلقائياً
+        if (posts.length > 0) {
+          localStorage.setItem('nanoona_admin_posts_cache', JSON.stringify(posts));
+        }
+
         if (posts.length === 0) { box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد منشورات حالياً. يمكنك إضافة منشور جديد من النموذج أعلاه.</div>'; return; }
 
-        box.innerHTML = posts.map(p => `
+        box.innerHTML = posts.map(p => {
+          const shareUrl = `https://nanoona.vercel.app/p/${p.id}`;
+          return `
           <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
               ${p.mediaUrl ? `<img src="${p.mediaUrl}" onerror="this.src='avatar.jpg'" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold-primary);">` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px;">🎬</div>`}
@@ -1314,13 +1341,67 @@
               </div>
             </div>
             
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" style="background:rgba(56, 189, 248, 0.15); border:1px solid rgba(56, 189, 248, 0.4); color:#38bdf8; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="copyPostShareLink('${p.id}')" title="نسخ رابط معاينة تويتر وتليجرام">🔗 مشاركة الرابط</button>
               <button type="button" style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4); color:var(--gold-light); border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="openEditModal('${p.id}')">✏️ تعديل</button>
               <button type="button" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="deletePost('${p.id}')">🗑️ حذف</button>
             </div>
           </div>
-        `).join('');
+        `;
+        }).join('');
       } catch (e) { box.innerHTML = '<div style="text-align:center; color:#ef4444;">خطأ أثناء جلب المنشورات</div>'; }
+    }
+
+    // نسخ رابط المنشور المخصص للمعاينة في تويتر وتليجرام
+    function copyPostShareLink(postId) {
+      const url = `https://nanoona.vercel.app/p/${postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        alert(`تم نسخ رابط المنشور بنجاح! 📋✨\n${url}\n\nعند لصق هذا الرابط في تويتر (X) أو تليجرام أو واتساب، ستظهر بطاقة المعاينة الكبيرة والصورة تلقائياً.`);
+      }).catch(() => {
+        prompt('انسخ رابط المنشور:', url);
+      });
+    }
+
+    // استرجاع المنشورات من الذاكرة المحلية إذا كانت متوفرة
+    async function restoreFromLocalCache() {
+      try {
+        const raw = localStorage.getItem('nanoona_admin_posts_cache');
+        if (!raw) {
+          alert('لا توجد منشورات سابقة محفوظة في الذاكرة المحلية لهذا المتصفح.');
+          return;
+        }
+        const cached = JSON.parse(raw);
+        if (!Array.isArray(cached) || cached.length === 0) {
+          alert('الذاكرة المحلية فارغة.');
+          return;
+        }
+
+        if (!confirm(`تم العثور على ${cached.length} منشور في الذاكرة المحلية للمتصفح. هل تود مزامنتها وحفظها بشكل دائم على السيرفر والسحابة؟`)) return;
+
+        const currentRes = await fetch('/api/posts');
+        const currentData = await currentRes.json();
+        const serverPosts = (currentData && currentData.posts) || [];
+
+        let addedCount = 0;
+        for (const p of cached) {
+          if (!serverPosts.some(sp => sp.id === p.id || sp.title === p.title)) {
+            await fetch('/api/posts', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-admin-token': sessionStorage.getItem('admin_token') || ''
+              },
+              body: JSON.stringify(p)
+            });
+            addedCount++;
+          }
+        }
+
+        alert(`تم استرجاع وحفظ ${addedCount} منشور في السحابة الدائمة بنجاح! ✨`);
+        loadPosts();
+      } catch (err) {
+        alert('حدث خطأ أثناء الاسترجاع: ' + err.message);
+      }
     }
 
     // فتح نافذة التعديل

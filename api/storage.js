@@ -1,6 +1,7 @@
-// api/storage.js - طبقة تخزين واسترجاع موحدة ومرنة تدعم Vercel KV و Upstash والملفات المحلية
+// api/storage.js - طبقة تخزين واسترجاع موحدة ومرنة تدعم Vercel Blob، KV، Upstash والملفات المحلية
 import fs from 'fs';
 import path from 'path';
+import { put } from '@vercel/blob';
 
 // إعدادات افتراضية
 const DEFAULT_CONFIG = {
@@ -82,6 +83,37 @@ const DEFAULT_POSTS = [
     createdAt: new Date(Date.now() - 3600000 * 36).toISOString()
   }
 ];
+
+// عنوان Vercel Blob الأساسي للمنصة
+const BLOB_BASE_URL = 'https://lg9mkoigra1xyncm.public.blob.vercel-storage.com';
+
+// دوال Vercel Blob السحابية الدائمة (مستمرة ولا تتأثر بإعادة تشغيل السيرفرات أو النشر الجديد)
+async function blobGet(pathname) {
+  try {
+    const url = `${BLOB_BASE_URL}/${pathname}?_t=${Date.now()}`;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (e) {
+    // الملف غير متوفر في Blob بعد
+  }
+  return null;
+}
+
+async function blobSet(pathname, data) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return false;
+  try {
+    await put(pathname, JSON.stringify(data, null, 2), {
+      access: 'public',
+      addRandomSuffix: false
+    });
+    return true;
+  } catch (e) {
+    console.warn(`[Blob Set ${pathname} Warning]:`, e.message);
+  }
+  return false;
+}
 
 // كاش في الذاكرة لتسريع الاستجابة
 let memoryConfig = null;
@@ -178,14 +210,21 @@ function writeLocalJson(filename, data) {
 export async function loadSiteConfig() {
   if (memoryConfig) return memoryConfig;
 
-  // محاولة السحب من Vercel KV / Upstash
+  // 1. محاولة القراءة من Vercel Blob (التخزين السحابي الدائم)
+  const fromBlob = await blobGet('site-config.json');
+  if (fromBlob && typeof fromBlob === 'object') {
+    memoryConfig = { ...DEFAULT_CONFIG, ...fromBlob };
+    return memoryConfig;
+  }
+
+  // 2. محاولة السحب من Vercel KV / Upstash
   const fromKv = await kvGet('site_config');
   if (fromKv && typeof fromKv === 'object') {
     memoryConfig = { ...DEFAULT_CONFIG, ...fromKv };
     return memoryConfig;
   }
 
-  // محاولة القراءة من data/site-config.json
+  // 3. محاولة القراءة من data/site-config.json
   const fromFile = readLocalJson('site-config.json', DEFAULT_CONFIG);
   memoryConfig = { ...DEFAULT_CONFIG, ...fromFile };
   return memoryConfig;
@@ -198,6 +237,9 @@ export async function saveSiteConfig(newConfig) {
     ...current,
     ...(newConfig || {})
   };
+
+  // حفظ سحابي دائم في Vercel Blob
+  await blobSet('site-config.json', memoryConfig);
 
   // حفظ في Vercel KV إن وجد
   await kvSet('site_config', memoryConfig);
@@ -212,14 +254,21 @@ export async function saveSiteConfig(newConfig) {
 export async function loadPosts() {
   if (memoryPosts !== null) return memoryPosts;
 
-  // محاولة السحب من Vercel KV / Upstash
+  // 1. محاولة القراءة من Vercel Blob (التخزين السحابي الدائم)
+  const fromBlob = await blobGet('posts.json');
+  if (Array.isArray(fromBlob)) {
+    memoryPosts = fromBlob;
+    return memoryPosts;
+  }
+
+  // 2. محاولة السحب من Vercel KV / Upstash
   const fromKv = await kvGet('site_posts');
   if (Array.isArray(fromKv)) {
     memoryPosts = fromKv;
     return memoryPosts;
   }
 
-  // محاولة القراءة من data/posts.json
+  // 3. محاولة القراءة من data/posts.json
   const fromFile = readLocalJson('posts.json', DEFAULT_POSTS);
   memoryPosts = Array.isArray(fromFile) ? fromFile : DEFAULT_POSTS;
   return memoryPosts;
@@ -228,6 +277,9 @@ export async function loadPosts() {
 // حفظ المنشورات
 export async function savePosts(posts) {
   memoryPosts = Array.isArray(posts) ? posts : [];
+
+  // حفظ سحابي دائم في Vercel Blob (لا يحذف أبداً حتى بعد أي تحديث أو رفع)
+  await blobSet('posts.json', memoryPosts);
 
   // حفظ في Vercel KV إن وجد
   await kvSet('site_posts', memoryPosts);
