@@ -415,70 +415,84 @@
         </button>
     </div>
 
-    <!-- CHECKOUT & PAYMENT MODAL (نظام SpaceRemit v2 الكامل بما يشمل الكريبتو والمحافظ) -->
-    <div id="subscribeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-dark-800 border border-gold-500/30 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-8">
+    <!-- CHECKOUT & PAYMENT MODAL (بوابة SpaceRemit الرسمية المعتمدة) -->
+    <div id="subscribeModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-dark-800 border border-gold-500/30 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-6">
             
             <!-- Modal Header -->
             <div class="p-4 bg-dark-900 border-b border-dark-700 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-shield-cat text-gold-400"></i>
-                    <span class="font-bold text-sm text-white">بوابة الدفع الآمنة | SpaceRemit v2</span>
+                    <i class="fa-solid fa-shield-cat text-gold-400 text-lg"></i>
+                    <div>
+                        <span class="font-bold text-sm text-white block">بوابة الدفع الرسمية | SpaceRemit API v2</span>
+                        <span class="text-[10px] text-emerald-400 font-medium">دفع معتمد وآمن 100% 🔒</span>
+                    </div>
                 </div>
-                <button onclick="closeModal('subscribeModal')" class="text-gray-400 hover:text-white p-1 rounded-full">
+                <button onclick="closeModal('subscribeModal')" class="text-gray-400 hover:text-white p-1 rounded-full transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
             <!-- Modal Content Body -->
-            <div class="p-5 space-y-4">
+            <div class="p-4 sm:p-5 space-y-4">
 
                 <!-- Selected Tier Summary -->
-                <div class="bg-dark-900/80 p-3.5 rounded-2xl border border-gold-500/20 flex items-center justify-between">
+                <div class="bg-dark-900/90 p-3.5 rounded-2xl border border-gold-500/20 flex items-center justify-between">
                     <div>
-                        <span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block">الباقة المختارة</span>
+                        <span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block">تفاصيل الطلب والفاتورة</span>
                         <h4 id="selected-tier-name" class="font-bold text-sm text-white">اشتراك برايفيت VIP ⭐️</h4>
                         <p class="text-[11px] text-gray-400" id="selected-invoice-id">فاتورة رقم: #INV-626507</p>
                     </div>
                     <div id="selected-tier-price" class="text-2xl font-black text-gold-400">$50.00</div>
                 </div>
 
-                <!-- Step 1: Country Selector -->
+                <!-- Account / Telegram Handle Input -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 mb-2">اختر الدولة لتحديد طرق الدفع المتاحة:</label>
-                    <select id="countrySelect" onchange="updatePaymentMethods()" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500">
-                        <option value="EG">🇪🇬 مصر (Egypt)</option>
-                        <option value="SA">🇸🇦 السعودية (Saudi Arabia)</option>
-                        <option value="AE">🇦🇪 الإمارات (UAE)</option>
-                        <option value="INT">🌐 باقي دول العالم (Global)</option>
-                    </select>
+                    <label class="block text-xs font-bold text-gray-300 mb-1.5">معرّف التليجرام أو رقم الواتساب (لتأكيد وتفعيل الاشتراك):</label>
+                    <input type="text" id="userTelegramInput" oninput="updateSpaceRemitPayment()" placeholder="@username" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500" dir="ltr">
                 </div>
 
-                <!-- Step 2: Payment Methods Grid -->
+                <!-- واجهة SpaceRemit الرسمية المعتمدة (SpaceRemit Official Gateway Interface) -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 mb-2">اختر طريقة الدفع المناسبة:</label>
-                    <div id="payment-methods-container" class="grid grid-cols-2 gap-2.5">
-                        <!-- Dynamic Payment Cards inserted by JS -->
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-lock text-gold-400"></i>
+                            واجهة الدفع المباشرة لبوابة SpaceRemit:
+                        </span>
+                        <span class="text-[10px] text-gray-400">PCI-DSS Compliant</span>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 460px; height: 470px;">
+                        <iframe id="sp_payment_iframe" src="about:blank" class="w-full h-full border-0 block" allow="payment"></iframe>
                     </div>
                 </div>
 
-                <!-- Account / Telegram Handle Input -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-300 mb-1">اسم المستخدم بالتليجرام أو رقم الواتساب (لتأكيد الاشتراك):</label>
-                    <input type="text" id="userTelegramInput" placeholder="@username" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500" dir="ltr">
+                <!-- أزرار الإجراءات والمتابعة السريعة -->
+                <div class="space-y-2 pt-1">
+                    <!-- زر فتح واجهة SpaceRemit في نافذة مستقلة كاملة -->
+                    <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-xs shadow-lg flex items-center justify-center gap-2 text-dark-950">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>فتح واجهة SpaceRemit في نافذة مستقلة كاملة</span>
+                    </a>
+
+                    <!-- زر تأكيد الفاتورة المباشر عبر واتساب -->
+                    <a id="spDirectWhatsAppBtn" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="w-full bg-emerald-600/15 hover:bg-emerald-600/25 border border-emerald-500/40 text-emerald-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>تأكيد الفاتورة الفوري مع الملكة نانو عبر واتساب</span>
+                    </a>
+
+                    <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
+                    <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" class="w-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-sky-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-brands fa-telegram text-sm"></i>
+                        <span>تأكيد الفاتورة المباشر عبر التليجرام الرسمي (@nnano14)</span>
+                    </a>
                 </div>
 
-                <!-- Security Note -->
-                <div class="flex items-center justify-center gap-2 text-[11px] text-emerald-400 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20">
-                    <i class="fa-solid fa-lock"></i>
-                    <span>عملية الدفع مشفرة ومعتمدة عبر بوابة SpaceRemit الرسمية</span>
+                <!-- ملاحظة الأمان والاعتماد -->
+                <div class="flex items-center justify-center gap-2 text-[11px] text-gray-400 pt-1">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>عملية الدفع مشفرة ومعتمدة عبر خوادم بوابة SpaceRemit العالمية</span>
                 </div>
 
-                <!-- Confirm Payment CTA Button -->
-                <button onclick="processPayment()" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bolt"></i>
-                    <span>متابعة إتمام عملية الدفع</span>
-                </button>
             </div>
         </div>
     </div>
@@ -487,36 +501,8 @@
     <script>
         let currentTier = 'اشتراك برايفيت VIP ⭐️';
         let currentPrice = '50.00';
-        let selectedMethodId = 'binance';
-        let selectedMethodName = 'Binance Pay (كريبتو)';
-
-        // طرق الدفع الرسمية المعتمدة عبر بوابة SpaceRemit (شاملة الكريبتو والمحافظ المحلية والبطاقات)
-        const paymentData = {
-            'EG': [
-                { id: 'binance', name: 'Binance Pay (كريبتو)', logo: 'https://placehold.co/120x40/f59e0b/000000?text=Binance+Pay' },
-                { id: 'instapay', name: 'InstaPay إنستا باي', logo: 'https://placehold.co/120x40/ffffff/5b21b6?text=InstaPay' },
-                { id: 'vodafone', name: 'فودافون كاش', logo: 'https://placehold.co/120x40/e11d48/ffffff?text=Vodafone' },
-                { id: 'card', name: 'بطاقة بنكية Visa/Master', logo: 'https://placehold.co/120x40/1e293b/ffffff?text=Visa/Master' }
-            ],
-            'SA': [
-                { id: 'binance', name: 'Binance Pay (كريبتو)', logo: 'https://placehold.co/120x40/f59e0b/000000?text=Binance+Pay' },
-                { id: 'stcpay', name: 'STC Pay', logo: 'https://placehold.co/120x40/4c1d95/ffffff?text=STC+Pay' },
-                { id: 'mada', name: 'بطاقة مدى Mada', logo: 'https://placehold.co/120x40/047857/ffffff?text=Mada' },
-                { id: 'urpay', name: 'UR Pay', logo: 'https://placehold.co/120x40/2563eb/ffffff?text=urpay' }
-            ],
-            'AE': [
-                { id: 'crypto', name: 'Crypto USDT (TRC20)', logo: 'https://placehold.co/120x40/10b981/ffffff?text=USDT+TRC20' },
-                { id: 'binance', name: 'Binance Pay', logo: 'https://placehold.co/120x40/f59e0b/000000?text=Binance+Pay' },
-                { id: 'applepay', name: 'Apple Pay', logo: 'https://placehold.co/120x40/000000/ffffff?text=Apple+Pay' },
-                { id: 'card', name: 'Credit Card', logo: 'https://placehold.co/120x40/1e293b/ffffff?text=Visa/Master' }
-            ],
-            'INT': [
-                { id: 'crypto', name: 'Crypto USDT (TRC20)', logo: 'https://placehold.co/120x40/10b981/ffffff?text=USDT+TRC20' },
-                { id: 'binance', name: 'Binance Pay', logo: 'https://placehold.co/120x40/f59e0b/000000?text=Binance+Pay' },
-                { id: 'card', name: 'Credit Card', logo: 'https://placehold.co/120x40/1e293b/ffffff?text=Visa/Master' },
-                { id: 'spaceremit', name: 'بوابة SpaceRemit الشاملة', logo: 'https://placehold.co/120x40/1e1b4b/d4af37?text=SpaceRemit' }
-            ]
-        };
+        let currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+        const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5";
 
         // Tab Switcher Logic
         function switchTab(tabName) {
@@ -562,7 +548,7 @@
         // Modal Handler
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
-            updatePaymentMethods();
+            updateSpaceRemitPayment();
         }
 
         function closeModal(modalId) {
@@ -572,72 +558,51 @@
         function selectTier(name, price) {
             currentTier = name;
             currentPrice = price;
+            currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+
             document.getElementById('selected-tier-name').innerText = name;
             document.getElementById('selected-tier-price').innerText = `$${price}`;
-            document.getElementById('selected-invoice-id').innerText = `فاتورة رقم: #INV-${Math.floor(100000 + Math.random() * 900000)}`;
+            document.getElementById('selected-invoice-id').innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+
             openModal('subscribeModal');
         }
 
-        // Dynamic Payment Method Render based on Selected Country
-        function updatePaymentMethods() {
-            const country = document.getElementById('countrySelect').value;
-            const container = document.getElementById('payment-methods-container');
-            container.innerHTML = '';
-
-            const methods = paymentData[country] || paymentData['EG'];
-            methods.forEach((method, idx) => {
-                const isSelected = idx === 0 ? 'border-gold-500 bg-gold-500/10' : 'border-dark-700 bg-dark-900';
-                if (idx === 0) {
-                    selectedMethodId = method.id;
-                    selectedMethodName = method.name;
-                }
-
-                container.innerHTML += `
-                    <div onclick="highlightPayment(this, '${method.id}', '${method.name}')" class="payment-card cursor-pointer border ${isSelected} hover:border-gold-500/60 p-3 rounded-2xl flex flex-col items-center justify-center text-center transition">
-                        <img src="${method.logo}" class="h-6 object-contain mb-1.5 rounded" alt="${method.name}">
-                        <span class="text-[11px] font-bold text-gray-200">${method.name}</span>
-                    </div>
-                `;
-            });
-        }
-
-        function highlightPayment(element, id, name) {
-            document.querySelectorAll('.payment-card').forEach(card => {
-                card.classList.remove('border-gold-500', 'bg-gold-500/10');
-                card.classList.add('border-dark-700', 'bg-dark-900');
-            });
-            element.classList.add('border-gold-500', 'bg-gold-500/10');
-            element.classList.remove('border-dark-700', 'bg-dark-900');
-            selectedMethodId = id;
-            selectedMethodName = name;
-        }
-
-        // إتمام عملية الدفع مباشرة عبر بوابة SpaceRemit v2 وواتساب مع الحفاظ على الكريبتو والمحافظ
-        function processPayment() {
+        // تحديث جلسة ورابط واجهة SpaceRemit الرسمية المعتمدة
+        function updateSpaceRemitPayment() {
             const userHandleInput = document.getElementById('userTelegramInput');
-            const userHandle = userHandleInput.value.trim();
-
-            if (!userHandle) {
-                alert("يرجى إدخال اسم المستخدم بالتليجرام أو رقم الواتساب لتأكيد الاشتراك.");
-                userHandleInput.focus();
-                return;
-            }
-
+            const userHandle = (userHandleInput ? userHandleInput.value.trim() : '') || 'customer';
             const cleanName = userHandle.replace(/[^a-zA-Z0-9_]/g, '') || 'customer';
-            const invNum = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
-            const cleanNotes = `${currentTier.replace(/[^a-zA-Z0-9]/g, '')}_${currentPrice}_${invNum}`;
+            const cleanNotes = `${currentTier.replace(/[^a-zA-Z0-9]/g, '')}_${currentPrice}_${currentInvoiceNumber}`;
 
-            // توجيه بوابة SpaceRemit: إذا كان بطاقة أو محفظة محلية، أو البوابة الكاملة شاملاً الكريبتو
-            let wayParam = '';
-            if (selectedMethodId === 'card') {
-                wayParam = '&way=card';
-            } else if (['instapay', 'vodafone', 'telda', 'stcpay', 'mada', 'urpay'].includes(selectedMethodId)) {
-                wayParam = '&way=local_methods';
+            // رابط واجهة SpaceRemit الرسمية المباشرة
+            const spaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=${SP_PUBLIC_KEY}&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}`;
+
+            // تحديث إطار الواجهة المباشرة
+            const iframe = document.getElementById('sp_payment_iframe');
+            if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentTier}_${currentPrice}_${cleanName}`) {
+                iframe.src = spaceRemitUrl;
+                iframe.setAttribute('data-loaded-for', `${currentTier}_${currentPrice}_${cleanName}`);
             }
-            // بالنسبة للكريبتو (USDT, Binance Pay) والبوابة الشاملة، لا يتم حصرها لتبقى كافة خيارات الكريبتو مفعلة مباشرة في SpaceRemit
 
-            const spaceRemitUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${currentPrice}&currency=USD&fullname=${encodeURIComponent(cleanName)}&email=customer%40nanoona.app&phone=0000000000&notes=${encodeURIComponent(cleanNotes)}${wayParam}`;
-            window.open(spaceRemitUrl, '_blank');
+            // تحديث زر فتح واجهة SpaceRemit في نافذة كاملة
+            const fullBtn = document.getElementById('spFullWindowBtn');
+            if (fullBtn) {
+                fullBtn.href = spaceRemitUrl;
+            }
+
+            // تحديث رابط التأكيد الفوري عبر واتساب
+            const waBtn = document.getElementById('spDirectWhatsAppBtn');
+            if (waBtn) {
+                const waMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${currentTier}) بقيمة ${currentPrice}$ عبر بوابة SpaceRemit الرسمية، معرّفي: ${userHandle}`;
+                waBtn.href = `https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`;
+            }
+
+            // تحديث رابط التأكيد المباشر عبر تليجرام
+            const tgBtn = document.getElementById('spDirectTelegramBtn');
+            if (tgBtn) {
+                const tgMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${currentTier}) بقيمة ${currentPrice}$ عبر بوابة SpaceRemit الرسمية، معرّف التليجرام: ${userHandle}`;
+                tgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgMsg)}`;
+            }
 
             // تسجيل الفاتورة في النظام
             fetch('/api/invoices', {
@@ -648,19 +613,11 @@
                     planType: currentTier,
                     planName: currentTier,
                     amount: currentPrice,
-                    paymentMethod: selectedMethodName,
-                    paymentMethodName: `SpaceRemit (${selectedMethodName})`,
-                    notes: `فاتورة رسمية عبر SpaceRemit`
+                    paymentMethod: 'spaceremit',
+                    paymentMethodName: 'بوابة SpaceRemit الرسمية (الواجهة المعتمدة)',
+                    notes: `فاتورة رسمية عبر SpaceRemit v2`
                 })
             }).catch(() => {});
-
-            // فتح رابط تأكيد الفاتورة المباشر عبر واتساب
-            const waMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${invNum} الخاصة بـ (${currentTier}) بقيمة ${currentPrice}$ عبر بوابة SpaceRemit (${selectedMethodName})، اسم المستخدم: ${userHandle}`;
-            setTimeout(() => {
-                window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`, '_blank');
-            }, 600);
-
-            closeModal('subscribeModal');
         }
     </script>
 </body>
