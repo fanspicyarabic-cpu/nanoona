@@ -5,6 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الملكة نانو | المنصة الرسمية للمحتوى الحصري VIP</title>
+    <meta name="description" content="المنصة الرسمية المعتمدة للملكة نانو | محتوى حصري، كواليس خاصة، وتجربة التواصل المباشر مع اشتراك VIP">
+
+    <!-- Open Graph (معاينة الروابط في تليجرام، واتساب، وفيسبوك) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="الملكة نانو | Almalika Nano">
+    <meta property="og:title" content="الملكة نانو | الحساب الرسمي الموثق والمحتوى الحصري VIP 👑">
+    <meta property="og:description" content="انضم إلى العالم الخاص بالملكة نانو، كواليس حصرية، تجربة التواصل المباشر، وباقات اشتراك VIP الآمنة والمعتمدة.">
+    <meta property="og:image" content="https://nanoona.vercel.app/avatar.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
+    <meta property="og:url" content="https://nanoona.vercel.app">
+
+    <!-- Twitter / X Cards (معاينة البطاقة الكبيرة في تويتر) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="الملكة نانو | المنصة الرسمية الحصرية VIP 👑">
+    <meta name="twitter:description" content="شاهد المحتوى الحصري واستمتع بالتواصل المباشر مع الملكة نانو">
+    <meta name="twitter:image" content="https://nanoona.vercel.app/avatar.jpg">
+    <meta name="theme-color" content="#EAB308">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -112,7 +130,7 @@
         <!-- Profile Banner & Hero Header -->
         <div class="relative rounded-3xl overflow-hidden glass-card border border-gold-500/20 shadow-2xl mb-6">
             <!-- Cover Image (صورة غلاف المشهورة الملكة نانو) -->
-            <div class="h-48 sm:h-72 w-full bg-cover bg-center relative" style="background-image: url('avatar.jpg');">
+            <div id="coverImageBanner" class="h-48 sm:h-72 w-full bg-cover bg-center relative transition-all duration-500" style="background-image: url('avatar.jpg');">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-dark-900/30 backdrop-blur-[2px]"></div>
             </div>
 
@@ -123,14 +141,14 @@
                     <!-- Profile Avatar (صورة المشهورة في إطار ذهبي فاخر) -->
                     <div class="relative">
                         <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full p-1 bg-gradient-to-tr from-gold-600 via-gold-400 to-yellow-200 gold-border-glow shadow-2xl overflow-hidden">
-                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400'" alt="الملكة نانو" class="w-full h-full object-cover rounded-full">
+                            <img id="avatarProfileImg" src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400'" alt="الملكة نانو" class="w-full h-full object-cover rounded-full">
                         </div>
                     </div>
 
                     <!-- Profile Titles & Authentic Verification Badge -->
                     <div class="mb-1">
                         <div class="flex items-center justify-center sm:justify-start gap-2">
-                            <h1 class="text-2xl sm:text-3xl font-black text-white">الملكة نانو</h1>
+                            <h1 id="celebrityNameDisplay" class="text-2xl sm:text-3xl font-black text-white">الملكة نانو</h1>
                             <!-- شارة التوثيق الحقيقية الرسمية (Official Verified Rosette Badge) -->
                             <span class="inline-flex items-center text-sky-400" title="حساب رسمي وموثق">
                                 <svg class="w-6 h-6 fill-current drop-shadow-md" viewBox="0 0 24 24">
@@ -138,7 +156,7 @@
                                 </svg>
                             </span>
                         </div>
-                        <p class="text-xs sm:text-sm text-gray-400 mt-1">صانعة محتوى حصري | تجربة التواصل المباشر وVIP</p>
+                        <p id="celebrityTitleDisplay" class="text-xs sm:text-sm text-gray-400 mt-1">صانعة محتوى حصري | تجربة التواصل المباشر وVIP</p>
                     </div>
                 </div>
 
@@ -154,26 +172,26 @@
             <!-- Profile Stats Bar -->
             <div class="grid grid-cols-3 border-t border-dark-700/60 bg-dark-800/50 py-3 text-center">
                 <div>
-                    <div class="text-lg sm:text-xl font-bold text-gold-400">1.2M</div>
+                    <div id="statFollowersDisplay" class="text-lg sm:text-xl font-bold text-gold-400">1.2M</div>
                     <div class="text-xs text-gray-400">متابع</div>
                 </div>
                 <div class="border-x border-dark-700/60">
-                    <div class="text-lg sm:text-xl font-bold text-gold-400">154K</div>
+                    <div id="statSubscribersDisplay" class="text-lg sm:text-xl font-bold text-gold-400">154K</div>
                     <div class="text-xs text-gray-400">مشترك VIP</div>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-xl font-bold text-gold-400">3.8M</div>
+                    <div id="statLikesDisplay" class="text-lg sm:text-xl font-bold text-gold-400">3.8M</div>
                     <div class="text-xs text-gray-400">إعجاب</div>
                 </div>
             </div>
 
             <!-- Social Links Quick Bar -->
             <div class="p-3 bg-dark-900/60 border-t border-dark-700/40 flex items-center justify-center gap-6 text-gray-400 text-lg">
-                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="قناة تليجرام الرسمية"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="واتساب مباشر"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="انستغرام"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="سناب شات"><i class="fa-brands fa-snapchat"></i></a>
+                <a id="linkTelegram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="قناة تليجرام الرسمية"><i class="fa-brands fa-telegram"></i></a>
+                <a id="linkWhatsapp" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="واتساب مباشر"><i class="fa-brands fa-whatsapp"></i></a>
+                <a id="linkTiktok" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+                <a id="linkInstagram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="انستغرام"><i class="fa-brands fa-instagram"></i></a>
+                <a id="linkSnapchat" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="سناب شات"><i class="fa-brands fa-snapchat"></i></a>
             </div>
         </div>
 
@@ -328,8 +346,8 @@
                 <div class="glass-card rounded-2xl p-6 border border-dark-700 flex flex-col justify-between relative hover:border-gold-500/30 transition">
                     <div>
                         <div class="text-xs font-bold text-gray-400 mb-1">الوصول الأساسي</div>
-                        <h3 class="text-xl font-black text-white mb-3">داعم للقناة 💖</h3>
-                        <div class="text-3xl font-black text-gold-400 mb-4">$10.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
+                        <h3 id="tier1Name" class="text-xl font-black text-white mb-3">داعم للقناة 💖</h3>
+                        <div id="tier1Price" class="text-3xl font-black text-gold-400 mb-4">$10.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
                         <ul class="space-y-3 text-xs text-gray-300 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> مشاهدة المنشورات العامة بالحساب</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> شارة داعم مميزة بالتعليقات</li>
@@ -337,7 +355,7 @@
                             <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-xmark"></i> مكالمات وتواصل مباشر</li>
                         </ul>
                     </div>
-                    <button onclick="selectTier('داعم للقناة', '10.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
+                    <button id="tier1Btn" onclick="selectTier('داعم للقناة', '10.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
                         اشتراك الباقة
                     </button>
                 </div>
@@ -349,8 +367,8 @@
                     </div>
                     <div>
                         <div class="text-xs font-bold text-gold-400 mb-1 mt-2">الباقة الأكثر شعبية</div>
-                        <h3 class="text-2xl font-black text-white mb-3">اشتراك VIP برايفيت 👑</h3>
-                        <div class="text-4xl font-black text-gold-400 mb-4">$50.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
+                        <h3 id="tier2Name" class="text-2xl font-black text-white mb-3">اشتراك VIP برايفيت 👑</h3>
+                        <div id="tier2Price" class="text-4xl font-black text-gold-400 mb-4">$50.00 <span class="text-xs text-gray-400 font-normal">/ شهرياً</span></div>
                         <ul class="space-y-3 text-xs text-gray-200 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> دخول حصري للقناة الخاصة والتليجرام VIP</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> مشاهدة فتح الصور والفيديوهات الحصرية كاملاً</li>
@@ -358,7 +376,7 @@
                             <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-gold-400"></i> روابط فردية صالحة لمرة واحدة عبر البوت</li>
                         </ul>
                     </div>
-                    <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl">
+                    <button id="tier2Btn" onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl">
                         اشترك الآن (VIP)
                     </button>
                 </div>
@@ -367,15 +385,15 @@
                 <div class="glass-card rounded-2xl p-6 border border-dark-700 flex flex-col justify-between hover:border-gold-500/30 transition">
                     <div>
                         <div class="text-xs font-bold text-purple-400 mb-1">الفي آي بي المباشر</div>
-                        <h3 class="text-xl font-black text-white mb-3">مكالمة فيديو مباشر 📹</h3>
-                        <div class="text-3xl font-black text-gold-400 mb-4">$30.00 <span class="text-xs text-gray-400 font-normal">/ جلسة</span></div>
+                        <h3 id="tier3Name" class="text-xl font-black text-white mb-3">مكالمة فيديو مباشر 📹</h3>
+                        <div id="tier3Price" class="text-3xl font-black text-gold-400 mb-4">$30.00 <span class="text-xs text-gray-400 font-normal">/ جلسة</span></div>
                         <ul class="space-y-3 text-xs text-gray-300 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> مكالمة فيديو مرئي خاص ومباشر (20 دقيقة)</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> حجز موعد خاص فوري والتنسيق عبر واتساب</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold-500"></i> خصوصية تامة وصوت نقي</li>
                         </ul>
                     </div>
-                    <button onclick="selectTier('مكالمة فيديو مباشر', '30.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
+                    <button id="tier3Btn" onclick="selectTier('مكالمة فيديو مباشر', '30.00')" class="w-full bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl font-bold text-xs transition">
                         طلب المكالمة
                     </button>
                 </div>
@@ -386,7 +404,7 @@
         <!-- TAB CONTENT 3: ABOUT / BIO -->
         <div id="section-about" class="hidden glass-card rounded-2xl p-6 border border-dark-700 space-y-4">
             <h3 class="text-xl font-bold text-white mb-2">عن المنصة الرسمية للملكة نانو</h3>
-            <p class="text-sm text-gray-300 leading-relaxed">
+            <p id="celebrityBioDisplay" class="text-sm text-gray-300 leading-relaxed">
                 مرحباً بكم في العالم الخاص بالملكة نانو. تم إنشاء هذه المنصة لتوفير تجربة تواصل آمنة وحصرية مع المتابعين المميزين، بعيداً عن قيود منصات التواصل التقليدية.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-dark-700">
@@ -417,11 +435,11 @@
         </button>
     </div>
 
-    <!-- CHECKOUT & PAYMENT MODAL (بوابة SpaceRemit الرسمية المعتمدة) -->
-    <div id="subscribeModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <!-- CHECKOUT & PAYMENT MODAL (بوابة SpaceRemit الرسمية المعتمدة مع إمكانية الرجوع والإلغاء) -->
+    <div id="subscribeModal" onclick="handleBackdropClick(event, 'subscribeModal')" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div class="bg-dark-800 border border-gold-500/30 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-6">
             
-            <!-- Modal Header -->
+            <!-- Modal Header (مع زر رجوع وإلغاء صريح وواضح) -->
             <div class="p-4 bg-dark-900 border-b border-dark-700 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-shield-cat text-gold-400 text-lg"></i>
@@ -430,8 +448,10 @@
                         <span class="text-[10px] text-emerald-400 font-medium">دفع معتمد وآمن 100% 🔒</span>
                     </div>
                 </div>
-                <button onclick="closeModal('subscribeModal')" class="text-gray-400 hover:text-white p-1 rounded-full transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <!-- زر رجوع وإلغاء بارز -->
+                <button type="button" onclick="closeModal('subscribeModal')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-dark-700/90 hover:bg-red-500/20 text-gray-200 hover:text-red-400 border border-dark-600 transition text-xs font-bold" title="إلغاء والرجوع للخلف">
+                    <i class="fa-solid fa-arrow-right text-gold-400"></i>
+                    <span>رجوع للخلف ✕</span>
                 </button>
             </div>
 
@@ -478,6 +498,12 @@
                         </button>
                     </div>
 
+                    <!-- زر إلغاء ورجوع سفلي واضح -->
+                    <button type="button" onclick="closeModal('subscribeModal')" class="w-full bg-dark-900 hover:bg-dark-700 text-gray-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-dark-700">
+                        <i class="fa-solid fa-arrow-right text-gold-400"></i>
+                        <span>إلغاء عملية الدفع والرجوع للموقع للخلف</span>
+                    </button>
+
                     <!-- ملاحظة الأمان والاعتماد -->
                     <div class="flex items-center justify-center gap-2 text-[11px] text-gray-400 pt-1">
                         <i class="fa-solid fa-shield-halved text-emerald-400"></i>
@@ -520,12 +546,41 @@
                         <span>إرسال الفاتورة الآن عبر واتساب وتفعيل الرابط 💬</span>
                     </a>
 
+                    <button type="button" onclick="closeModal('subscribeModal')" class="w-full bg-dark-900 hover:bg-dark-700 text-gray-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-dark-700">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>إغلاق والرجوع للصفحة الرئيسية</span>
+                    </button>
+
                     <p class="text-[11px] text-gray-400 leading-relaxed">
                         تم فتح الواتساب تلقائياً لتسليمك رابط الانضمام الفردي المباشر للقناة الخاصة.
                     </p>
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <!-- نافذة عارض الوسائط والمحتوى مع زر رجوع وإلغاء بارز (Media Lightbox Modal) -->
+    <div id="mediaLightboxModal" onclick="handleBackdropClick(event, 'mediaLightboxModal')" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex flex-col items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="w-full max-w-3xl flex items-center justify-between pb-3 text-white">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-photo-film text-gold-400"></i>
+                <span id="lightboxTitle" class="font-bold text-sm">معاينة المحتوى الحصري</span>
+            </div>
+            <!-- زر رجوع وإلغاء فوري من العارض -->
+            <button type="button" onclick="closeMediaLightbox()" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-dark-800 hover:bg-red-500/20 text-white hover:text-red-400 border border-gold-500/30 text-xs font-bold transition shadow-lg">
+                <i class="fa-solid fa-arrow-right text-gold-400"></i>
+                <span>رجوع للخلف ✕</span>
+            </button>
+        </div>
+        <div class="relative w-full max-w-3xl max-h-[75vh] flex items-center justify-center overflow-hidden rounded-2xl border border-dark-700 bg-dark-950 shadow-2xl p-1">
+            <div id="lightboxContent" class="w-full h-full flex items-center justify-center"></div>
+        </div>
+        <div class="w-full max-w-3xl pt-3 flex justify-center">
+            <button type="button" onclick="closeMediaLightbox()" class="bg-dark-800/90 hover:bg-dark-700 text-gray-200 hover:text-white px-6 py-2.5 rounded-xl text-xs font-bold transition border border-dark-600 flex items-center gap-2 shadow-lg">
+                <i class="fa-solid fa-arrow-right text-gold-400"></i>
+                <span>إغلاق وعودة للموقع</span>
+            </button>
         </div>
     </div>
 
@@ -540,16 +595,22 @@
         function switchTab(tabName) {
             const tabs = ['posts', 'tiers', 'about'];
             tabs.forEach(t => {
-                document.getElementById(`section-${t}`).classList.add('hidden');
+                const sec = document.getElementById(`section-${t}`);
+                if (sec) sec.classList.add('hidden');
                 const btn = document.getElementById(`tab-${t}`);
-                btn.classList.remove('border-gold-500', 'text-gold-400');
-                btn.classList.add('border-transparent', 'text-gray-400');
+                if (btn) {
+                    btn.classList.remove('border-gold-500', 'text-gold-400');
+                    btn.classList.add('border-transparent', 'text-gray-400');
+                }
             });
 
-            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            const activeSec = document.getElementById(`section-${tabName}`);
+            if (activeSec) activeSec.classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.classList.add('border-gold-500', 'text-gold-400');
-            activeBtn.classList.remove('border-transparent', 'text-gray-400');
+            if (activeBtn) {
+                activeBtn.classList.add('border-gold-500', 'text-gold-400');
+                activeBtn.classList.remove('border-transparent', 'text-gray-400');
+            }
         }
 
         function filterPosts(cat, btn) {
@@ -573,28 +634,108 @@
         function toggleLike(btn) {
             btn.classList.toggle('text-red-400');
             const icon = btn.querySelector('i');
-            icon.classList.toggle('fa-solid');
-            icon.classList.toggle('fa-regular');
+            if (icon) {
+                icon.classList.toggle('fa-solid');
+                icon.classList.toggle('fa-regular');
+            }
         }
 
-        // Modal Handler
+        // إغلاق النوافذ عند النقر خارج المحتوى (Backdrop Click)
+        function handleBackdropClick(event, modalId) {
+            if (event.target && event.target.id === modalId) {
+                if (modalId === 'subscribeModal') closeModal('subscribeModal');
+                else if (modalId === 'mediaLightboxModal') closeMediaLightbox();
+            }
+        }
+
+        // Modal Handler مع دعم زر الرجوع للهاتف (Mobile Back Button PopState)
         function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
+            const el = document.getElementById(modalId);
+            if (!el) return;
+            el.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            history.pushState({ modalOpen: true, modalId: modalId }, '');
             updateSpaceRemitPayment();
         }
 
         function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
+            closeModalDirect(modalId);
+            if (history.state && history.state.modalOpen) {
+                history.back();
+            }
         }
+
+        function closeModalDirect(modalId) {
+            const el = document.getElementById(modalId || 'subscribeModal');
+            if (el) el.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // عارض الوسائط (Media Lightbox)
+        function openMediaLightbox(title, type, url) {
+            const titleEl = document.getElementById('lightboxTitle');
+            const box = document.getElementById('lightboxContent');
+            if (titleEl) titleEl.innerText = title || 'معاينة المحتوى الحصري';
+
+            if (!url) {
+                if (box) box.innerHTML = '<div class="text-gray-400 p-8">لا يوجد رابط وسائط متاح.</div>';
+            } else if (type === 'video' || url.match(/\.(mp4|webm|mov)$/i)) {
+                if (box) box.innerHTML = `<video src="${url}" controls autoplay class="max-h-[70vh] max-w-full rounded-xl shadow-2xl"></video>`;
+            } else if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
+                const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
+                const ytid = m ? m[1] : '';
+                if (box) box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1" class="w-full h-[55vh] border-0 rounded-xl" allowfullscreen allow="autoplay"></iframe>`;
+            } else {
+                if (box) box.innerHTML = `<img src="${url}" class="max-h-[70vh] max-w-full object-contain rounded-xl shadow-2xl" alt="معاينة">`;
+            }
+
+            const modal = document.getElementById('mediaLightboxModal');
+            if (modal) modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            history.pushState({ modalOpen: true, modalId: 'mediaLightboxModal' }, '');
+        }
+
+        function closeMediaLightbox() {
+            closeMediaLightboxDirect();
+            if (history.state && history.state.modalOpen) {
+                history.back();
+            }
+        }
+
+        function closeMediaLightboxDirect() {
+            const modal = document.getElementById('mediaLightboxModal');
+            if (modal) modal.classList.add('hidden');
+            const box = document.getElementById('lightboxContent');
+            if (box) box.innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        // دعم زر الرجوع الفعلي بالجوال (Android & iOS gesture / back button)
+        window.addEventListener('popstate', function() {
+            closeModalDirect('subscribeModal');
+            closeMediaLightboxDirect();
+        });
+
+        // دعم زر الهروب Escape في لوحة المفاتيح
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModalDirect('subscribeModal');
+                closeMediaLightboxDirect();
+            }
+        });
 
         function selectTier(name, price) {
             currentTier = name;
             currentPrice = price;
             currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
 
-            document.getElementById('selected-tier-name').innerText = name;
-            document.getElementById('selected-tier-price').innerText = `$${price}`;
-            document.getElementById('selected-invoice-id').innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+            const nameEl = document.getElementById('selected-tier-name');
+            const priceEl = document.getElementById('selected-tier-price');
+            const invEl = document.getElementById('selected-invoice-id');
+
+            if (nameEl) nameEl.innerText = name;
+            if (priceEl) priceEl.innerText = `$${price}`;
+            if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
 
             // إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
@@ -708,6 +849,218 @@
         window.SP_SUCCESSFUL_PAYMENT = function(code) {
             triggerPaymentSuccess(code);
         };
+
+        // جلب وتطبيق إعدادات واجهة الموقع المخصصة من لوحة التحكم (Dynamic Site Config)
+        async function loadSiteConfig() {
+            try {
+                const res = await fetch('/api/site-config');
+                const data = await res.json();
+                if (data && data.success && data.config) {
+                    applySiteConfig(data.config);
+                }
+            } catch (err) {
+                console.warn('[SiteConfig] Could not load dynamic config:', err);
+            }
+        }
+
+        function applySiteConfig(cfg) {
+            if (cfg.celebrityName) {
+                const el = document.getElementById('celebrityNameDisplay');
+                if (el) el.innerText = cfg.celebrityName;
+            }
+            if (cfg.celebrityTitle) {
+                const el = document.getElementById('celebrityTitleDisplay');
+                if (el) el.innerText = cfg.celebrityTitle;
+            }
+            if (cfg.celebrityBio) {
+                const el = document.getElementById('celebrityBioDisplay');
+                if (el) el.innerText = cfg.celebrityBio;
+            }
+            if (cfg.coverUrl) {
+                const el = document.getElementById('coverImageBanner');
+                if (el) el.style.backgroundImage = `url('${cfg.coverUrl}')`;
+            }
+            if (cfg.avatarUrl) {
+                const el = document.getElementById('avatarProfileImg');
+                if (el) el.src = cfg.avatarUrl;
+            }
+            if (cfg.followersCount) {
+                const el = document.getElementById('statFollowersDisplay');
+                if (el) el.innerText = cfg.followersCount;
+            }
+            if (cfg.subscribersCount) {
+                const el = document.getElementById('statSubscribersDisplay');
+                if (el) el.innerText = cfg.subscribersCount;
+            }
+            if (cfg.likesCount) {
+                const el = document.getElementById('statLikesDisplay');
+                if (el) el.innerText = cfg.likesCount;
+            }
+
+            // باقات الاشتراك والأسعار
+            if (cfg.tierBasicName) {
+                const el = document.getElementById('tier1Name');
+                if (el) el.innerText = cfg.tierBasicName;
+            }
+            if (cfg.tierBasicPrice) {
+                const el = document.getElementById('tier1Price');
+                if (el) el.innerHTML = `$${cfg.tierBasicPrice} <span class="text-xs text-gray-400 font-normal">/ شهرياً</span>`;
+                const btn = document.getElementById('tier1Btn');
+                if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierBasicName || 'داعم للقناة'}', '${cfg.tierBasicPrice}')`);
+            }
+
+            if (cfg.tierVipName) {
+                const el = document.getElementById('tier2Name');
+                if (el) el.innerText = cfg.tierVipName;
+            }
+            if (cfg.tierVipPrice) {
+                const el = document.getElementById('tier2Price');
+                if (el) el.innerHTML = `$${cfg.tierVipPrice} <span class="text-xs text-gray-400 font-normal">/ شهرياً</span>`;
+                const btn = document.getElementById('tier2Btn');
+                if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierVipName || 'اشتراك VIP برايفيت'}', '${cfg.tierVipPrice}')`);
+            }
+
+            if (cfg.tierCallName) {
+                const el = document.getElementById('tier3Name');
+                if (el) el.innerText = cfg.tierCallName;
+            }
+            if (cfg.tierCallPrice) {
+                const el = document.getElementById('tier3Price');
+                if (el) el.innerHTML = `$${cfg.tierCallPrice} <span class="text-xs text-gray-400 font-normal">/ جلسة</span>`;
+                const btn = document.getElementById('tier3Btn');
+                if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierCallName || 'مكالمة فيديو مباشر'}', '${cfg.tierCallPrice}')`);
+            }
+
+            // روابط التواصل الاجتماعي
+            if (cfg.telegramChannel) {
+                const el = document.getElementById('linkTelegram');
+                if (el) el.href = cfg.telegramChannel;
+            }
+            if (cfg.whatsappNumber) {
+                const el = document.getElementById('linkWhatsapp');
+                if (el) el.href = cfg.whatsappNumber;
+            }
+            if (cfg.tiktokUrl) {
+                const el = document.getElementById('linkTiktok');
+                if (el) el.href = cfg.tiktokUrl;
+            }
+            if (cfg.instagramUrl) {
+                const el = document.getElementById('linkInstagram');
+                if (el) el.href = cfg.instagramUrl;
+            }
+            if (cfg.snapchatUrl) {
+                const el = document.getElementById('linkSnapchat');
+                if (el) el.href = cfg.snapchatUrl;
+            }
+        }
+
+        // جلب المنشورات المباشرة من لوحة التحكم (Dynamic Feed Posts)
+        async function loadDynamicPosts() {
+            try {
+                const res = await fetch('/api/posts');
+                const data = await res.json();
+                if (data && data.posts && data.posts.length > 0) {
+                    renderDynamicPosts(data.posts);
+                }
+            } catch (err) {
+                console.warn('[Posts] Using default feed posts:', err);
+            }
+        }
+
+        function renderDynamicPosts(posts) {
+            const grid = document.getElementById('feedPostsGrid');
+            if (!grid) return;
+
+            const cardsHtml = posts.map(p => {
+                const isVip = p.isVip;
+                const mediaType = p.mediaType || 'image';
+                const cat = mediaType === 'video' || mediaType === 'youtube' ? 'videos' : 'photos';
+                const previewImg = (mediaType === 'image' && p.mediaUrl) ? p.mediaUrl : (p.thumbnail || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
+
+                if (isVip) {
+                    return `
+                    <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="${cat}">
+                        <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
+                            <div class="flex items-center gap-3">
+                                <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">${p.title}</h4>
+                                    <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                </div>
+                            </div>
+                            <span class="bg-gold-500/20 text-gold-400 border border-gold-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-bold">
+                                <i class="fa-solid fa-lock"></i> VIP حصري
+                            </span>
+                        </div>
+                        
+                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer" style="background-image: url('${previewImg}');" onclick="selectTier('اشتراك VIP برايفيت', '50.00')">
+                            <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
+                                <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
+                                    <i class="fa-solid fa-lock"></i>
+                                </div>
+                                <h3 class="font-bold text-lg text-white mb-1">المحتوى محمي للمشتركين</h3>
+                                <p class="text-xs text-gray-300 mb-4 max-w-xs">${p.content || 'اشترك الآن لفتح هذا المحتوى والاستمتاع بالمشاهدة الحصرية.'}</p>
+                                <button onclick="event.stopPropagation(); selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
+                                    <i class="fa-solid fa-key"></i>
+                                    <span>فتح المحتوى الحصري ($50 / شهر)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
+                            <div class="flex items-center gap-4">
+                                <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">${p.likes || 120}</span></button>
+                                <span><i class="fa-regular fa-comment ml-1"></i> ${Math.floor((p.likes || 100) / 4)}</span>
+                            </div>
+                            <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 1050} مشاهدة</span>
+                        </div>
+                    </div>`;
+                } else {
+                    return `
+                    <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="${cat}">
+                        <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
+                            <div class="flex items-center gap-3">
+                                <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">${p.title}</h4>
+                                    <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-bold">
+                                <i class="fa-solid fa-globe"></i> متاح للجميع
+                            </span>
+                        </div>
+                        
+                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer group" style="background-image: url('${previewImg}');" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')">
+                            <div class="absolute inset-0 bg-dark-900/20 group-hover:bg-dark-900/10 transition flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-gold-500/90 text-dark-900 flex items-center justify-center text-xl shadow-2xl opacity-90 group-hover:scale-110 transition">
+                                    <i class="fa-solid ${mediaType === 'video' || mediaType === 'youtube' ? 'fa-play mr-0.5' : 'fa-expand'}"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
+                            <div class="flex items-center gap-4">
+                                <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">${p.likes || 350}</span></button>
+                                <span><i class="fa-regular fa-comment ml-1"></i> ${Math.floor((p.likes || 350) / 3)}</span>
+                            </div>
+                            <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
+                                <span>مشاهدة كاملة</span>
+                                <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                }
+            }).join('');
+
+            grid.innerHTML = cardsHtml;
+        }
+
+        // تشغيل التحميل التلقائي فور تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSiteConfig();
+            loadDynamicPosts();
+        });
     </script>
 </body>
 </html>

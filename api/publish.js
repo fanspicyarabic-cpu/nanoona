@@ -18,18 +18,27 @@ export default async function handler(req, res) {
       try { body = JSON.parse(body); } catch (e) { body = {}; }
     }
 
-    const { title, content, mediaUrl, mediaType, isVip, botToken: customBotToken, channelId: customChannelId } = body || {};
+    const { title, content, mediaUrl, mediaType, isVip, botToken: customBotToken, channelId: customChannelId, buttonText, buttonUrl } = body || {};
 
     const botToken = customBotToken || process.env.TELEGRAM_BOT_TOKEN;
     const channelId = customChannelId || process.env.TELEGRAM_CHANNEL_ID || '@nnano14';
 
-    console.log(`[Smart Publisher] طلب نشر منشور: "${title}" (النوع: ${mediaType || 'text'}, VIP: ${isVip})`);
+    console.log(`[Smart Publisher] طلب نشر منشور: "${title}" (النوع: ${mediaType || 'text'}, VIP: ${isVip}, زر مخصص: ${buttonText || 'افتراضي'})`);
 
     let broadcastResult = null;
     let broadcastStatus = 'no_bot_token';
 
     if (botToken && channelId) {
-      const caption = `👑 *${title || 'منشور جديد من الملكة نانو'}* \n\n${content || ''}\n\n${isVip ? '🔒 _محتوى حصري لمشتركي VIP_' : '✨ _متاح للجميع_'}\n\n🔗 للاشتراك والدعم: https://nanoona.vercel.app`;
+      const caption = `👑 *${title || 'منشور جديد من الملكة نانو'}* \n\n${content || ''}\n\n${isVip ? '🔒 _محتوى حصري لمشتركي VIP_' : '✨ _متاح للجميع_'}`;
+
+      // تجهيز أزرار تفاعلية مخصصة (Inline Keyboard Buttons)
+      const btnLabel = buttonText || 'اشترك الآن ودخول القناة VIP ⭐️';
+      const btnLink = buttonUrl || 'https://nanoona.vercel.app';
+      const replyMarkup = {
+        inline_keyboard: [
+          [{ text: btnLabel, url: btnLink }]
+        ]
+      };
 
       try {
         if (mediaType === 'image' && mediaUrl) {
@@ -41,7 +50,8 @@ export default async function handler(req, res) {
               chat_id: channelId,
               photo: mediaUrl,
               caption: caption,
-              parse_mode: 'Markdown'
+              parse_mode: 'Markdown',
+              reply_markup: replyMarkup
             })
           });
           broadcastResult = await tgRes.json();
@@ -54,7 +64,8 @@ export default async function handler(req, res) {
               chat_id: channelId,
               video: mediaUrl,
               caption: caption,
-              parse_mode: 'Markdown'
+              parse_mode: 'Markdown',
+              reply_markup: replyMarkup
             })
           });
           broadcastResult = await tgRes.json();
@@ -68,7 +79,8 @@ export default async function handler(req, res) {
               chat_id: channelId,
               text: textWithMedia,
               parse_mode: 'Markdown',
-              disable_web_page_preview: false
+              disable_web_page_preview: false,
+              reply_markup: replyMarkup
             })
           });
           broadcastResult = await tgRes.json();

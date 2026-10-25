@@ -37,7 +37,7 @@ let memoryPosts = [
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
@@ -101,6 +101,41 @@ export default async function handler(req, res) {
         success: true,
         message: 'تم نشر المنشور بنجاح',
         post: newPost
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message });
+    }
+  }
+
+  // PUT: تعديل منشور موجود
+  if (req.method === 'PUT') {
+    try {
+      let body = req.body;
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch (e) { body = {}; }
+      }
+      const { id, title, content, mediaUrl, mediaType, isVip } = body || {};
+      if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
+
+      const idx = memoryPosts.findIndex(p => p.id === id);
+      if (idx === -1) {
+        return res.status(404).json({ success: false, message: 'المنشور غير موجود' });
+      }
+
+      memoryPosts[idx] = {
+        ...memoryPosts[idx],
+        title: title !== undefined ? title.trim() : memoryPosts[idx].title,
+        content: content !== undefined ? content.trim() : memoryPosts[idx].content,
+        mediaUrl: mediaUrl !== undefined ? mediaUrl.trim() : memoryPosts[idx].mediaUrl,
+        mediaType: mediaType !== undefined ? mediaType : memoryPosts[idx].mediaType,
+        isVip: isVip !== undefined ? Boolean(isVip) : memoryPosts[idx].isVip,
+        updatedAt: new Date().toISOString()
+      };
+
+      return res.status(200).json({
+        success: true,
+        message: 'تم تعديل المنشور بنجاح',
+        post: memoryPosts[idx]
       });
     } catch (e) {
       return res.status(500).json({ success: false, message: e.message });

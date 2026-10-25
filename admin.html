@@ -375,7 +375,8 @@
       <button type="button" class="admin-tab-btn active" onclick="switchTab('invoices', this)">📋 إدارة الفواتير</button>
       <button type="button" class="admin-tab-btn" onclick="switchTab('publisher', this)">✍️ النشر الذكي</button>
       <button type="button" class="admin-tab-btn" onclick="switchTab('posts', this)">📁 المحتوى المنشور</button>
-      <button type="button" class="admin-tab-btn" onclick="switchTab('settings', this)">⚙️ المحافظ والبوت</button>
+      <button type="button" class="admin-tab-btn" onclick="switchTab('site-config', this)">🎨 تخصيص واجهة الموقع</button>
+      <button type="button" class="admin-tab-btn" onclick="switchTab('settings', this)">⚙️ تفعيل البوت والمحافظ</button>
     </div>
 
     <a href="/" target="_blank" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 20px; padding: 6px 14px; font-size: 12px; text-decoration: none;">زيارة الموقع ↗</a>
@@ -441,6 +442,21 @@
           <div class="preview-box" id="mediaPreview"></div>
         </div>
 
+        <!-- زر تفاعلي مخصص لقناة تليجرام (Custom Inline Keyboard Button) -->
+        <div style="background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 18px;">
+          <div style="font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 8px;">🔘 زر تفاعلي مخصص لقناة تليجرام (Inline Keyboard Button):</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label class="form-label" style="font-size: 11px;">نص الزر التفاعلي:</label>
+              <input type="text" id="postButtonText" class="text-input" placeholder="اشترك الآن ودخول القناة VIP ⭐️" value="اشترك الآن ودخول القناة VIP ⭐️">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 11px;">رابط الزر (URL):</label>
+              <input type="url" id="postButtonUrl" class="text-input" placeholder="https://nanoona.vercel.app" value="https://nanoona.vercel.app" style="direction: ltr;">
+            </div>
+          </div>
+        </div>
+
         <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: var(--radius-md);">
           <div>
             <div style="font-size: 13px; font-weight: 700; color: #fff;">محتوى مقفل لمشتركي VIP 🔒</div>
@@ -456,10 +472,13 @@
       </div>
     </section>
 
-    <!-- 3️⃣ قسم المحتوى المنشور -->
+    <!-- 3️⃣ قسم المحتوى المنشور مع التعديل والحذف -->
     <section id="sec-posts" class="admin-sec">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 style="font-size: 16px; font-weight: 800; color: #fff;">المنشورات الحالية في المنصة:</h2>
+        <div>
+          <h2 style="font-size: 16px; font-weight: 800; color: #fff;">المنشورات الحالية في المنصة:</h2>
+          <p style="font-size: 11px; color: var(--text-muted);">إمكانية تعديل نصوص وصور المنشور وحذفها بنقرة واحدة</p>
+        </div>
         <button type="button" onclick="loadPosts()" style="background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--gold-light); border-radius: 12px; padding: 6px 12px; font-size: 12px; cursor: pointer;">تحديث 🔄</button>
       </div>
 
@@ -468,10 +487,145 @@
       </div>
     </section>
 
-    <!-- 4️⃣ قسم إعدادات المحافظ وبوت التليجرام -->
+    <!-- 4️⃣ قسم تخصيص واجهة الموقع والمظهر الشامل -->
+    <section id="sec-site-config" class="admin-sec">
+      <div class="form-panel" style="max-width: 900px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <h2 style="font-size: 16px; font-weight: 800; color: #fff;">🎨 تخصيص واجهة الموقع والمظهر المباشر</h2>
+            <p style="font-size: 11px; color: var(--text-muted);">تحكم كامل في جميع عناصر الواجهة الرئيسية: الصور، الإحصائيات، الباقات والأسعار، وروابط التواصل.</p>
+          </div>
+          <button type="button" class="btn-gold" style="padding: 10px 20px;" onclick="saveSiteConfig()">حفظ وتطبيق فوراً 💾</button>
+        </div>
+
+        <div id="siteConfigNotice" style="display: none; padding: 12px; border-radius: var(--radius-md); margin-bottom: 16px; font-size: 13px; font-weight: 700; text-align: center;"></div>
+
+        <!-- 1. البروفايل والصور -->
+        <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">👤 بيانات المشهورة والبروفايل</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">اسم المشهورة (الاسم المعروض):</label>
+              <input type="text" id="cfgCelebName" class="text-input" placeholder="الملكة نانو">
+            </div>
+            <div class="form-group">
+              <label class="form-label">اللقب والوصف السريع:</label>
+              <input type="text" id="cfgCelebTitle" class="text-input" placeholder="صانعة محتوى حصري | تجربة التواصل المباشر وVIP">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">رابط صورة الغلاف الخلفية (Cover Banner):</label>
+              <input type="text" id="cfgCoverUrl" class="text-input" placeholder="avatar.jpg أو رابط صورة خارجي" style="direction: ltr;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط الصورة الشخصية (Avatar):</label>
+              <input type="text" id="cfgAvatarUrl" class="text-input" placeholder="avatar.jpg أو رابط صورة خارجي" style="direction: ltr;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الوصف والنبذة التعريفي في تبويب (عن القناة):</label>
+            <textarea id="cfgCelebBio" class="text-input" rows="3" placeholder="اكتب نبذة عن القناة والمنصة..."></textarea>
+          </div>
+        </div>
+
+        <!-- 2. إحصائيات البروفايل -->
+        <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">📊 مؤشرات وإحصائيات البروفايل</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">عدد المتابعين:</label>
+              <input type="text" id="cfgFollowersCount" class="text-input" placeholder="1.2M">
+            </div>
+            <div class="form-group">
+              <label class="form-label">عدد المشتركين VIP:</label>
+              <input type="text" id="cfgSubscribersCount" class="text-input" placeholder="154K">
+            </div>
+            <div class="form-group">
+              <label class="form-label">عدد الإعجابات:</label>
+              <input type="text" id="cfgLikesCount" class="text-input" placeholder="3.8M">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. أسعار وتفاصيل باقات الاشتراك -->
+        <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">💎 باقات الاشتراك والأسعار ($ USD)</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">باقة الوصول الأساسي (Tier 1):</div>
+              <input type="text" id="cfgTier1Name" class="text-input" placeholder="اسم الباقة" style="margin-bottom: 6px;">
+              <input type="number" step="0.01" id="cfgTier1Price" class="text-input" placeholder="السعر $" style="direction: ltr;">
+            </div>
+            <div style="background: rgba(212,175,55,0.08); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--card-border);">
+              <div style="font-size: 12px; font-weight: 800; color: var(--gold-light); margin-bottom: 6px;">باقة VIP برايفيت (Tier 2):</div>
+              <input type="text" id="cfgTier2Name" class="text-input" placeholder="اسم الباقة" style="margin-bottom: 6px;">
+              <input type="number" step="0.01" id="cfgTier2Price" class="text-input" placeholder="السعر $" style="direction: ltr;">
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 12px; font-weight: 700; color: #c084fc; margin-bottom: 6px;">مكالمة الفيديو (Tier 3):</div>
+              <input type="text" id="cfgTier3Name" class="text-input" placeholder="اسم الباقة" style="margin-bottom: 6px;">
+              <input type="number" step="0.01" id="cfgTier3Price" class="text-input" placeholder="السعر $" style="direction: ltr;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. روابط التواصل الاجتماعي -->
+        <div style="margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">🌐 روابط منصات التواصل الاجتماعي المعروضة</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">رابط قناة تليجرام:</label>
+              <input type="url" id="cfgTgChannelLink" class="text-input" placeholder="https://t.me/nnano14" style="direction: ltr;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط الواتساب:</label>
+              <input type="url" id="cfgWaLink" class="text-input" placeholder="https://wa.me/qr/6SUMEKHOZNDUK1" style="direction: ltr;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط تيك توك:</label>
+              <input type="url" id="cfgTiktokLink" class="text-input" placeholder="https://tiktok.com/@..." style="direction: ltr;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط انستغرام:</label>
+              <input type="url" id="cfgInstaLink" class="text-input" placeholder="https://instagram.com/..." style="direction: ltr;">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">رابط سناب شات:</label>
+            <input type="url" id="cfgSnapLink" class="text-input" placeholder="https://snapchat.com/add/..." style="direction: ltr;">
+          </div>
+        </div>
+
+        <button type="button" class="btn-gold" style="width: 100%; font-size: 15px;" onclick="saveSiteConfig()">حفظ وتطبيق جميع التعديلات على الموقع 💾</button>
+      </div>
+    </section>
+
+    <!-- 5️⃣ قسم إعدادات وتفعيل بوت التليجرام والمحافظ -->
     <section id="sec-settings" class="admin-sec">
       <div class="form-panel">
-        <h2 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 16px;">⚙️ إعدادات المحافظ وبوت تليجرام</h2>
+        <h2 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 16px;">🤖 تفعيل بوت تليجرام والمحافظ</h2>
+
+        <!-- اختبار اتصال البوت المباشر -->
+        <div style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+          <div style="font-size: 13px; font-weight: 800; color: #10b981; margin-bottom: 6px;">⚡ تفعيل البوت والتحقق من صلاحية القناة:</div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">تأكد من إضافة البوت كـ Admin في القناة الرسمية لمنحه صلاحية النشر وإرسال الروابط الفردية للمشتركين.</p>
+          
+          <div class="form-group">
+            <label class="form-label">Telegram Bot Token (رمز البوت من @BotFather):</label>
+            <input type="text" id="cfgBotToken" class="text-input" placeholder="123456789:ABCdefGHIjkLMNopQRstUVwxyZ" style="direction: ltr;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">معرف القناة الرسمية أو المغلقة (Channel ID أو @nnano14):</label>
+            <input type="text" id="cfgChannelId" class="text-input" value="@nnano14" style="direction: ltr;">
+          </div>
+
+          <button type="button" class="btn-gold" style="background: var(--emerald-gradient); color:#fff;" onclick="testBotConnection()">فحص اتصال وتفعيل البوت 🤖</button>
+          
+          <div id="botTestResult" style="display: none; margin-top: 12px; padding: 12px; border-radius: var(--radius-sm); font-size: 12px;"></div>
+        </div>
 
         <div class="form-group">
           <label class="form-label">حساب InstaPay (مصر):</label>
@@ -485,20 +639,54 @@
           <label class="form-label">رقم زين كاش (العراق):</label>
           <input type="text" id="cfgZaincash" class="text-input" value="07812345678" style="direction: ltr;">
         </div>
-        <div class="form-group">
-          <label class="form-label">Telegram Bot Token (للروابط الفردية والبث التلقائي):</label>
-          <input type="text" id="cfgBotToken" class="text-input" placeholder="123456789:ABCdefGHIjkLMNopQRstUVwxyZ" style="direction: ltr;">
-        </div>
-        <div class="form-group">
-          <label class="form-label">معرف القناة المغلقة (Channel ID أو @nnano14):</label>
-          <input type="text" id="cfgChannelId" class="text-input" value="@nnano14" style="direction: ltr;">
-        </div>
 
-        <button type="button" class="btn-gold" onclick="saveSettings()">حفظ الإعدادات 💾</button>
+        <button type="button" class="btn-gold" onclick="saveSettings()">حفظ الإعدادات والمحافظ 💾</button>
       </div>
     </section>
 
   </main>
+
+  <!-- نافذة تعديل المنشور المنبثقة (Edit Post Modal) -->
+  <div id="editPostModal" class="lightbox" style="align-items: center; justify-content: center;">
+    <div class="form-panel" style="width: 100%; max-width: 600px; margin: auto; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #fff;">✏️ تعديل المنشور</h3>
+        <button type="button" onclick="closeEditModal()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <input type="hidden" id="editPostId">
+      <div class="form-group">
+        <label class="form-label">عنوان المنشور:</label>
+        <input type="text" id="editPostTitle" class="text-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف / النص:</label>
+        <textarea id="editPostContent" class="text-input" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رابط الوسائط الخارجي:</label>
+        <input type="url" id="editPostMediaUrl" class="text-input" style="direction: ltr;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع الوسائط:</label>
+        <select id="editPostMediaType" class="text-input" style="direction: rtl;">
+          <option value="image">صورة عالية الدقة (Image)</option>
+          <option value="video">فيديو مباشر (MP4/WebM)</option>
+          <option value="youtube">يوتيوب (YouTube)</option>
+        </select>
+      </div>
+      <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-md);">
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #fff;">محتوى مقفل VIP 🔒</div>
+          <div style="font-size: 11px; color: var(--text-muted);">حجب وتضبيب لغير المشتركين</div>
+        </div>
+        <input type="checkbox" id="editPostIsVip" style="width: 22px; height: 22px; accent-color: var(--gold-primary); cursor: pointer;">
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 18px;">
+        <button type="button" class="btn-gold" style="flex: 1;" onclick="submitPostEdit()">حفظ التعديلات 💾</button>
+        <button type="button" class="btn-reject" style="padding: 12px 20px;" onclick="closeEditModal()">إلغاء ✕</button>
+      </div>
+    </div>
+  </div>
 
   <!-- لايت بوكس لعرض الإيصالات -->
   <div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
@@ -506,6 +694,8 @@
   </div>
 
   <script>
+    let loadedPostsCache = [];
+
     // التحقق من رمز PIN للدخول
     function verifyAdminPin() {
       const pin = document.getElementById('adminPinInput').value.trim();
@@ -513,6 +703,7 @@
         document.getElementById('authScreen').style.display = 'none';
         sessionStorage.setItem('admin_auth', 'true');
         loadInvoices();
+        loadSiteConfig();
       } else {
         document.getElementById('authErrorMsg').style.display = 'block';
       }
@@ -522,6 +713,7 @@
       if (sessionStorage.getItem('admin_auth') === 'true') {
         document.getElementById('authScreen').style.display = 'none';
         loadInvoices();
+        loadSiteConfig();
       }
     });
 
@@ -530,11 +722,13 @@
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      ['invoices', 'publisher', 'posts', 'settings'].forEach(id => {
-        document.getElementById(`sec-${id}`).classList.toggle('active', id === tabId);
+      ['invoices', 'publisher', 'posts', 'site-config', 'settings'].forEach(id => {
+        const sec = document.getElementById(`sec-${id}`);
+        if (sec) sec.classList.toggle('active', id === tabId);
       });
 
       if (tabId === 'posts') loadPosts();
+      if (tabId === 'site-config') loadSiteConfig();
     }
 
     // جلب الفواتير
@@ -708,12 +902,14 @@
       box.innerHTML = `<img src="${url}" alt="معاينة" style="max-height:240px; max-width:100%; object-fit:contain;">`;
     }
 
-    // نشر المنشور
+    // نشر المنشور مع الزر التفاعلي المخصص
     async function publishPost(dual) {
       const title = document.getElementById('postTitle').value.trim();
       const content = document.getElementById('postContent').value.trim();
       const mediaUrl = document.getElementById('postMediaUrl').value.trim();
       const isVip = document.getElementById('postIsVip').checked;
+      const buttonText = (document.getElementById('postButtonText').value || '').trim();
+      const buttonUrl = (document.getElementById('postButtonUrl').value || '').trim();
 
       if (!title) { alert('يرجى كتابة عنوان للمنشور'); return; }
 
@@ -734,11 +930,11 @@
           await fetch('/api/publish', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId })
+            body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl })
           });
         }
 
-        alert(dual ? 'تم النشر بنجاح على الموقع وقناة تليجرام! 🚀' : 'تم النشر بنجاح على الموقع! ✨');
+        alert(dual ? 'تم النشر بنجاح على الموقع وقناة تليجرام مع الزر المخصص! 🚀' : 'تم النشر بنجاح على الموقع! ✨');
         document.getElementById('postTitle').value = '';
         document.getElementById('postContent').value = '';
         document.getElementById('postMediaUrl').value = '';
@@ -748,7 +944,7 @@
       }
     }
 
-    // إدارة المنشورات
+    // إدارة المنشورات (عرض مع إمكانية التعديل والحذف)
     async function loadPosts() {
       const box = document.getElementById('postsList');
       box.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">جاري التحميل...</div>`;
@@ -756,28 +952,245 @@
         const res = await fetch('/api/posts');
         const data = await res.json();
         const posts = (data && data.posts) || [];
-        if (posts.length === 0) { box.innerHTML = 'لا توجد منشورات.'; return; }
+        loadedPostsCache = posts;
+
+        if (posts.length === 0) { box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد منشورات حالياً.</div>'; return; }
 
         box.innerHTML = posts.map(p => `
-          <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-weight:800; color:#fff;">${p.title}</div>
-              <div style="font-size:12px; color:var(--text-muted);">${p.isVip ? '🔒 VIP حصري' : '✨ متاح'} • ${p.mediaType || 'صورة'}</div>
+          <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
+              ${p.mediaUrl ? `<img src="${p.mediaUrl}" onerror="this.src='avatar.jpg'" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold-primary);">` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px;">🎬</div>`}
+              <div>
+                <div style="font-weight:800; font-size:14px; color:#fff; margin-bottom: 2px;">${p.title}</div>
+                <div style="font-size:12px; color:var(--text-muted);">${p.isVip ? '<span style="color:var(--gold-light); font-weight:bold;">🔒 VIP حصري</span>' : '<span style="color:#10b981; font-weight:bold;">✨ متاح للجميع</span>'} • نوع الوسائط: ${p.mediaType || 'صورة'}</div>
+              </div>
             </div>
-            <button type="button" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:6px 14px; cursor:pointer;" onclick="deletePost('${p.id}')">حذف ✕</button>
+            
+            <div style="display: flex; gap: 8px;">
+              <button type="button" style="background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4); color:var(--gold-light); border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="openEditModal('${p.id}')">✏️ تعديل</button>
+              <button type="button" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#ef4444; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="deletePost('${p.id}')">🗑️ حذف</button>
+            </div>
           </div>
         `).join('');
-      } catch (e) { box.innerHTML = 'خطأ أثناء الجلب'; }
+      } catch (e) { box.innerHTML = '<div style="text-align:center; color:#ef4444;">خطأ أثناء جلب المنشورات</div>'; }
+    }
+
+    // فتح نافذة التعديل
+    function openEditModal(id) {
+      const p = loadedPostsCache.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('editPostId').value = p.id;
+      document.getElementById('editPostTitle').value = p.title || '';
+      document.getElementById('editPostContent').value = p.content || '';
+      document.getElementById('editPostMediaUrl').value = p.mediaUrl || '';
+      document.getElementById('editPostMediaType').value = p.mediaType || 'image';
+      document.getElementById('editPostIsVip').checked = Boolean(p.isVip);
+
+      document.getElementById('editPostModal').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editPostModal').classList.remove('active');
+    }
+
+    // إرسال التعديل
+    async function submitPostEdit() {
+      const id = document.getElementById('editPostId').value;
+      const title = document.getElementById('editPostTitle').value.trim();
+      const content = document.getElementById('editPostContent').value.trim();
+      const mediaUrl = document.getElementById('editPostMediaUrl').value.trim();
+      const mediaType = document.getElementById('editPostMediaType').value;
+      const isVip = document.getElementById('editPostIsVip').checked;
+
+      if (!title) { alert('عنوان المنشور مطلوب'); return; }
+
+      try {
+        const res = await fetch('/api/posts', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, title, content, mediaUrl, mediaType, isVip })
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          alert('تم حفظ وتعديل المنشور بنجاح! ✨');
+          closeEditModal();
+          loadPosts();
+        } else {
+          alert(`فشل التعديل: ${data.message || 'خطأ غير معروف'}`);
+        }
+      } catch (e) {
+        alert('حدث خطأ أثناء حفظ التعديل');
+      }
     }
 
     async function deletePost(id) {
-      if (!confirm('حذف هذا المنشور نهائياً؟')) return;
+      if (!confirm('هل أنت متأكد من حذف هذا المنشور نهائياً من المنصة؟')) return;
       await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
       loadPosts();
     }
 
-    function saveSettings() {
-      alert('تم حفظ الإعدادات بنجاح! 💾');
+    // جلب إعدادات الموقع وتعبئة النموذج
+    async function loadSiteConfig() {
+      try {
+        const res = await fetch('/api/site-config');
+        const data = await res.json();
+        if (data && data.success && data.config) {
+          const c = data.config;
+          if (c.celebrityName) document.getElementById('cfgCelebName').value = c.celebrityName;
+          if (c.celebrityTitle) document.getElementById('cfgCelebTitle').value = c.celebrityTitle;
+          if (c.celebrityBio) document.getElementById('cfgCelebBio').value = c.celebrityBio;
+          if (c.coverUrl) document.getElementById('cfgCoverUrl').value = c.coverUrl;
+          if (c.avatarUrl) document.getElementById('cfgAvatarUrl').value = c.avatarUrl;
+
+          if (c.followersCount) document.getElementById('cfgFollowersCount').value = c.followersCount;
+          if (c.subscribersCount) document.getElementById('cfgSubscribersCount').value = c.subscribersCount;
+          if (c.likesCount) document.getElementById('cfgLikesCount').value = c.likesCount;
+
+          if (c.tierBasicName) document.getElementById('cfgTier1Name').value = c.tierBasicName;
+          if (c.tierBasicPrice) document.getElementById('cfgTier1Price').value = c.tierBasicPrice;
+          if (c.tierVipName) document.getElementById('cfgTier2Name').value = c.tierVipName;
+          if (c.tierVipPrice) document.getElementById('cfgTier2Price').value = c.tierVipPrice;
+          if (c.tierCallName) document.getElementById('cfgTier3Name').value = c.tierCallName;
+          if (c.tierCallPrice) document.getElementById('cfgTier3Price').value = c.tierCallPrice;
+
+          if (c.telegramChannel) document.getElementById('cfgTgChannelLink').value = c.telegramChannel;
+          if (c.whatsappNumber) document.getElementById('cfgWaLink').value = c.whatsappNumber;
+          if (c.tiktokUrl) document.getElementById('cfgTiktokLink').value = c.tiktokUrl;
+          if (c.instagramUrl) document.getElementById('cfgInstaLink').value = c.instagramUrl;
+          if (c.snapchatUrl) document.getElementById('cfgSnapLink').value = c.snapchatUrl;
+
+          if (c.telegramBotToken) document.getElementById('cfgBotToken').value = c.telegramBotToken;
+          if (c.telegramChannelId) document.getElementById('cfgChannelId').value = c.telegramChannelId;
+
+          if (c.instapayAccount) document.getElementById('cfgInstapay').value = c.instapayAccount;
+          if (c.vodafoneCash) document.getElementById('cfgVodafone').value = c.vodafoneCash;
+          if (c.zainCash) document.getElementById('cfgZaincash').value = c.zainCash;
+        }
+      } catch (err) {
+        console.warn('Could not load site config:', err);
+      }
+    }
+
+    // حفظ وتطبيق إعدادات الموقع الشاملة
+    async function saveSiteConfig() {
+      const config = {
+        celebrityName: document.getElementById('cfgCelebName').value.trim(),
+        celebrityTitle: document.getElementById('cfgCelebTitle').value.trim(),
+        celebrityBio: document.getElementById('cfgCelebBio').value.trim(),
+        coverUrl: document.getElementById('cfgCoverUrl').value.trim(),
+        avatarUrl: document.getElementById('cfgAvatarUrl').value.trim(),
+
+        followersCount: document.getElementById('cfgFollowersCount').value.trim(),
+        subscribersCount: document.getElementById('cfgSubscribersCount').value.trim(),
+        likesCount: document.getElementById('cfgLikesCount').value.trim(),
+
+        tierBasicName: document.getElementById('cfgTier1Name').value.trim(),
+        tierBasicPrice: document.getElementById('cfgTier1Price').value.trim(),
+        tierVipName: document.getElementById('cfgTier2Name').value.trim(),
+        tierVipPrice: document.getElementById('cfgTier2Price').value.trim(),
+        tierCallName: document.getElementById('cfgTier3Name').value.trim(),
+        tierCallPrice: document.getElementById('cfgTier3Price').value.trim(),
+
+        telegramChannel: document.getElementById('cfgTgChannelLink').value.trim(),
+        whatsappNumber: document.getElementById('cfgWaLink').value.trim(),
+        tiktokUrl: document.getElementById('cfgTiktokLink').value.trim(),
+        instagramUrl: document.getElementById('cfgInstaLink').value.trim(),
+        snapchatUrl: document.getElementById('cfgSnapLink').value.trim(),
+
+        telegramBotToken: document.getElementById('cfgBotToken').value.trim(),
+        telegramChannelId: document.getElementById('cfgChannelId').value.trim()
+      };
+
+      const notice = document.getElementById('siteConfigNotice');
+
+      try {
+        const res = await fetch('/api/site-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config)
+        });
+        const data = await res.json();
+
+        if (data && data.success) {
+          notice.style.display = 'block';
+          notice.style.background = 'rgba(16,185,129,0.15)';
+          notice.style.border = '1px solid rgba(16,185,129,0.4)';
+          notice.style.color = '#10b981';
+          notice.textContent = '✓ تم حفظ وتحديث واجهة الموقع فوراً بنجاح! تم تطبيق التغييرات على الواجهة الرئيسية.';
+          setTimeout(() => { notice.style.display = 'none'; }, 5000);
+          alert('تم حفظ وتطبيق التعديلات على واجهة الموقع بنجاح! 💾✨');
+        } else {
+          alert('حدث خطأ أثناء حفظ الإعدادات');
+        }
+      } catch (e) {
+        alert('فشل الاتصال بالخادم لحفظ الإعدادات');
+      }
+    }
+
+    // فحص وتأكيد تفعيل بوت تليجرام
+    async function testBotConnection() {
+      const botToken = document.getElementById('cfgBotToken').value.trim();
+      const channelId = document.getElementById('cfgChannelId').value.trim();
+      const resultBox = document.getElementById('botTestResult');
+
+      if (!botToken) {
+        alert('يرجى إدخال رمز Telegram Bot Token أولاً');
+        return;
+      }
+
+      resultBox.style.display = 'block';
+      resultBox.style.background = 'rgba(0,0,0,0.4)';
+      resultBox.style.color = '#cbd5e1';
+      resultBox.innerHTML = 'جاري الاتصال والتحقق من سيرفرات تليجرام... ⏳';
+
+      try {
+        const res = await fetch('/api/test-bot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ botToken, channelId })
+        });
+        const data = await res.json();
+
+        if (data && data.success) {
+          resultBox.style.background = 'rgba(16,185,129,0.15)';
+          resultBox.style.border = '1px solid rgba(16,185,129,0.4)';
+          resultBox.style.color = '#10b981';
+          resultBox.innerHTML = `
+            <strong>✓ تم التحقق بنجاح!</strong><br>
+            • اسم البوت: <b>${data.bot.name}</b> (@${data.bot.username})<br>
+            • معرف البوت: <code>${data.bot.id}</code><br>
+            ${data.channel ? `• القناة المتصلة: <b>${data.channel.title || ''}</b> (ID: <code>${data.channel.id}</code>)` : (data.channelError ? `• تنبيه القناة: <span style="color:#f59e0b;">${data.channelError} (تأكد من إضافة البوت مشرفاً Admin في القناة)</span>` : '')}
+          `;
+        } else {
+          resultBox.style.background = 'rgba(239,68,68,0.15)';
+          resultBox.style.border = '1px solid rgba(239,68,68,0.4)';
+          resultBox.style.color = '#ef4444';
+          resultBox.innerHTML = `✕ فشل التحقق: ${data.message || 'رمز البوت غير صالح'}`;
+        }
+      } catch (err) {
+        resultBox.style.background = 'rgba(239,68,68,0.15)';
+        resultBox.style.color = '#ef4444';
+        resultBox.innerHTML = `✕ تعذر الاتصال: ${err.message}`;
+      }
+    }
+
+    async function saveSettings() {
+      const config = {
+        telegramBotToken: document.getElementById('cfgBotToken').value.trim(),
+        telegramChannelId: document.getElementById('cfgChannelId').value.trim(),
+        instapayAccount: document.getElementById('cfgInstapay').value.trim(),
+        vodafoneCash: document.getElementById('cfgVodafone').value.trim(),
+        zainCash: document.getElementById('cfgZaincash').value.trim()
+      };
+
+      await fetch('/api/site-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config)
+      });
+
+      alert('تم حفظ إعدادات البوت والمحافظ بنجاح! 💾');
     }
   </script>
 </body>
