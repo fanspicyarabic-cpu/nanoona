@@ -50,6 +50,10 @@ export default async function handler(req, res) {
     }
   }
 
+  if (post && post.thumbnail && post.thumbnail.startsWith('http')) {
+    previewImage = post.thumbnail.trim();
+  }
+
   const imageUrl = previewImage;
   const canonicalUrl = post ? `${siteUrl}/p/${post.id}` : siteUrl;
   const targetAppUrl = post ? `${siteUrl}/#${post.id}` : siteUrl;
@@ -127,7 +131,7 @@ export default async function handler(req, res) {
 
         ${isVideo && videoUrl ? `
         <div class="rounded-2xl overflow-hidden border border-yellow-500/20 mb-6 max-h-60 bg-black flex items-center justify-center shadow-lg">
-            <video src="${videoUrl}" controls playsinline class="w-full max-h-60 object-contain"></video>
+            <video src="${videoUrl}" ${previewImage && previewImage !== defaultAvatar ? `poster="${previewImage}"` : ''} controls playsinline class="w-full max-h-60 object-contain"></video>
         </div>
         ` : (post && post.mediaUrl ? `
         <div class="rounded-2xl overflow-hidden border border-white/10 mb-6 max-h-56 bg-black flex items-center justify-center">

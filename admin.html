@@ -450,6 +450,26 @@
           <div class="preview-box" id="mediaPreview"></div>
         </div>
 
+        <!-- تحديد قسم وسجل النشر + غلاف الفيديو -->
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">قسم وسجل النشر (التصنيف):</label>
+            <select id="postCategorySelect" class="text-input" style="direction: rtl;" onchange="onCategorySelectChange('post', this.value)">
+              <option value="photos">📸 جلسات تصوير</option>
+              <option value="videos">🎬 فيديوهات خاصة</option>
+              <option value="live">🔴 بث مباشر</option>
+              <option value="snaps">👻 سنابات حصرية</option>
+              <option value="daily">✨ يوميات ومقاطع</option>
+              <option value="custom">➕ كتابة قسم مخصص جديد...</option>
+            </select>
+            <input type="text" id="postCategoryCustom" class="text-input" placeholder="اسم القسم الجديد..." style="display: none; margin-top: 6px;">
+          </div>
+          <div>
+            <label class="form-label">صورة غلاف الفيديو (Thumbnail / Poster):</label>
+            <input type="url" id="postThumbnail" class="text-input" placeholder="https://... رابط صورة الغلاف (اختياري)" style="direction: ltr;">
+          </div>
+        </div>
+
         <!-- زر تفاعلي مخصص لقناة تليجرام (Custom Inline Keyboard Button) -->
         <div style="background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 18px;">
           <div style="font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 8px;">🔘 زر تفاعلي مخصص لقناة تليجرام (Inline Keyboard Button):</div>
@@ -883,13 +903,31 @@
         <label class="form-label">رابط الوسائط الخارجي (فيديو Videy، مباشر، يوتيوب، أو صورة):</label>
         <input type="url" id="editPostMediaUrl" class="text-input" style="direction: ltr;" oninput="onEditMediaUrlChange(this.value)">
       </div>
+      <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div>
+          <label class="form-label">نوع الوسائط:</label>
+          <select id="editPostMediaType" class="text-input" style="direction: rtl;">
+            <option value="image">صورة عالية الدقة (Image)</option>
+            <option value="video">فيديو مباشر (MP4/WebM)</option>
+            <option value="youtube">يوتيوب (YouTube)</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">قسم وسجل النشر:</label>
+          <select id="editPostCategorySelect" class="text-input" style="direction: rtl;" onchange="onCategorySelectChange('editPost', this.value)">
+            <option value="photos">📸 جلسات تصوير</option>
+            <option value="videos">🎬 فيديوهات خاصة</option>
+            <option value="live">🔴 بث مباشر</option>
+            <option value="snaps">👻 سنابات حصرية</option>
+            <option value="daily">✨ يوميات ومقاطع</option>
+            <option value="custom">➕ كتابة قسم مخصص...</option>
+          </select>
+          <input type="text" id="editPostCategoryCustom" class="text-input" placeholder="اسم القسم الجديد..." style="display: none; margin-top: 6px;">
+        </div>
+      </div>
       <div class="form-group">
-        <label class="form-label">نوع الوسائط:</label>
-        <select id="editPostMediaType" class="text-input" style="direction: rtl;">
-          <option value="image">صورة عالية الدقة (Image)</option>
-          <option value="video">فيديو مباشر (MP4/WebM)</option>
-          <option value="youtube">يوتيوب (YouTube)</option>
-        </select>
+        <label class="form-label">صورة غلاف الفيديو (Thumbnail / Poster):</label>
+        <input type="url" id="editPostThumbnail" class="text-input" placeholder="https://... رابط صورة الغلاف (اختياري)" style="direction: ltr;">
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
         <div class="form-group">
@@ -1299,7 +1337,68 @@
       box.innerHTML = `<img src="${info.directUrl}" alt="معاينة" style="max-height:240px; max-width:100%; object-fit:contain; border-radius:10px;" onerror="this.alt='تعذر تحميل المعاينة (تأكد من صحة الرابط)'; this.style.color='#ef4444';">`;
     }
 
-    // نشر المنشور مع الزر التفاعلي المخصص ودعم فيديوهات Videy
+    // إدارة تصنيفات وأقسام المحتوى (جلسات تصوير، فيديوهات خاصة، بث مباشر، سنابات، يوميات، وأقسام مخصصة)
+    function onCategorySelectChange(prefix, val) {
+      const customInput = document.getElementById(prefix + 'CategoryCustom');
+      if (customInput) {
+        if (val === 'custom') {
+          customInput.style.display = 'block';
+          customInput.focus();
+        } else {
+          customInput.style.display = 'none';
+          customInput.value = '';
+        }
+      }
+    }
+
+    function getSelectedCategory(prefix) {
+      const sel = document.getElementById(prefix + 'CategorySelect');
+      const customInput = document.getElementById(prefix + 'CategoryCustom');
+      if (sel && sel.value === 'custom') {
+        const customVal = customInput ? customInput.value.trim() : '';
+        return customVal || 'photos';
+      }
+      return (sel && sel.value) || 'photos';
+    }
+
+    function setSelectedCategory(prefix, val) {
+      const sel = document.getElementById(prefix + 'CategorySelect');
+      const customInput = document.getElementById(prefix + 'CategoryCustom');
+      if (!sel) return;
+      const standard = ['photos', 'videos', 'live', 'snaps', 'daily'];
+      if (standard.includes(val)) {
+        sel.value = val;
+        if (customInput) {
+          customInput.style.display = 'none';
+          customInput.value = '';
+        }
+      } else if (val) {
+        sel.value = 'custom';
+        if (customInput) {
+          customInput.style.display = 'block';
+          customInput.value = val;
+        }
+      } else {
+        sel.value = 'photos';
+        if (customInput) {
+          customInput.style.display = 'none';
+          customInput.value = '';
+        }
+      }
+    }
+
+    function getCategoryLabel(cat) {
+      const map = {
+        photos: '📸 جلسات تصوير',
+        videos: '🎬 فيديوهات خاصة',
+        live: '🔴 بث مباشر',
+        snaps: '👻 سنابات حصرية',
+        daily: '✨ يوميات ومقاطع'
+      };
+      return map[cat] || `📁 ${cat}`;
+    }
+
+    // نشر المنشور مع الزر التفاعلي المخصص ودعم فيديوهات Videy والأقسام والغلاف
     async function publishPost(dual) {
       const title = document.getElementById('postTitle').value.trim();
       const content = document.getElementById('postContent').value.trim();
@@ -1307,6 +1406,8 @@
       const isVip = document.getElementById('postIsVip').checked;
       const buttonText = (document.getElementById('postButtonText').value || '').trim();
       const buttonUrl = (document.getElementById('postButtonUrl').value || '').trim();
+      const thumbnail = (document.getElementById('postThumbnail').value || '').trim();
+      const category = getSelectedCategory('post');
 
       if (!title) { alert('يرجى كتابة عنوان للمنشور'); return; }
 
@@ -1322,7 +1423,7 @@
             'Content-Type': 'application/json',
             'x-admin-token': sessionStorage.getItem('admin_token') || ''
           },
-          body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip })
+          body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, category, thumbnail })
         });
         const postData = await postRes.json();
         if (!postData.success) {
@@ -1342,7 +1443,7 @@
                 'Content-Type': 'application/json',
                 'x-admin-token': sessionStorage.getItem('admin_token') || ''
               },
-              body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl })
+              body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl, category, thumbnail })
             });
             const pubData = await pubRes.json();
             if (pubData && pubData.success && pubData.broadcastStatus === 'sent_successfully') {
@@ -1359,6 +1460,8 @@
         document.getElementById('postTitle').value = '';
         document.getElementById('postContent').value = '';
         document.getElementById('postMediaUrl').value = '';
+        document.getElementById('postThumbnail').value = '';
+        setSelectedCategory('post', 'photos');
         onMediaUrlChange('');
         loadPosts();
       } catch (e) {
@@ -1391,7 +1494,12 @@
           return `
           <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
-              ${isVid && p.mediaUrl ? `
+              ${p.thumbnail ? `
+                <div style="width:52px; height:52px; border-radius:8px; border:1px solid var(--gold-primary); overflow:hidden; position:relative; flex-shrink:0;">
+                  <img src="${p.thumbnail}" onerror="this.src='avatar.jpg'" style="width:100%; height:100%; object-fit:cover;">
+                  ${isVid ? '<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); font-size:14px;">▶</div>' : ''}
+                </div>
+              ` : (isVid && p.mediaUrl ? `
                 <div style="width:52px; height:52px; border-radius:8px; background:#000; border:1px solid var(--gold-primary); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                   <video src="${p.mediaUrl}#t=0.5" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
                   <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); font-size:16px;">🎬</div>
@@ -1400,10 +1508,17 @@
                 <div style="width:52px; height:52px; border-radius:8px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">▶️</div>
               ` : (p.mediaUrl ? `
                 <img src="${p.mediaUrl}" onerror="this.src='avatar.jpg'" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold-primary); flex-shrink:0;">
-              ` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">📸</div>`))}
+              ` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">📸</div>`)))}
               <div>
                 <div style="font-weight:800; font-size:14px; color:#fff; margin-bottom: 2px;">${p.title}</div>
-                <div style="font-size:12px; color:var(--text-muted);">${p.isVip ? '<span style="color:var(--gold-light); font-weight:bold;">🔒 VIP حصري</span>' : '<span style="color:#10b981; font-weight:bold;">✨ متاح للجميع</span>'} • نوع الوسائط: ${p.mediaType === 'video' ? '🎬 فيديو' : (p.mediaType === 'youtube' ? '▶️ يوتيوب' : '📸 صورة')}</div>
+                <div style="font-size:12px; color:var(--text-muted); display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                  ${p.isVip ? '<span style="color:var(--gold-light); font-weight:bold;">🔒 VIP</span>' : '<span style="color:#10b981; font-weight:bold;">✨ متاح للجميع</span>'}
+                  <span>•</span>
+                  <span style="color:#38bdf8; font-weight:600;">${getCategoryLabel(p.category || 'photos')}</span>
+                  <span>•</span>
+                  <span>${p.mediaType === 'video' ? '🎬 فيديو' : (p.mediaType === 'youtube' ? '▶️ يوتيوب' : '📸 صورة')}</span>
+                  ${p.thumbnail ? '<span style="color:var(--gold-light);">• 🖼️ غلاف مخصص</span>' : ''}
+                </div>
               </div>
             </div>
             
@@ -1480,6 +1595,8 @@
       document.getElementById('editPostContent').value = p.content || '';
       document.getElementById('editPostMediaUrl').value = p.mediaUrl || '';
       document.getElementById('editPostMediaType').value = p.mediaType || 'image';
+      document.getElementById('editPostThumbnail').value = p.thumbnail || '';
+      setSelectedCategory('editPost', p.category || 'photos');
       document.getElementById('editPostIsVip').checked = Boolean(p.isVip);
       document.getElementById('editPostViews').value = p.views !== undefined ? p.views : 1250;
       document.getElementById('editPostLikes').value = p.likes !== undefined ? p.likes : 142;
@@ -1511,6 +1628,8 @@
       const isVip = document.getElementById('editPostIsVip').checked;
       const views = document.getElementById('editPostViews').value.trim();
       const likes = document.getElementById('editPostLikes').value.trim();
+      const thumbnail = (document.getElementById('editPostThumbnail').value || '').trim();
+      const category = getSelectedCategory('editPost');
 
       if (!title) { alert('عنوان المنشور مطلوب'); return; }
 
@@ -1532,7 +1651,7 @@
             'Content-Type': 'application/json',
             'x-admin-token': sessionStorage.getItem('admin_token') || ''
           },
-          body: JSON.stringify({ id, title, content, mediaUrl, mediaType, isVip, views, likes })
+          body: JSON.stringify({ id, title, content, mediaUrl, mediaType, isVip, views, likes, category, thumbnail })
         });
         const data = await res.json();
         if (data && data.success) {
@@ -1543,7 +1662,7 @@
           alert(`فشل التعديل: ${data.message || 'خطأ غير معروف'}`);
         }
       } catch (e) {
-        alert('حدث خطأ أثناء حفظ التعديل');
+        alert('حدث خطأ أثناء حفظ التعديل: ' + e.message);
       }
     }
 

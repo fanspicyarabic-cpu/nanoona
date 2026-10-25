@@ -236,11 +236,13 @@
         <div id="section-posts" class="space-y-6">
 
             <!-- Content Filter Badges -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1">
-                <button onclick="filterPosts('all', this)" class="feed-filter-btn bg-gold-500/10 text-gold-400 border border-gold-500/30 px-4 py-1.5 rounded-full text-xs font-semibold">الكل</button>
-                <button onclick="filterPosts('photos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">جلسات تصوير</button>
-                <button onclick="filterPosts('videos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">فيديوهات خاصة</button>
-                <button onclick="filterPosts('live', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold">بث مباشر</button>
+            <div class="flex items-center gap-2 overflow-x-auto pb-1" id="feedFilterBadges">
+                <button onclick="filterPosts('all', this)" class="feed-filter-btn bg-gold-500/10 text-gold-400 border border-gold-500/30 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">الكل</button>
+                <button onclick="filterPosts('photos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">جلسات تصوير</button>
+                <button onclick="filterPosts('videos', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">فيديوهات خاصة</button>
+                <button onclick="filterPosts('live', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">بث مباشر</button>
+                <button onclick="filterPosts('snaps', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">سنابات حصرية</button>
+                <button onclick="filterPosts('daily', this)" class="feed-filter-btn bg-dark-800 text-gray-400 hover:bg-dark-700 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">يوميات</button>
             </div>
 
             <!-- Feed Grid -->
@@ -648,8 +650,19 @@
             return { type: type || 'image', directUrl: url };
         }
 
+        function getCategoryLabel(cat) {
+            const map = {
+                photos: '📸 جلسات تصوير',
+                videos: '🎬 فيديوهات خاصة',
+                live: '🔴 بث مباشر',
+                snaps: '👻 سنابات حصرية',
+                daily: '✨ يوميات ومقاطع'
+            };
+            return map[cat] || `📁 ${cat}`;
+        }
+
         // عارض الوسائط (Media Lightbox)
-        function openMediaLightbox(title, type, url) {
+        function openMediaLightbox(title, type, url, poster) {
             const titleEl = document.getElementById('lightboxTitle');
             const box = document.getElementById('lightboxContent');
             if (titleEl) titleEl.innerText = title || 'معاينة المحتوى الحصري';
@@ -659,7 +672,8 @@
             } else {
                 const info = resolveMediaInfo(url, type);
                 if (info.type === 'video') {
-                    if (box) box.innerHTML = `<video src="${info.directUrl}" controls autoplay playsinline class="max-h-[75vh] max-w-full rounded-2xl shadow-2xl bg-black"></video>`;
+                    const posterAttr = (poster && poster.startsWith('http')) ? `poster="${poster}"` : '';
+                    if (box) box.innerHTML = `<video src="${info.directUrl}" ${posterAttr} controls autoplay playsinline class="max-h-[75vh] max-w-full rounded-2xl shadow-2xl bg-black"></video>`;
                 } else if (info.type === 'youtube') {
                     if (box) box.innerHTML = `<iframe src="${info.directUrl}" class="w-full h-[55vh] border-0 rounded-2xl" allowfullscreen allow="autoplay"></iframe>`;
                 } else {
@@ -1112,13 +1126,40 @@
                 return;
             }
 
+            // بناء أزرار فلترة الأقسام ديناميكياً مع دعم الأقسام المخصصة
+            const filterContainer = document.getElementById('feedFilterBadges');
+            if (filterContainer) {
+                const baseCats = [
+                    { id: 'all', label: 'الكل' },
+                    { id: 'photos', label: 'جلسات تصوير' },
+                    { id: 'videos', label: 'فيديوهات خاصة' },
+                    { id: 'live', label: 'بث مباشر' },
+                    { id: 'snaps', label: 'سنابات حصرية' },
+                    { id: 'daily', label: 'يوميات' }
+                ];
+                const customCats = new Set();
+                posts.forEach(p => {
+                    if (p.category && !baseCats.some(b => b.id === p.category)) {
+                        customCats.add(p.category);
+                    }
+                });
+                const allCats = [
+                    ...baseCats,
+                    ...Array.from(customCats).map(c => ({ id: c, label: c }))
+                ];
+                filterContainer.innerHTML = allCats.map((c, i) => `
+                    <button onclick="filterPosts('${c.id}', this)" class="feed-filter-btn ${i === 0 ? 'bg-gold-500/10 text-gold-400 border border-gold-500/30' : 'bg-dark-800 text-gray-400 hover:bg-dark-700'} px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition">${c.label}</button>
+                `).join('');
+            }
+
             const cardsHtml = posts.map(p => {
                 const isVip = p.isVip;
                 const info = resolveMediaInfo(p.mediaUrl, p.mediaType);
                 const mediaType = info.type;
                 const directMediaUrl = info.directUrl;
-                const cat = mediaType === 'video' || mediaType === 'youtube' ? 'videos' : 'photos';
-                const previewImg = (mediaType === 'image' && directMediaUrl) ? directMediaUrl : (p.thumbnail || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
+                const cat = p.category || (mediaType === 'video' || mediaType === 'youtube' ? 'videos' : 'photos');
+                const thumbnail = (p.thumbnail || '').trim();
+                const previewImg = thumbnail || ((mediaType === 'image' && directMediaUrl) ? directMediaUrl : 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
 
                 if (isVip) {
                     return `
@@ -1128,7 +1169,10 @@
                                 <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
                                 <div>
                                     <h4 class="font-bold text-sm text-white">${p.title}</h4>
-                                    <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                        <span class="text-[10px] bg-dark-800 text-gray-300 px-2 py-0.5 rounded border border-dark-700">${getCategoryLabel(cat)}</span>
+                                    </div>
                                 </div>
                             </div>
                             <span class="bg-gold-500/20 text-gold-400 border border-gold-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-bold">
@@ -1137,11 +1181,13 @@
                         </div>
                         
                         <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer" onclick="selectTier(currentTier, currentPrice, 'vip')">
-                            ${mediaType === 'video' && directMediaUrl ? `
+                            ${thumbnail ? `
+                                <img src="${thumbnail}" class="w-full h-full object-cover filter blur-sm" alt="غلاف المنشور">
+                            ` : (mediaType === 'video' && directMediaUrl ? `
                                 <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover filter blur-sm"></video>
                             ` : `
                                 <div class="w-full h-full bg-cover bg-center filter blur-sm" style="background-image: url('${previewImg}');"></div>
-                            `}
+                            `)}
                             <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
                                 <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
                                     <i class="fa-solid fa-lock"></i>
@@ -1175,7 +1221,10 @@
                                 <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
                                 <div>
                                     <h4 class="font-bold text-sm text-white">${p.title}</h4>
-                                    <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="text-xs text-gray-400">${new Date(p.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+                                        <span class="text-[10px] bg-dark-800 text-gray-300 px-2 py-0.5 rounded border border-dark-700">${getCategoryLabel(cat)}</span>
+                                    </div>
                                 </div>
                             </div>
                             <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-bold">
@@ -1183,12 +1232,14 @@
                             </span>
                         </div>
                         
-                        <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer group" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}')">
-                            ${mediaType === 'video' && directMediaUrl ? `
+                        <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer group" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}', '${thumbnail.replace(/'/g, "\\'")}')">
+                            ${thumbnail ? `
+                                <img src="${thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.title}">
+                            ` : (mediaType === 'video' && directMediaUrl ? `
                                 <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-500"></video>
                             ` : `
                                 <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition duration-500" style="background-image: url('${previewImg}');"></div>
-                            `}
+                            `)}
                             <div class="absolute inset-0 bg-dark-900/20 group-hover:bg-dark-900/10 transition flex items-center justify-center">
                                 <div class="w-12 h-12 rounded-full bg-gold-500/90 text-dark-900 flex items-center justify-center text-xl shadow-2xl opacity-90 group-hover:scale-110 transition">
                                     <i class="fa-solid ${mediaType === 'video' || mediaType === 'youtube' ? 'fa-play mr-0.5' : 'fa-expand'}"></i>
@@ -1207,7 +1258,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 2400} مشاهدة</span>
-                                <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
+                                <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}', '${thumbnail.replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
                                     <span>مشاهدة</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </button>

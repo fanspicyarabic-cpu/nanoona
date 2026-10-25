@@ -2,6 +2,30 @@
 import { loadPosts, savePosts } from '../lib/storage.js';
 import { isValidAdminToken } from './admin-auth.js';
 
+function normalizeMedia(url, type) {
+  let finalMediaUrl = (url || '').trim();
+  let finalMediaType = type || 'image';
+
+  if (!finalMediaUrl) {
+    return { mediaUrl: '', mediaType: finalMediaType };
+  }
+
+  const videyMatch = finalMediaUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+  if (videyMatch) {
+    return { mediaUrl: `https://cdn.videy.co/${videyMatch[1]}.mp4`, mediaType: 'video' };
+  }
+
+  if (finalMediaUrl.includes('youtube.com') || finalMediaUrl.includes('youtu.be')) {
+    return { mediaUrl: finalMediaUrl, mediaType: 'youtube' };
+  }
+
+  if (finalMediaUrl.match(/\.(mp4|webm|mov|m4v|ogg)$/i)) {
+    return { mediaUrl: finalMediaUrl, mediaType: 'video' };
+  }
+
+  return { mediaUrl: finalMediaUrl, mediaType: finalMediaType };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -15,8 +39,12 @@ export default async function handler(req, res) {
   // GET: جلب المنشورات
   if (req.method === 'GET') {
     try {
-      const { type, isVip } = req.query || {};
+      const { type, isVip, category } = req.query || {};
       let posts = await loadPosts();
+
+      if (category && category !== 'all') {
+        posts = posts.filter(p => (p.category || 'photos') === category);
+      }
 
       if (type && type !== 'all') {
         if (type === 'video') {
@@ -58,31 +86,7 @@ export default async function handler(req, res) {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
 
-function normalizeMedia(url, type) {
-  let finalMediaUrl = (url || '').trim();
-  let finalMediaType = type || 'image';
-
-  if (!finalMediaUrl) {
-    return { mediaUrl: '', mediaType: finalMediaType };
-  }
-
-  const videyMatch = finalMediaUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
-  if (videyMatch) {
-    return { mediaUrl: `https://cdn.videy.co/${videyMatch[1]}.mp4`, mediaType: 'video' };
-  }
-
-  if (finalMediaUrl.includes('youtube.com') || finalMediaUrl.includes('youtu.be')) {
-    return { mediaUrl: finalMediaUrl, mediaType: 'youtube' };
-  }
-
-  if (finalMediaUrl.match(/\.(mp4|webm|mov|m4v|ogg)$/i)) {
-    return { mediaUrl: finalMediaUrl, mediaType: 'video' };
-  }
-
-  return { mediaUrl: finalMediaUrl, mediaType: finalMediaType };
-}
-
-      const { title, content, mediaUrl, mediaType, isVip } = body || {};
+      const { title, content, mediaUrl, mediaType, isVip, category, thumbnail } = body || {};
 
       if (!title) {
         return res.status(400).json({ success: false, message: 'عنوان المنشور مطلوب' });
@@ -97,6 +101,8 @@ function normalizeMedia(url, type) {
         content: (content || '').trim(),
         mediaUrl: normalized.mediaUrl,
         mediaType: normalized.mediaType,
+        thumbnail: (thumbnail || '').trim(),
+        category: (category || 'photos').trim(),
         isVip: Boolean(isVip),
         likes: 0,
         views: 1,
@@ -123,7 +129,7 @@ function normalizeMedia(url, type) {
       if (typeof body === 'string') {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
-      const { id, title, content, mediaUrl, mediaType, isVip, views, likes } = body || {};
+      const { id, title, content, mediaUrl, mediaType, isVip, views, likes, category, thumbnail } = body || {};
       if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
 
       let currentPosts = await loadPosts();
@@ -147,6 +153,8 @@ function normalizeMedia(url, type) {
         content: content !== undefined ? content.trim() : currentPosts[idx].content,
         mediaUrl: updatedMediaUrl,
         mediaType: updatedMediaType,
+        thumbnail: thumbnail !== undefined ? thumbnail.trim() : (currentPosts[idx].thumbnail || ''),
+        category: category !== undefined ? category.trim() : (currentPosts[idx].category || 'photos'),
         isVip: isVip !== undefined ? Boolean(isVip) : currentPosts[idx].isVip,
         views: views !== undefined ? views : currentPosts[idx].views,
         likes: likes !== undefined ? likes : currentPosts[idx].likes,
