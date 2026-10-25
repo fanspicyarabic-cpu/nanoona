@@ -121,6 +121,9 @@ export default async function handler(req, res) {
 
     const cryptoUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods&sp_selected_local_method=21`;
     const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
+    const wuUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods&sp_selected_local_method=140`;
+    const redotUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods&sp_selected_local_method=27`;
+    const riaUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods&sp_selected_local_method=152`;
     const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
 
     const selectedWay = paymentWay || 'crypto';
@@ -162,13 +165,19 @@ export default async function handler(req, res) {
         cardUrl: cardUrl,
         localMethodsUrl: localMethodsUrl,
         cryptoUrl: cryptoUrl,
+        wuUrl: wuUrl,
+        redotUrl: redotUrl,
+        riaUrl: riaUrl,
         token: invoiceNumber
       },
       payment_url: paymentUrl,
       paymentUrl: paymentUrl,
       card_url: cardUrl,
-      local_methods_url: localMethodsUrl,
       crypto_url: cryptoUrl,
+      wu_url: wuUrl,
+      redot_url: redotUrl,
+      ria_url: riaUrl,
+      local_methods_url: localMethodsUrl,
       invoice_number: invoiceNumber
     });
 
