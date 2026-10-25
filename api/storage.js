@@ -120,7 +120,15 @@ async function kvSet(key, value) {
 }
 
 function getLocalFilePath(filename) {
-  return path.join(process.cwd(), 'data', filename);
+  const candidates = [
+    path.join(process.cwd(), 'data', filename),
+    path.join(process.cwd(), filename),
+    path.resolve('data', filename)
+  ];
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  return candidates[0];
 }
 
 function readLocalJson(filename, fallback) {
