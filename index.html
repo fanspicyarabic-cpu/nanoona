@@ -487,38 +487,35 @@
                         <input type="hidden" name="phone" id="sp_phone_input" value="0000000000">
                         <input type="hidden" name="notes" id="sp_notes_input" value="vip_50">
 
-                        <!-- 1. حاوية وسائل الدفع والعملات الرقمية والمحافظ (Local payment methods) -->
+                        <!-- حاوية وسائل الدفع والعملات الرقمية الرسمية (Local payment methods) -->
                         <div class="sp-one-type-select bg-dark-900/90 p-3 sm:p-4 rounded-2xl border border-gold-500/30">
-                            <label for="sp_local_methods_radio" class="flex items-center gap-2 cursor-pointer mb-2.5 text-xs font-bold text-white">
-                                <input type="radio" name="sp-pay-type-radio" value="local-methods-pay" id="sp_local_methods_radio" checked class="accent-gold-400">
-                                <span>العملات الرقمية وويسترن يونيون والمحافظ (Local Methods & Crypto)</span>
-                            </label>
+                            <!-- راديو مخفي لتوجيه السكربت الرسمي لمكتبة SpaceRemit -->
+                            <input type="radio" name="sp-pay-type-radio" value="local-methods-pay" id="sp_local_methods_radio" checked class="hidden">
                             
-                            <!-- Container for displaying local payment methods (This renders the EXACT official grid) -->
+                            <div class="flex items-center justify-between mb-2.5 px-1">
+                                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                    <i class="fa-solid fa-wallet text-gold-400"></i>
+                                    <span>وسائل الدفع والعملات الرقمية والمحافظ المعتمدة</span>
+                                </span>
+                                <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                                    <i class="fa-solid fa-shield-halved ml-1"></i>بوابة SpaceRemit
+                                </span>
+                            </div>
+                            
+                            <!-- Container for displaying local payment methods (Ria, WU, Crypto, RedotPay, Skrill...) -->
                             <div id="spaceremit-local-methods-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[310px]"></div>
                         </div>
 
-                        <!-- 2. حاوية الدفع بالبطاقة البنكية (Card payment) -->
-                        <div class="sp-one-type-select bg-dark-900/90 p-3 sm:p-4 rounded-2xl border border-gold-500/20">
-                            <label for="sp_card_radio" class="flex items-center gap-2 cursor-pointer mb-2.5 text-xs font-bold text-white">
-                                <input type="radio" name="sp-pay-type-radio" value="card-pay" id="sp_card_radio" class="accent-gold-400">
-                                <span>الدفع المباشر بالبطاقة البنكية (Visa / MasterCard)</span>
-                            </label>
-                            
-                            <!-- Container for card payment -->
-                            <div id="spaceremit-card-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[140px]"></div>
-                        </div>
-
-                        <!-- تعليمات الاختيار -->
+                        <!-- تعليمات الاختيار الاحترافية -->
                         <div class="text-[11px] text-gray-300 text-center px-1">
                             <span>💡 حدد وسيلتك المفضلة من القائمة أعلاه، ثم اضغط زر المتابعة لفتح تفاصيل السداد فوراً.</span>
                         </div>
 
-                        <!-- زر إتمام الدفع الرسمي لتفعيل واجهة السداد في SpaceRemit -->
+                        <!-- زر إتمام الدفع الرسمي الاحترافي والمختصر -->
                         <div>
-                            <button type="submit" id="sp_official_pay_btn" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer">
-                                <i class="fa-solid fa-lock"></i>
-                                <span>تأكيد وسيلة الدفع والمتابعة (Pay) ↗</span>
+                            <button type="submit" id="sp_official_pay_btn" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer hover:brightness-110 active:scale-[0.99] transition">
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                                <span>اختر وسيلة الدفع ثم متابعة ↗</span>
                             </button>
                         </div>
                     </form>
@@ -788,16 +785,12 @@
             if (amountInp) amountInp.value = parseFloat(currentPrice).toFixed(2);
             if (notesInp) notesInp.value = cleanNotes;
 
-            // 3. تحديث iframes الخاصة ببوابة SpaceRemit بالسعر والملاحظات المحدثة
+            // 3. تحديث iframe الخاص بوسائل الدفع الرسمية ببوابة SpaceRemit بالسعر والملاحظات المحدثة
             const localIframe = document.getElementById('sp_local_nethods_iframe');
-            const cardIframe = document.getElementById('sp_iframe');
             const baseUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&notes=${cleanNotes}`;
 
             if (localIframe) {
                 localIframe.src = `${baseUrl}&way=local_methods&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
-            }
-            if (cardIframe) {
-                cardIframe.src = `${baseUrl}&way=card&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
             }
 
             // 4. تحديث رابط واتساب للمحافظ المحلية
@@ -1135,7 +1128,7 @@
         const LOCAL_METHODS_BOX_STATUS = true;
         const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay";
 
-        const CARD_BOX_STATUS = true;
+        const CARD_BOX_STATUS = false;
         const CARD_BOX_PARENT_ID = "#spaceremit-card-pay";
         let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = false;
 
