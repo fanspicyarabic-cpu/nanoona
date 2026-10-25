@@ -39,6 +39,10 @@ let siteConfig = {
   zainCash: "07812345678"
 };
 
+export function getSiteConfig() {
+  return siteConfig;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

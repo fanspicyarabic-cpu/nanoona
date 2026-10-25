@@ -951,14 +951,16 @@
             }
 
             if (cfg.tierVipName) {
+                currentTier = cfg.tierVipName;
                 const el = document.getElementById('tier2Name');
                 if (el) el.innerText = cfg.tierVipName;
             }
             if (cfg.tierVipPrice) {
+                currentPrice = cfg.tierVipPrice;
                 const el = document.getElementById('tier2Price');
                 if (el) el.innerHTML = `$${cfg.tierVipPrice} <span class="text-xs text-gray-400 font-normal">/ شهرياً</span>`;
                 const btn = document.getElementById('tier2Btn');
-                if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierVipName || 'اشتراك VIP برايفيت'}', '${cfg.tierVipPrice}')`);
+                if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierVipName || 'اشتراك VIP برايفيت'}', '${cfg.tierVipPrice}', 'vip')`);
             }
 
             if (cfg.tierCallName) {
@@ -1034,16 +1036,16 @@
                             </span>
                         </div>
                         
-                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer" style="background-image: url('${previewImg}');" onclick="selectTier('اشتراك VIP برايفيت', '50.00')">
+                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer" style="background-image: url('${previewImg}');" onclick="selectTier(currentTier, currentPrice, 'vip')">
                             <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
                                 <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
                                     <i class="fa-solid fa-lock"></i>
                                 </div>
                                 <h3 class="font-bold text-lg text-white mb-1">المحتوى محمي للمشتركين</h3>
                                 <p class="text-xs text-gray-300 mb-4 max-w-xs">${p.content || 'اشترك الآن لفتح هذا المحتوى والاستمتاع بالمشاهدة الحصرية.'}</p>
-                                <button onclick="event.stopPropagation(); selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
+                                <button onclick="event.stopPropagation(); selectTier(currentTier, currentPrice, 'vip')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
                                     <i class="fa-solid fa-key"></i>
-                                    <span>فتح المحتوى الحصري ($50 / شهر)</span>
+                                    <span>فتح المحتوى الحصري ($${currentPrice} / شهر)</span>
                                 </button>
                             </div>
                         </div>

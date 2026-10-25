@@ -1,13 +1,6 @@
 // api/create-payment.js - إنشاء جلسة دفع مشفرة وآمنة لبوابة SpaceRemit مع التحقق الصارم من الخادم (Server-Side Validation)
 import { registerInvoice } from './invoices.js';
-
-// قوائم الأسعار والخدمات المعتمدة في السيرفر لمنع أي تلاعب عبر أدوات المطور (F12)
-const VERIFIED_SERVICES = {
-  'basic': { name: 'اشتراك المحتوى الأساسي', price: 20.00 },
-  'vip': { name: 'اشتراك برايفيت VIP ⭐️', price: 50.00 },
-  'call': { name: 'مكالمة فيديو مباشر 📹', price: 150.00 },
-  'tip': { name: 'إكرامية ودعم للملكة نانو 💖', price: 10.00 }
-};
+import { getSiteConfig } from './site-config.js';
 
 export default async function handler(req, res) {
   // إعداد ترويسات CORS
@@ -40,25 +33,44 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: 'معرّف التليجرام مطلوب للمتابعة.' });
     }
 
-    // 1. التحقق الصارم من السيرفر (Server-Side Validation)
-    // تحديد نوع الخدمة والمبلغ الحقيقي في السيرفر دون الاعتماد على مدخلات المتصفح
+    // 1. التحقق الصارم من السيرفر وجلب الأسعار الحالية المحدثة ديناميكياً من لوحة التحكم
+    const siteConfig = getSiteConfig() || {};
+    const dynamicPrices = {
+      'basic': {
+        name: siteConfig.tierBasicName || 'اشتراك المحتوى الأساسي',
+        price: parseFloat(siteConfig.tierBasicPrice) || 20.00
+      },
+      'vip': {
+        name: siteConfig.tierVipName || 'اشتراك برايفيت VIP ⭐️',
+        price: parseFloat(siteConfig.tierVipPrice) || 50.00
+      },
+      'call': {
+        name: siteConfig.tierCallName || 'مكالمة فيديو مباشر 📹',
+        price: parseFloat(siteConfig.tierCallPrice) || 150.00
+      },
+      'tip': {
+        name: 'إكرامية ودعم للملكة نانو 💖',
+        price: 10.00
+      }
+    };
+
     let cleanServiceKey = (serviceType || 'vip').toLowerCase().trim();
-    let verifiedService = VERIFIED_SERVICES[cleanServiceKey];
+    let verifiedService = dynamicPrices[cleanServiceKey];
 
     // مطابقة الأسماء البديلة
     if (!verifiedService) {
       if (cleanServiceKey.includes('vip') || cleanServiceKey.includes('برايفيت')) {
         cleanServiceKey = 'vip';
-        verifiedService = VERIFIED_SERVICES['vip'];
+        verifiedService = dynamicPrices['vip'];
       } else if (cleanServiceKey.includes('call') || cleanServiceKey.includes('مكالمة')) {
         cleanServiceKey = 'call';
-        verifiedService = VERIFIED_SERVICES['call'];
+        verifiedService = dynamicPrices['call'];
       } else if (cleanServiceKey.includes('basic') || cleanServiceKey.includes('اساسي') || cleanServiceKey.includes('أساسي') || cleanServiceKey.includes('داعم')) {
         cleanServiceKey = 'basic';
-        verifiedService = VERIFIED_SERVICES['basic'];
+        verifiedService = dynamicPrices['basic'];
       } else {
         cleanServiceKey = 'vip';
-        verifiedService = VERIFIED_SERVICES['vip'];
+        verifiedService = dynamicPrices['vip'];
       }
     }
 
