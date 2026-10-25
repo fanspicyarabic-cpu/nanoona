@@ -475,116 +475,60 @@
                         <div id="selected-tier-price" class="text-3xl font-black text-gold-400 font-mono">$50.00</div>
                     </div>
 
-                    <!-- قائمة جميع وسائل الدفع المعتمدة والمتاحة -->
-                    <div class="bg-gradient-to-b from-dark-900 to-dark-800 p-4 rounded-2xl border border-gold-500/30 space-y-3">
-                        <div class="text-center pb-1">
-                            <h4 class="font-bold text-sm text-white flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-wallet text-gold-400"></i>
-                                <span>اختر وسيلة الدفع التي تناسبك</span>
-                            </h4>
-                            <p class="text-[11px] text-gray-300 mt-1">جميع الوسائل مفعّلة ومباشرة، اضغط على الوسيلة لفتح صفحة السداد الرسمية فوراً:</p>
+                    <!-- نموذج بوابة SpaceRemit الرسمي المعتمد من وثائق المطورين (apiinfo-v2) -->
+                    <form id="spaceremit-form" class="space-y-4">
+                        <!-- Hidden input fields for amount and currency -->
+                        <input type="hidden" name="amount" id="sp_amount_input" value="50.00">
+                        <input type="hidden" name="currency" value="USD">
+
+                        <!-- Hidden input fields for buyer information -->
+                        <input type="hidden" name="fullname" id="sp_fullname_input" value="VIP_Member">
+                        <input type="hidden" name="email" id="sp_email_input" value="customer@nanoona.app">
+                        <input type="hidden" name="phone" id="sp_phone_input" value="0000000000">
+                        <input type="hidden" name="notes" id="sp_notes_input" value="vip_50">
+
+                        <!-- 1. حاوية وسائل الدفع والعملات الرقمية والمحافظ (Local payment methods) -->
+                        <div class="sp-one-type-select bg-dark-900/90 p-3 sm:p-4 rounded-2xl border border-gold-500/30">
+                            <label for="sp_local_methods_radio" class="flex items-center gap-2 cursor-pointer mb-2.5 text-xs font-bold text-white">
+                                <input type="radio" name="sp-pay-type-radio" value="local-methods-pay" id="sp_local_methods_radio" checked class="accent-gold-400">
+                                <span>العملات الرقمية وويسترن يونيون والمحافظ (Local Methods & Crypto)</span>
+                            </label>
+                            
+                            <!-- Container for displaying local payment methods (This renders the EXACT official grid) -->
+                            <div id="spaceremit-local-methods-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[310px]"></div>
                         </div>
 
-                        <!-- شبكة وسائل الدفع المتكاملة -->
-                        <div class="space-y-2 pt-1">
-                            <!-- 1. البطاقة البنكية Visa / MasterCard -->
-                            <a id="spCardWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-gold-500/40 hover:border-gold-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 group-hover:scale-105 transition">
-                                        <i class="fa-regular fa-credit-card text-sm"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">بطاقة بنكية (Visa / MasterCard / مدى)</div>
-                                        <div class="text-[10px] text-gray-400">دفع آمن ومباشر عبر بوابة SpaceRemit</div>
-                                    </div>
-                                </div>
-                                <span class="bg-gold-500/15 text-gold-400 text-[10px] px-2.5 py-1 rounded-full font-bold border border-gold-500/30">دفع مباشر ↗</span>
-                            </a>
-
-                            <!-- 2. العملات الرقمية USDT / Binance Pay -->
-                            <a id="spCryptoWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-amber-500/40 hover:border-amber-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition">
-                                        <i class="fa-brands fa-bitcoin text-base"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">العملات الرقمية (USDT TRC20 / Binance Pay)</div>
-                                        <div class="text-[10px] text-gray-400">تحويل فوري بدون عمولة إضافية</div>
-                                    </div>
-                                </div>
-                                <span class="bg-amber-500/15 text-amber-300 text-[10px] px-2.5 py-1 rounded-full font-bold border border-amber-500/30">فوري ⚡ ↗</span>
-                            </a>
-
-                            <!-- 3. ويسترن يونيون Western Union -->
-                            <a id="spWuWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-yellow-500/40 hover:border-yellow-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 group-hover:scale-105 transition">
-                                        <i class="fa-solid fa-money-bill-transfer text-sm"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">ويسترن يونيون (Western Union)</div>
-                                        <div class="text-[10px] text-gray-400">تحويل نقدي مباشر مع تسجيل رقم الحوالة MTCN</div>
-                                    </div>
-                                </div>
-                                <span class="bg-yellow-500/15 text-yellow-300 text-[10px] px-2.5 py-1 rounded-full font-bold border border-yellow-500/30">تحويل دولي ↗</span>
-                            </a>
-
-                            <!-- 4. محفظة RedotPay العالمية -->
-                            <a id="spRedotWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-rose-500/40 hover:border-rose-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-105 transition">
-                                        <i class="fa-solid fa-wallet text-sm"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">محفظة RedotPay العالمية</div>
-                                        <div class="text-[10px] text-gray-400">دفع فوري بمعرف المحفظة أو الباركود</div>
-                                    </div>
-                                </div>
-                                <span class="bg-rose-500/15 text-rose-300 text-[10px] px-2.5 py-1 rounded-full font-bold border border-rose-500/30">RedotPay ↗</span>
-                            </a>
-
-                            <!-- 5. تحويل مالي Ria Money Transfer -->
-                            <a id="spRiaWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-orange-500/40 hover:border-orange-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 group-hover:scale-105 transition">
-                                        <i class="fa-solid fa-paper-plane text-sm"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">تحويل مالي عبر Ria Money Transfer</div>
-                                        <div class="text-[10px] text-gray-400">حوالة معتمدة دولياً ومباشرة</div>
-                                    </div>
-                                </div>
-                                <span class="bg-orange-500/15 text-orange-300 text-[10px] px-2.5 py-1 rounded-full font-bold border border-orange-500/30">حوالة Ria ↗</span>
-                            </a>
-
-                            <!-- 6. المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay) -->
-                            <a id="spLocalWalletsBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900/90 hover:bg-dark-700 text-white border border-emerald-500/40 hover:border-emerald-400 py-3 px-3.5 rounded-xl font-bold text-xs flex items-center justify-between transition shadow-md group">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition">
-                                        <i class="fa-solid fa-mobile-screen-button text-sm"></i>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-xs font-bold">المحافظ المحلية (Vodafone Cash / InstaPay / STC Pay)</div>
-                                        <div class="text-[10px] text-gray-400">تحويل محلي مباشر وتفعيل فوري عبر واتساب</div>
-                                    </div>
-                                </div>
-                                <span class="bg-emerald-500/15 text-emerald-300 text-[10px] px-2.5 py-1 rounded-full font-bold border border-emerald-500/30">واتساب فوري 💬</span>
-                            </a>
-
-                            <!-- 7. بوابة SpaceRemit الشاملة -->
-                            <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-950/80 hover:bg-dark-800 text-gray-300 border border-dark-700 py-2.5 px-3.5 rounded-xl text-xs flex items-center justify-center gap-2 transition">
-                                <i class="fa-solid fa-globe text-gray-400"></i>
-                                <span>بوابة SpaceRemit الشاملة (استعراض كافة الخيارات) ↗</span>
-                            </a>
+                        <!-- 2. حاوية الدفع بالبطاقة البنكية (Card payment) -->
+                        <div class="sp-one-type-select bg-dark-900/90 p-3 sm:p-4 rounded-2xl border border-gold-500/20">
+                            <label for="sp_card_radio" class="flex items-center gap-2 cursor-pointer mb-2.5 text-xs font-bold text-white">
+                                <input type="radio" name="sp-pay-type-radio" value="card-pay" id="sp_card_radio" class="accent-gold-400">
+                                <span>الدفع المباشر بالبطاقة البنكية (Visa / MasterCard)</span>
+                            </label>
+                            
+                            <!-- Container for card payment -->
+                            <div id="spaceremit-card-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[140px]"></div>
                         </div>
-                    </div>
 
-                    <!-- زر تأكيد إتمام الدفع بعد السداد في البوابة -->
+                        <!-- تعليمات الاختيار -->
+                        <div class="text-[11px] text-gray-300 text-center px-1">
+                            <span>💡 حدد وسيلتك المفضلة من القائمة أعلاه، ثم اضغط زر المتابعة لفتح تفاصيل السداد فوراً.</span>
+                        </div>
+
+                        <!-- زر إتمام الدفع الرسمي لتفعيل واجهة السداد في SpaceRemit -->
+                        <div>
+                            <button type="submit" id="sp_official_pay_btn" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>تأكيد وسيلة الدفع والمتابعة (Pay) ↗</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- خيار المحافظ المحلية المصرية والسعودية السريعة عبر واتساب -->
                     <div class="pt-1">
-                        <button type="button" onclick="triggerPaymentSuccess()" class="w-full bg-emerald-600/25 hover:bg-emerald-600/35 border border-emerald-500/50 text-emerald-400 py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg">
-                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
-                            <span>أكملت عملية السداد؟ اضغط هنا لإرسال الفاتورة للواتساب وتفعيل الاشتراك 💬</span>
-                        </button>
+                        <a id="spLocalWhatsAppDirect" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-md">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+                            <span>أو تفضل التحويل عبر المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay) عبر واتساب 💬</span>
+                        </a>
                     </div>
 
                     <!-- زر إلغاء ورجوع سفلي واضح -->
@@ -829,52 +773,46 @@
             }
 
             const cleanNotes = `${currentServiceType}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
-            const cardGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=card`;
-            const cryptoGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods&sp_selected_local_method=21`;
-            const wuGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods&sp_selected_local_method=140`;
-            const redotGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods&sp_selected_local_method=27`;
-            const riaGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods&sp_selected_local_method=152`;
-            const fullGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods`;
 
+            // 1. تحديث ملخص الباقة المحددة في رأس المودال
+            const nameEl = document.getElementById('selected-tier-name');
+            const priceEl = document.getElementById('selected-tier-price');
+            const invEl = document.getElementById('selected-invoice-id');
+            if (nameEl) nameEl.innerText = currentTier;
+            if (priceEl) priceEl.innerText = `$${currentPrice}`;
+            if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+
+            // 2. تحديث حقول النموذج المخفية الخاصة ببوابة SpaceRemit
+            const amountInp = document.getElementById('sp_amount_input');
+            const notesInp = document.getElementById('sp_notes_input');
+            if (amountInp) amountInp.value = parseFloat(currentPrice).toFixed(2);
+            if (notesInp) notesInp.value = cleanNotes;
+
+            // 3. تحديث iframes الخاصة ببوابة SpaceRemit بالسعر والملاحظات المحدثة
+            const localIframe = document.getElementById('sp_local_nethods_iframe');
+            const cardIframe = document.getElementById('sp_iframe');
+            const baseUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&notes=${cleanNotes}`;
+
+            if (localIframe) {
+                localIframe.src = `${baseUrl}&way=local_methods&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
+            }
+            if (cardIframe) {
+                cardIframe.src = `${baseUrl}&way=card&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
+            }
+
+            // 4. تحديث رابط واتساب للمحافظ المحلية
             let waBase = 'https://wa.me/qr/6SUMEKHOZNDUK1';
             if (window.currentSiteConfig && window.currentSiteConfig.whatsappNumber) {
                 const num = window.currentSiteConfig.whatsappNumber.replace(/[^0-9]/g, '');
                 if (num) waBase = `https://wa.me/${num}`;
             }
-            const localWalletsMsg = `👑 مرحباً الملكة نانو، أرغب بالاشتراك عبر المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay / تحويل بنكي):
-━━━━━━━━━━━━━━━
-⭐ الباقة: ${currentTier}
-💰 القيمة: $${currentPrice}
-🧾 الفاتورة: #${currentInvoiceNumber}
-━━━━━━━━━━━━━━━
-يرجى تزويدي برقم المحفظة المتاح للتحويل فوراً لتأكيد الاشتراك.`;
-            const localWalletsUrl = `${waBase}?text=${encodeURIComponent(localWalletsMsg)}`;
+            const localWaEl = document.getElementById('spLocalWhatsAppDirect');
+            if (localWaEl) {
+                const waText = `👑 مرحباً الملكة نانو، أرغب بالدفع عبر المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay):\n⭐ الباقة: ${currentTier}\n💰 القيمة: $${currentPrice}\n🧾 الفاتورة: #${currentInvoiceNumber}`;
+                localWaEl.href = `${waBase}?text=${encodeURIComponent(waText)}`;
+            }
 
-            // تحديث بيانات المودال
-            const nameEl = document.getElementById('selected-tier-name');
-            const priceEl = document.getElementById('selected-tier-price');
-            const invEl = document.getElementById('selected-invoice-id');
-            const cardBtn = document.getElementById('spCardWindowBtn');
-            const cryptoBtn = document.getElementById('spCryptoWindowBtn');
-            const wuBtn = document.getElementById('spWuWindowBtn');
-            const redotBtn = document.getElementById('spRedotWindowBtn');
-            const riaBtn = document.getElementById('spRiaWindowBtn');
-            const localBtn = document.getElementById('spLocalWalletsBtn');
-            const fullBtn = document.getElementById('spFullWindowBtn');
-
-            if (nameEl) nameEl.innerText = currentTier;
-            if (priceEl) priceEl.innerText = `$${currentPrice}`;
-            if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
-
-            if (cardBtn) cardBtn.href = cardGatewayUrl;
-            if (cryptoBtn) cryptoBtn.href = cryptoGatewayUrl;
-            if (wuBtn) wuBtn.href = wuGatewayUrl;
-            if (redotBtn) redotBtn.href = redotGatewayUrl;
-            if (riaBtn) riaBtn.href = riaGatewayUrl;
-            if (localBtn) localBtn.href = localWalletsUrl;
-            if (fullBtn) fullBtn.href = fullGatewayUrl;
-
-            // إظهار واجهة الدفع وإخفاء شاشة النجاح
+            // 5. إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
             const successView = document.getElementById('spSuccessBody');
             if (checkoutView) checkoutView.classList.remove('hidden');
@@ -882,7 +820,7 @@
 
             openModal('subscribeModal');
 
-            // تسجيل الفاتورة على السيرفر في الخلفية
+            // 6. تسجيل الفاتورة على السيرفر في الخلفية
             fetch('/api/create-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -892,17 +830,9 @@
                     paymentWay: 'all'
                 })
             }).then(r => r.json()).then(data => {
-                if (data && data.success) {
-                    if (data.invoice_number) {
-                        currentInvoiceNumber = data.invoice_number;
-                        if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
-                    }
-                    if (data.card_url && cardBtn) cardBtn.href = data.card_url;
-                    if (data.crypto_url && cryptoBtn) cryptoBtn.href = data.crypto_url;
-                    if (data.wu_url && wuBtn) wuBtn.href = data.wu_url;
-                    if (data.redot_url && redotBtn) redotBtn.href = data.redot_url;
-                    if (data.ria_url && riaBtn) riaBtn.href = data.ria_url;
-                    if (data.local_methods_url && fullBtn) fullBtn.href = data.local_methods_url;
+                if (data && data.success && data.invoice_number) {
+                    currentInvoiceNumber = data.invoice_number;
+                    if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
                 }
             }).catch(() => {});
         }
@@ -1195,5 +1125,36 @@
             loadDynamicPosts();
         });
     </script>
+
+    <!-- إعدادات وسكربت بوابة SpaceRemit v2 الرسمي المعتمد من وثائق المطورين (https://spaceremit.com/apiinfo-v2) -->
+    <script>
+        const SP_PUBLIC_KEY = "pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5";
+        const SP_FORM_ID = "#spaceremit-form";
+        const SP_SELECT_RADIO_NAME = "sp-pay-type-radio";
+
+        const LOCAL_METHODS_BOX_STATUS = true;
+        const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay";
+
+        const CARD_BOX_STATUS = true;
+        const CARD_BOX_PARENT_ID = "#spaceremit-card-pay";
+        let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = false;
+
+        function SP_SUCCESSFUL_PAYMENT(spaceremit_code) {
+            console.log("SpaceRemit payment successful code:", spaceremit_code);
+            triggerPaymentSuccess(spaceremit_code);
+        }
+        function SP_FAILD_PAYMENT() {
+            console.warn("SpaceRemit payment failed or canceled");
+        }
+        function SP_RECIVED_MESSAGE(message) {
+            if (message && message !== "Inactivated method") {
+                console.log("SpaceRemit message:", message);
+            }
+        }
+        function SP_NEED_AUTH(target_auth_link) {
+            console.log("SpaceRemit auth link:", target_auth_link);
+        }
+    </script>
+    <script src="https://spaceremit.com/api/v2/js_script/spaceremit.js"></script>
 </body>
 </html>
