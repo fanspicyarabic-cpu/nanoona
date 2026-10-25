@@ -626,6 +626,28 @@
             document.body.style.overflow = '';
         }
 
+        // تحليل واستخراج رابط الفيديو المباشر (يدعم استضافة Videy.co ويوتيوب والفيديوهات المباشرة)
+        function resolveMediaInfo(url, type) {
+            if (!url) return { type: type || 'none', directUrl: '' };
+            url = String(url).trim();
+
+            const videyMatch = url.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+            if (videyMatch) {
+                return { type: 'video', directUrl: `https://cdn.videy.co/${videyMatch[1]}.mp4` };
+            }
+
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
+                return { type: 'youtube', directUrl: m ? `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1` : '' };
+            }
+
+            if (type === 'video' || url.match(/\.(mp4|webm|mov|m4v|ogg)$/i)) {
+                return { type: 'video', directUrl: url };
+            }
+
+            return { type: type || 'image', directUrl: url };
+        }
+
         // عارض الوسائط (Media Lightbox)
         function openMediaLightbox(title, type, url) {
             const titleEl = document.getElementById('lightboxTitle');
@@ -634,14 +656,15 @@
 
             if (!url) {
                 if (box) box.innerHTML = '<div class="text-gray-400 p-8">لا يوجد رابط وسائط متاح.</div>';
-            } else if (type === 'video' || url.match(/\.(mp4|webm|mov)$/i)) {
-                if (box) box.innerHTML = `<video src="${url}" controls autoplay class="max-h-[70vh] max-w-full rounded-xl shadow-2xl"></video>`;
-            } else if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
-                const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
-                const ytid = m ? m[1] : '';
-                if (box) box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1" class="w-full h-[55vh] border-0 rounded-xl" allowfullscreen allow="autoplay"></iframe>`;
             } else {
-                if (box) box.innerHTML = `<img src="${url}" class="max-h-[70vh] max-w-full object-contain rounded-xl shadow-2xl" alt="معاينة">`;
+                const info = resolveMediaInfo(url, type);
+                if (info.type === 'video') {
+                    if (box) box.innerHTML = `<video src="${info.directUrl}" controls autoplay playsinline class="max-h-[75vh] max-w-full rounded-2xl shadow-2xl bg-black"></video>`;
+                } else if (info.type === 'youtube') {
+                    if (box) box.innerHTML = `<iframe src="${info.directUrl}" class="w-full h-[55vh] border-0 rounded-2xl" allowfullscreen allow="autoplay"></iframe>`;
+                } else {
+                    if (box) box.innerHTML = `<img src="${info.directUrl}" class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl" alt="معاينة">`;
+                }
             }
 
             const modal = document.getElementById('mediaLightboxModal');
@@ -1091,9 +1114,11 @@
 
             const cardsHtml = posts.map(p => {
                 const isVip = p.isVip;
-                const mediaType = p.mediaType || 'image';
+                const info = resolveMediaInfo(p.mediaUrl, p.mediaType);
+                const mediaType = info.type;
+                const directMediaUrl = info.directUrl;
                 const cat = mediaType === 'video' || mediaType === 'youtube' ? 'videos' : 'photos';
-                const previewImg = (mediaType === 'image' && p.mediaUrl) ? p.mediaUrl : (p.thumbnail || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
+                const previewImg = (mediaType === 'image' && directMediaUrl) ? directMediaUrl : (p.thumbnail || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');
 
                 if (isVip) {
                     return `
@@ -1111,7 +1136,12 @@
                             </span>
                         </div>
                         
-                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer" style="background-image: url('${previewImg}');" onclick="selectTier(currentTier, currentPrice, 'vip')">
+                        <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer" onclick="selectTier(currentTier, currentPrice, 'vip')">
+                            ${mediaType === 'video' && directMediaUrl ? `
+                                <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover filter blur-sm"></video>
+                            ` : `
+                                <div class="w-full h-full bg-cover bg-center filter blur-sm" style="background-image: url('${previewImg}');"></div>
+                            `}
                             <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
                                 <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
                                     <i class="fa-solid fa-lock"></i>
@@ -1153,7 +1183,12 @@
                             </span>
                         </div>
                         
-                        <div class="relative h-64 w-full bg-cover bg-center overflow-hidden cursor-pointer group" style="background-image: url('${previewImg}');" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')">
+                        <div class="relative h-64 w-full bg-black overflow-hidden cursor-pointer group" onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}')">
+                            ${mediaType === 'video' && directMediaUrl ? `
+                                <video src="${directMediaUrl}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-500"></video>
+                            ` : `
+                                <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition duration-500" style="background-image: url('${previewImg}');"></div>
+                            `}
                             <div class="absolute inset-0 bg-dark-900/20 group-hover:bg-dark-900/10 transition flex items-center justify-center">
                                 <div class="w-12 h-12 rounded-full bg-gold-500/90 text-dark-900 flex items-center justify-center text-xl shadow-2xl opacity-90 group-hover:scale-110 transition">
                                     <i class="fa-solid ${mediaType === 'video' || mediaType === 'youtube' ? 'fa-play mr-0.5' : 'fa-expand'}"></i>
@@ -1172,7 +1207,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 2400} مشاهدة</span>
-                                <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
+                                <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(directMediaUrl || p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
                                     <span>مشاهدة</span>
                                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                                 </button>

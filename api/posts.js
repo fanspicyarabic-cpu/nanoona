@@ -58,19 +58,45 @@ export default async function handler(req, res) {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
 
+function normalizeMedia(url, type) {
+  let finalMediaUrl = (url || '').trim();
+  let finalMediaType = type || 'image';
+
+  if (!finalMediaUrl) {
+    return { mediaUrl: '', mediaType: finalMediaType };
+  }
+
+  const videyMatch = finalMediaUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+  if (videyMatch) {
+    return { mediaUrl: `https://cdn.videy.co/${videyMatch[1]}.mp4`, mediaType: 'video' };
+  }
+
+  if (finalMediaUrl.includes('youtube.com') || finalMediaUrl.includes('youtu.be')) {
+    return { mediaUrl: finalMediaUrl, mediaType: 'youtube' };
+  }
+
+  if (finalMediaUrl.match(/\.(mp4|webm|mov|m4v|ogg)$/i)) {
+    return { mediaUrl: finalMediaUrl, mediaType: 'video' };
+  }
+
+  return { mediaUrl: finalMediaUrl, mediaType: finalMediaType };
+}
+
       const { title, content, mediaUrl, mediaType, isVip } = body || {};
 
       if (!title) {
         return res.status(400).json({ success: false, message: 'عنوان المنشور مطلوب' });
       }
 
+      const normalized = normalizeMedia(mediaUrl, mediaType);
+
       const currentPosts = await loadPosts();
       const newPost = {
         id: `post-${Date.now()}`,
         title: title.trim(),
         content: (content || '').trim(),
-        mediaUrl: (mediaUrl || '').trim(),
-        mediaType: mediaType || 'image',
+        mediaUrl: normalized.mediaUrl,
+        mediaType: normalized.mediaType,
         isVip: Boolean(isVip),
         likes: 0,
         views: 1,
@@ -106,12 +132,21 @@ export default async function handler(req, res) {
         return res.status(404).json({ success: false, message: 'المنشور غير موجود' });
       }
 
+      let updatedMediaUrl = mediaUrl !== undefined ? mediaUrl.trim() : currentPosts[idx].mediaUrl;
+      let updatedMediaType = mediaType !== undefined ? mediaType : currentPosts[idx].mediaType;
+
+      if (mediaUrl !== undefined) {
+        const norm = normalizeMedia(updatedMediaUrl, updatedMediaType);
+        updatedMediaUrl = norm.mediaUrl;
+        updatedMediaType = norm.mediaType;
+      }
+
       currentPosts[idx] = {
         ...currentPosts[idx],
         title: title !== undefined ? title.trim() : currentPosts[idx].title,
         content: content !== undefined ? content.trim() : currentPosts[idx].content,
-        mediaUrl: mediaUrl !== undefined ? mediaUrl.trim() : currentPosts[idx].mediaUrl,
-        mediaType: mediaType !== undefined ? mediaType : currentPosts[idx].mediaType,
+        mediaUrl: updatedMediaUrl,
+        mediaType: updatedMediaType,
         isVip: isVip !== undefined ? Boolean(isVip) : currentPosts[idx].isVip,
         views: views !== undefined ? views : currentPosts[idx].views,
         likes: likes !== undefined ? likes : currentPosts[idx].likes,

@@ -880,8 +880,8 @@
         <textarea id="editPostContent" class="text-input" rows="3"></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">رابط الوسائط الخارجي:</label>
-        <input type="url" id="editPostMediaUrl" class="text-input" style="direction: ltr;">
+        <label class="form-label">رابط الوسائط الخارجي (فيديو Videy، مباشر، يوتيوب، أو صورة):</label>
+        <input type="url" id="editPostMediaUrl" class="text-input" style="direction: ltr;" oninput="onEditMediaUrlChange(this.value)">
       </div>
       <div class="form-group">
         <label class="form-label">نوع الوسائط:</label>
@@ -1207,7 +1207,59 @@
       document.getElementById('lightbox').classList.add('active');
     }
 
-    // الكشف التلقائي الذكي للوسائط
+    // تحليل واستخراج معلومات الوسائط (دعم كامل لـ Videy، يوتيوب، وفيديوهات MP4/WebM)
+    function resolveMediaInfo(url) {
+      if (!url) return { type: 'none', url: '', directUrl: '', label: '' };
+      url = String(url).trim();
+
+      // دعم منصة Videy.co (يدعم: https://videy.co/v/?id=... أو https://cdn.videy.co/...)
+      const videyMatch = url.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+      if (videyMatch) {
+        const directUrl = `https://cdn.videy.co/${videyMatch[1]}.mp4`;
+        return {
+          type: 'video',
+          provider: 'videy',
+          url,
+          directUrl,
+          label: '🎬 استضافة Videy (تشغيل مباشر وسريع)'
+        };
+      }
+
+      // دعم يوتيوب
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
+        const ytid = m ? m[1] : null;
+        return {
+          type: 'youtube',
+          provider: 'youtube',
+          url,
+          directUrl: ytid ? `https://www.youtube-nocookie.com/embed/${ytid}` : '',
+          label: '▶️ يوتيوب (مشغل فيديو تلقائي)'
+        };
+      }
+
+      // دعم روابط الفيديو المباشرة
+      if (url.match(/\.(mp4|webm|mov|m4v|ogg)$/i)) {
+        return {
+          type: 'video',
+          provider: 'direct',
+          url,
+          directUrl: url,
+          label: '🎬 فيديو مباشر (HTML5 بدون تخزين)'
+        };
+      }
+
+      // صورة افتراضية
+      return {
+        type: 'image',
+        provider: 'image',
+        url,
+        directUrl: url,
+        label: '📸 صورة عالية الدقة'
+      };
+    }
+
+    // الكشف التلقائي الذكي للوسائط عند إدخال الرابط
     function onMediaUrlChange(url) {
       url = (url || '').trim();
       const badge = document.getElementById('badgeDetection');
@@ -1221,45 +1273,47 @@
       }
 
       badge.style.display = 'inline-block';
+      const info = resolveMediaInfo(url);
 
-      if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const m = url.match(/(?:youtu\.be\/|watch\?v=|shorts\/)([\w-]{11})/);
-        const ytid = m ? m[1] : null;
-        badge.textContent = '▶️ يوتيوب (مشغل فيديو تلقائي)';
-        badge.style.color = '#ef4444';
-        box.classList.add('active');
-        box.innerHTML = ytid ? `<iframe src="https://www.youtube-nocookie.com/embed/${ytid}" style="width:100%; height:240px; border:none;"></iframe>` : 'رابط يوتيوب غير صالح';
-        return;
-      }
-
-      if (url.match(/\.(mp4|webm|mov)$/i)) {
-        badge.textContent = '🎬 فيديو مباشر (HTML5 بدون تخزين)';
+      if (info.type === 'video') {
+        badge.textContent = info.label;
         badge.style.color = '#10b981';
         box.classList.add('active');
-        box.innerHTML = `<video src="${url}" controls style="width:100%; max-height:240px;"></video>`;
+        box.innerHTML = `<video src="${info.directUrl}" controls playsinline style="width:100%; max-height:240px; border-radius:10px; background:#000;"></video>`;
         return;
       }
 
-      badge.textContent = '📸 صورة عالية الدقة';
+      if (info.type === 'youtube') {
+        badge.textContent = info.label;
+        badge.style.color = '#ef4444';
+        box.classList.add('active');
+        box.innerHTML = info.directUrl
+          ? `<iframe src="${info.directUrl}" style="width:100%; height:240px; border:none; border-radius:10px;"></iframe>`
+          : 'رابط يوتيوب غير صالح';
+        return;
+      }
+
+      badge.textContent = info.label;
       badge.style.color = '#38bdf8';
       box.classList.add('active');
-      box.innerHTML = `<img src="${url}" alt="معاينة" style="max-height:240px; max-width:100%; object-fit:contain;">`;
+      box.innerHTML = `<img src="${info.directUrl}" alt="معاينة" style="max-height:240px; max-width:100%; object-fit:contain; border-radius:10px;" onerror="this.alt='تعذر تحميل المعاينة (تأكد من صحة الرابط)'; this.style.color='#ef4444';">`;
     }
 
-    // نشر المنشور مع الزر التفاعلي المخصص
+    // نشر المنشور مع الزر التفاعلي المخصص ودعم فيديوهات Videy
     async function publishPost(dual) {
       const title = document.getElementById('postTitle').value.trim();
       const content = document.getElementById('postContent').value.trim();
-      const mediaUrl = document.getElementById('postMediaUrl').value.trim();
+      const rawMediaUrl = document.getElementById('postMediaUrl').value.trim();
       const isVip = document.getElementById('postIsVip').checked;
       const buttonText = (document.getElementById('postButtonText').value || '').trim();
       const buttonUrl = (document.getElementById('postButtonUrl').value || '').trim();
 
       if (!title) { alert('يرجى كتابة عنوان للمنشور'); return; }
 
-      let mediaType = 'image';
-      if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) mediaType = 'youtube';
-      else if (mediaUrl.match(/\.(mp4|webm|mov)$/i)) mediaType = 'video';
+      const mediaInfo = resolveMediaInfo(rawMediaUrl);
+      const mediaType = mediaInfo.type !== 'none' ? mediaInfo.type : 'image';
+      // إذا كان فيديو Videy يتم حفظ الرابط المباشر لضمان تشغيله لدى الجميع
+      const mediaUrl = (mediaInfo.type === 'video' && mediaInfo.directUrl) ? mediaInfo.directUrl : rawMediaUrl;
 
       try {
         const postRes = await fetch('/api/posts', {
@@ -1331,13 +1385,25 @@
 
         box.innerHTML = posts.map(p => {
           const shareUrl = `https://nanoona.vercel.app/p/${p.id}`;
+          const isVid = p.mediaType === 'video' || (p.mediaUrl && (p.mediaUrl.match(/\.(mp4|webm|mov|m4v)$/i) || p.mediaUrl.includes('videy.co')));
+          const isYt = p.mediaType === 'youtube' || (p.mediaUrl && (p.mediaUrl.includes('youtube.com') || p.mediaUrl.includes('youtu.be')));
+
           return `
           <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
-              ${p.mediaUrl ? `<img src="${p.mediaUrl}" onerror="this.src='avatar.jpg'" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold-primary);">` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px;">🎬</div>`}
+              ${isVid && p.mediaUrl ? `
+                <div style="width:52px; height:52px; border-radius:8px; background:#000; border:1px solid var(--gold-primary); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <video src="${p.mediaUrl}#t=0.5" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+                  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); font-size:16px;">🎬</div>
+                </div>
+              ` : (isYt ? `
+                <div style="width:52px; height:52px; border-radius:8px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">▶️</div>
+              ` : (p.mediaUrl ? `
+                <img src="${p.mediaUrl}" onerror="this.src='avatar.jpg'" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold-primary); flex-shrink:0;">
+              ` : `<div style="width:52px; height:52px; border-radius:8px; background:rgba(212,175,55,0.15); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">📸</div>`))}
               <div>
                 <div style="font-weight:800; font-size:14px; color:#fff; margin-bottom: 2px;">${p.title}</div>
-                <div style="font-size:12px; color:var(--text-muted);">${p.isVip ? '<span style="color:var(--gold-light); font-weight:bold;">🔒 VIP حصري</span>' : '<span style="color:#10b981; font-weight:bold;">✨ متاح للجميع</span>'} • نوع الوسائط: ${p.mediaType || 'صورة'}</div>
+                <div style="font-size:12px; color:var(--text-muted);">${p.isVip ? '<span style="color:var(--gold-light); font-weight:bold;">🔒 VIP حصري</span>' : '<span style="color:#10b981; font-weight:bold;">✨ متاح للجميع</span>'} • نوع الوسائط: ${p.mediaType === 'video' ? '🎬 فيديو' : (p.mediaType === 'youtube' ? '▶️ يوتيوب' : '📸 صورة')}</div>
               </div>
             </div>
             
@@ -1425,18 +1491,39 @@
       document.getElementById('editPostModal').classList.remove('active');
     }
 
+    // كشف تلقائي للنوع أثناء تعديل المنشور
+    function onEditMediaUrlChange(url) {
+      if (!url) return;
+      const info = resolveMediaInfo(url);
+      const sel = document.getElementById('editPostMediaType');
+      if (sel && info.type && info.type !== 'none') {
+        sel.value = info.type;
+      }
+    }
+
     // إرسال التعديل
     async function submitPostEdit() {
       const id = document.getElementById('editPostId').value;
       const title = document.getElementById('editPostTitle').value.trim();
       const content = document.getElementById('editPostContent').value.trim();
-      const mediaUrl = document.getElementById('editPostMediaUrl').value.trim();
-      const mediaType = document.getElementById('editPostMediaType').value;
+      const rawMediaUrl = document.getElementById('editPostMediaUrl').value.trim();
+      let mediaType = document.getElementById('editPostMediaType').value;
       const isVip = document.getElementById('editPostIsVip').checked;
       const views = document.getElementById('editPostViews').value.trim();
       const likes = document.getElementById('editPostLikes').value.trim();
 
       if (!title) { alert('عنوان المنشور مطلوب'); return; }
+
+      let mediaUrl = rawMediaUrl;
+      if (rawMediaUrl) {
+        const info = resolveMediaInfo(rawMediaUrl);
+        if (info.type === 'video' && info.directUrl) {
+          mediaUrl = info.directUrl;
+          mediaType = 'video';
+        } else if (info.type === 'youtube') {
+          mediaType = 'youtube';
+        }
+      }
 
       try {
         const res = await fetch('/api/posts', {

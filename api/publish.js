@@ -79,15 +79,26 @@ export default async function handler(req, res) {
     let broadcastResult = null;
     let broadcastStatus = 'unknown';
 
+    let targetMediaUrl = (mediaUrl || '').trim();
+    let targetMediaType = mediaType || 'image';
+
+    const videyMatch = targetMediaUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+    if (videyMatch) {
+      targetMediaUrl = `https://cdn.videy.co/${videyMatch[1]}.mp4`;
+      targetMediaType = 'video';
+    } else if (targetMediaUrl.match(/\.(mp4|mov|webm|m4v)$/i)) {
+      targetMediaType = 'video';
+    }
+
     // 1. محاولة الإرسال كصورة
-    if (mediaType === 'image' && mediaUrl && mediaUrl.startsWith('http')) {
+    if (targetMediaType === 'image' && targetMediaUrl && targetMediaUrl.startsWith('http')) {
       try {
         const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: channelId,
-            photo: mediaUrl,
+            photo: targetMediaUrl,
             caption: caption.slice(0, 1024),
             parse_mode: 'HTML',
             reply_markup: replyMarkup
@@ -99,14 +110,14 @@ export default async function handler(req, res) {
       }
     }
     // 2. محاولة الإرسال كفيديو مباشر
-    else if (mediaType === 'video' && mediaUrl && mediaUrl.match(/\.(mp4|mov|webm)$/i)) {
+    else if (targetMediaType === 'video' && targetMediaUrl && targetMediaUrl.match(/\.(mp4|mov|webm)$/i)) {
       try {
         const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendVideo`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: channelId,
-            video: mediaUrl,
+            video: targetMediaUrl,
             caption: caption.slice(0, 1024),
             parse_mode: 'HTML',
             reply_markup: replyMarkup

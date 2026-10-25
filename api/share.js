@@ -31,7 +31,26 @@ export default async function handler(req, res) {
   const title = post ? `${escapeHtml(post.title)} | الملكة نانو VIP` : 'الملكة نانو | المنصة الرسمية للمحتوى الحصري VIP 👑';
   const rawDesc = post && post.content ? post.content : 'شاهد المحتوى الحصري واستمتع بالتواصل المباشر مع الملكة نانو على المنصة الرسمية المعتمدة.';
   const description = escapeHtml(rawDesc.slice(0, 200));
-  const imageUrl = (post && post.mediaUrl && post.mediaUrl.startsWith('http')) ? post.mediaUrl : defaultAvatar;
+  // كشف ذكي للفيديو واستضافة Videy
+  let isVideo = false;
+  let videoUrl = '';
+  let previewImage = defaultAvatar;
+
+  if (post && post.mediaUrl) {
+    const rawUrl = post.mediaUrl.trim();
+    const videyMatch = rawUrl.match(/(?:videy\.co\/v\/?\?(?:.*&)?id=|videy\.co\/|cdn\.videy\.co\/)([a-zA-Z0-9]+)/i);
+    if (videyMatch) {
+      isVideo = true;
+      videoUrl = `https://cdn.videy.co/${videyMatch[1]}.mp4`;
+    } else if (post.mediaType === 'video' || rawUrl.match(/\.(mp4|mov|webm|m4v)$/i)) {
+      isVideo = true;
+      videoUrl = rawUrl;
+    } else if (rawUrl.startsWith('http')) {
+      previewImage = rawUrl;
+    }
+  }
+
+  const imageUrl = previewImage;
   const canonicalUrl = post ? `${siteUrl}/p/${post.id}` : siteUrl;
   const targetAppUrl = post ? `${siteUrl}/#${post.id}` : siteUrl;
 
@@ -44,7 +63,7 @@ export default async function handler(req, res) {
     <meta name="description" content="${description}">
 
     <!-- Open Graph (معاينة الروابط في تليجرام، واتساب، وفيسبوك) -->
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="${isVideo ? 'video.other' : 'article'}">
     <meta property="og:site_name" content="الملكة نانو | المنصة الرسمية">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
@@ -53,6 +72,9 @@ export default async function handler(req, res) {
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    ${isVideo ? `<meta property="og:video" content="${videoUrl}">
+    <meta property="og:video:secure_url" content="${videoUrl}">
+    <meta property="og:video:type" content="video/mp4">` : ''}
     <meta property="og:url" content="${canonicalUrl}">
 
     <!-- Twitter / X Cards (بطاقة تويتر الكبيرة المميزة) -->
@@ -93,7 +115,7 @@ export default async function handler(req, res) {
     <div class="max-w-md w-full bg-[#121318]/90 border border-yellow-500/30 rounded-3xl p-6 shadow-2xl backdrop-blur-md text-center">
         <!-- Logo / Avatar -->
         <div class="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-yellow-600 via-yellow-400 to-yellow-200 shadow-xl overflow-hidden mb-4">
-            <img src="${imageUrl}" alt="معاينة" class="w-full h-full object-cover rounded-full" onerror="this.src='${defaultAvatar}'">
+            <img src="${defaultAvatar}" alt="الملكة نانو" class="w-full h-full object-cover rounded-full">
         </div>
 
         <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-400 text-xs font-bold mb-3">
@@ -103,11 +125,15 @@ export default async function handler(req, res) {
         <h1 class="text-xl font-black text-white mb-2 leading-tight">${post ? escapeHtml(post.title) : 'الملكة نانو'}</h1>
         <p class="text-xs text-gray-400 mb-6 leading-relaxed">${description}</p>
 
-        ${post && post.mediaUrl ? `
+        ${isVideo && videoUrl ? `
+        <div class="rounded-2xl overflow-hidden border border-yellow-500/20 mb-6 max-h-60 bg-black flex items-center justify-center shadow-lg">
+            <video src="${videoUrl}" controls playsinline class="w-full max-h-60 object-contain"></video>
+        </div>
+        ` : (post && post.mediaUrl ? `
         <div class="rounded-2xl overflow-hidden border border-white/10 mb-6 max-h-56 bg-black flex items-center justify-center">
             <img src="${imageUrl}" alt="${title}" class="w-full h-full object-cover" onerror="this.style.display='none'">
         </div>
-        ` : ''}
+        ` : '')}
 
         <a href="${targetAppUrl}" class="gold-btn w-full py-3 px-6 rounded-xl block text-sm shadow-xl mb-3">
             <span>فتح المنشور في المنصة الرسمية 👑</span>
