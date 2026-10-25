@@ -111,9 +111,9 @@
         
         <!-- Profile Banner & Hero Header -->
         <div class="relative rounded-3xl overflow-hidden glass-card border border-gold-500/20 shadow-2xl mb-6">
-            <!-- Cover Image -->
-            <div class="h-44 sm:h-64 w-full bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200');">
-                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
+            <!-- Cover Image (صورة غلاف المشهورة الملكة نانو) -->
+            <div class="h-48 sm:h-72 w-full bg-cover bg-center relative" style="background-image: url('avatar.jpg');">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-dark-900/30 backdrop-blur-[2px]"></div>
             </div>
 
             <!-- Profile Info Box -->
@@ -461,30 +461,18 @@
                         </span>
                         <span class="text-[10px] text-gray-400">PCI-DSS Compliant</span>
                     </div>
-                    <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 460px; height: 470px;">
+                    <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 520px; height: 530px;">
                         <iframe id="sp_payment_iframe" src="about:blank" class="w-full h-full border-0 block" allow="payment"></iframe>
                     </div>
                 </div>
 
-                <!-- أزرار الإجراءات والمتابعة السريعة -->
-                <div class="space-y-2 pt-1">
-                    <!-- زر فتح واجهة SpaceRemit في نافذة مستقلة كاملة -->
-                    <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-xs shadow-lg flex items-center justify-center gap-2 text-dark-950">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        <span>فتح واجهة SpaceRemit في نافذة مستقلة كاملة</span>
-                    </a>
-
-                    <!-- زر تأكيد الفاتورة المباشر عبر واتساب -->
-                    <a id="spDirectWhatsAppBtn" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="w-full bg-emerald-600/15 hover:bg-emerald-600/25 border border-emerald-500/40 text-emerald-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+                <!-- إشعار الإرسال التلقائي للفاتورة إلى واتساب الإدارة -->
+                <div class="flex items-center justify-between text-[11px] text-emerald-400 bg-emerald-500/10 px-3.5 py-2.5 rounded-xl border border-emerald-500/20">
+                    <span class="flex items-center gap-1.5 font-bold">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
-                        <span>تأكيد الفاتورة الفوري مع الملكة نانو عبر واتساب</span>
-                    </a>
-
-                    <!-- زر تأكيد الفاتورة المباشر عبر التليجرام -->
-                    <a id="spDirectTelegramBtn" href="https://t.me/nnano14" target="_blank" rel="noopener" class="w-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-sky-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
-                        <i class="fa-brands fa-telegram text-sm"></i>
-                        <span>تأكيد الفاتورة المباشر عبر التليجرام الرسمي (@nnano14)</span>
-                    </a>
+                        يتم إرسال نسخة الفاتورة تلقائياً لرقم الإدارة
+                    </span>
+                    <span class="text-[10px] text-gray-400">تأكيد فوري ⚡</span>
                 </div>
 
                 <!-- ملاحظة الأمان والاعتماد -->
@@ -565,6 +553,15 @@
             document.getElementById('selected-invoice-id').innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
 
             openModal('subscribeModal');
+
+            // إرسال الفاتورة تلقائياً ومباشرة إلى رقم الواتساب المعتمد
+            const userHandleInput = document.getElementById('userTelegramInput');
+            const userHandle = (userHandleInput ? userHandleInput.value.trim() : '') || 'مشترك جديد';
+            const autoInvoiceMsg = `🌟 إشعار فاتورة اشتراك جديدة تلقائية\n━━━━━━━━━━━━━━━\n🧾 رقم الفاتورة: #${currentInvoiceNumber}\n👑 الباقة: ${name}\n💰 المبلغ: $${price}\n👤 اسم المشترك: ${userHandle}\n🔒 وسيلة الدفع: بوابة SpaceRemit الرسمية\n━━━━━━━━━━━━━━━\nتم فتح واجهة الدفع تلقائياً للمشترك عبر المنصة.`;
+            
+            setTimeout(() => {
+                window.open(`https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(autoInvoiceMsg)}`, '_blank');
+            }, 600);
         }
 
         // تحديث جلسة ورابط واجهة SpaceRemit الرسمية المعتمدة
@@ -584,27 +581,7 @@
                 iframe.setAttribute('data-loaded-for', `${currentTier}_${currentPrice}_${cleanName}`);
             }
 
-            // تحديث زر فتح واجهة SpaceRemit في نافذة كاملة
-            const fullBtn = document.getElementById('spFullWindowBtn');
-            if (fullBtn) {
-                fullBtn.href = spaceRemitUrl;
-            }
-
-            // تحديث رابط التأكيد الفوري عبر واتساب
-            const waBtn = document.getElementById('spDirectWhatsAppBtn');
-            if (waBtn) {
-                const waMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${currentTier}) بقيمة ${currentPrice}$ عبر بوابة SpaceRemit الرسمية، معرّفي: ${userHandle}`;
-                waBtn.href = `https://wa.me/qr/6SUMEKHOZNDUK1?text=${encodeURIComponent(waMsg)}`;
-            }
-
-            // تحديث رابط التأكيد المباشر عبر تليجرام
-            const tgBtn = document.getElementById('spDirectTelegramBtn');
-            if (tgBtn) {
-                const tgMsg = `مرحباً الملكة نانو، أود تأكيد سداد الفاتورة رقم #${currentInvoiceNumber} الخاصة بـ (${currentTier}) بقيمة ${currentPrice}$ عبر بوابة SpaceRemit الرسمية، معرّف التليجرام: ${userHandle}`;
-                tgBtn.href = `https://t.me/nnano14?text=${encodeURIComponent(tgMsg)}`;
-            }
-
-            // تسجيل الفاتورة في النظام
+            // تسجيل وحفظ الفاتورة في النظام
             fetch('/api/invoices', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
