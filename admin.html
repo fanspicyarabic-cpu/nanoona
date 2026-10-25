@@ -380,6 +380,7 @@
       <button type="button" class="admin-tab-btn" onclick="switchTab('publisher', this)">✍️ النشر الذكي</button>
       <button type="button" class="admin-tab-btn" onclick="switchTab('posts', this)">📁 المحتوى المنشور</button>
       <button type="button" class="admin-tab-btn" onclick="switchTab('site-config', this)">🎨 تخصيص واجهة الموقع</button>
+      <button type="button" class="admin-tab-btn" onclick="switchTab('adsterra', this)">📢 إعلانات Adsterra</button>
       <button type="button" class="admin-tab-btn" onclick="switchTab('settings', this)">⚙️ تفعيل البوت والمحافظ</button>
     </div>
 
@@ -600,34 +601,192 @@
           </div>
         </div>
 
-        <!-- 4. روابط التواصل الاجتماعي -->
-        <div style="margin-bottom: 18px;">
-          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">🌐 روابط منصات التواصل الاجتماعي المعروضة</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div class="form-group">
-              <label class="form-label">رابط قناة تليجرام:</label>
-              <input type="url" id="cfgTgChannelLink" class="text-input" placeholder="https://t.me/nnano14" style="direction: ltr;">
-            </div>
-            <div class="form-group">
-              <label class="form-label">رابط الواتساب:</label>
-              <input type="url" id="cfgWaLink" class="text-input" placeholder="https://wa.me/qr/6SUMEKHOZNDUK1" style="direction: ltr;">
-            </div>
-            <div class="form-group">
-              <label class="form-label">رابط تيك توك:</label>
-              <input type="url" id="cfgTiktokLink" class="text-input" placeholder="https://tiktok.com/@..." style="direction: ltr;">
-            </div>
-            <div class="form-group">
-              <label class="form-label">رابط انستغرام:</label>
-              <input type="url" id="cfgInstaLink" class="text-input" placeholder="https://instagram.com/..." style="direction: ltr;">
-            </div>
+        <!-- 4. روابط التواصل الاجتماعي (إضافة وتعديل وتفعيل/إخفاء) -->
+        <div style="margin-bottom: 24px; background: rgba(0,0,0,0.25); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 18px;">
+          <div style="margin-bottom: 14px;">
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--gold-light); margin: 0 0 4px 0;">🌐 منصات التواصل الاجتماعي (تفعيل وإخفاء وتعديل)</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0;">قم بتفعيل المنصات التي تريد ظهورها في شريط التواصل بالواجهة الرئيسية وتعطيل أو إخفاء ما لا ترغب به بنقرة واحدة.</p>
           </div>
-          <div class="form-group">
-            <label class="form-label">رابط سناب شات:</label>
-            <input type="url" id="cfgSnapLink" class="text-input" placeholder="https://snapchat.com/add/..." style="direction: ltr;">
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+            
+            <!-- Telegram -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-telegram"></i> قناة تليجرام
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowTelegram" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgTgChannelLink" class="text-input" placeholder="https://t.me/nnano14" style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- TikTok -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #f43f5e; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-tiktok"></i> تيك توك (TikTok)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowTiktok" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgTiktokLink" class="text-input" placeholder="https://tiktok.com/@..." style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- Instagram -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #e1306c; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-instagram"></i> انستغرام (Instagram)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowInstagram" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgInstaLink" class="text-input" placeholder="https://instagram.com/..." style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- Snapchat -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #facc15; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-snapchat"></i> سناب شات (Snapchat)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowSnapchat" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgSnapLink" class="text-input" placeholder="https://snapchat.com/add/..." style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- WhatsApp -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #22c55e; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-whatsapp"></i> واتساب (WhatsApp)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowWhatsapp" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgWaLink" class="text-input" placeholder="https://wa.me/..." style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- X / Twitter -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-x-twitter"></i> منصة إكس (Twitter)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowTwitter" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgTwitterLink" class="text-input" placeholder="https://x.com/..." style="direction: ltr; font-size: 12px;">
+            </div>
+
+            <!-- YouTube -->
+            <div style="background: rgba(18,18,28,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13px; font-weight: 800; color: #ef4444; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-brands fa-youtube"></i> يوتيوب (YouTube)
+                </span>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+                  <input type="checkbox" id="cfgShowYoutube" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+                  <span>إظهار في الموقع</span>
+                </label>
+              </div>
+              <input type="url" id="cfgYoutubeLink" class="text-input" placeholder="https://youtube.com/@..." style="direction: ltr; font-size: 12px;">
+            </div>
+
           </div>
         </div>
 
         <button type="button" class="btn-gold" style="width: 100%; font-size: 15px;" onclick="saveSiteConfig()">حفظ وتطبيق جميع التعديلات على الموقع 💾</button>
+      </div>
+    </section>
+
+    <!-- 5️⃣ قسم إدارة إعلانات أدستيرا (Adsterra Ads Monetization) -->
+    <section id="sec-adsterra" class="admin-sec">
+      <div class="form-panel">
+        
+        <!-- Header & Master Toggle -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 17px; font-weight: 800; color: #fff; margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
+              <span>📢</span> إدارة وتحقيق الدخل من إعلانات أدستيرا (Adsterra)
+            </h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0;">أضف أكواد إعلانات شبكة Adsterra (المنبثقة Popunder، السوشيال بار Social Bar، والبانرات) وتحكم بتشغيلها وإيقافها بنقرة واحدة.</p>
+          </div>
+
+          <!-- Master Adsterra Switch -->
+          <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 12px; border: 1px solid var(--card-border);">
+            <span style="font-size: 13px; font-weight: bold; color: #fff;">حالة الإعلانات:</span>
+            <select id="cfgAdsterraEnabled" class="text-input" style="width: 170px; font-weight: bold; background: #0f172a; border-color: var(--card-border); color: #fff; cursor: pointer;">
+              <option value="false">معطلة بالكامل ❌</option>
+              <option value="true">مفعلة وتعمل ✅</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: #bae6fd; display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 18px;">💡</span>
+          <span>الصق كود الإعلان البرمجي (Script أو HTML) كما هو من لوحة Adsterra مباشرة. عند تعطيل الإعلانات لن يتم تحميل أي كود لحماية سرعة وأمان الموقع.</span>
+        </div>
+
+        <!-- 1. Popunder / Social Bar Script Code -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span>⚡</span> كود الإعلانات المنبثقة التلقائية / Social Bar / Popunder:
+            </div>
+            <span style="font-size: 11px; color: var(--gold-light); background: rgba(212,175,55,0.15); padding: 2px 8px; border-radius: 6px;">الأعلى أرباحاً 💰</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">ضع هنا كود الـ Script الخاص بإعلان Popunder أو Social Bar المأخوذ من Adsterra ليتم تشغيله تلقائياً للزوار:</p>
+          <textarea id="cfgAdsterraHeaderCode" class="text-input" rows="4" placeholder="<script type='text/javascript' src='//pl...js'></script>" style="font-family: monospace; font-size: 12px; direction: ltr;"></textarea>
+        </div>
+
+        <!-- 2. Top Banner Code -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span>🔝</span> كود البانر الإعلاني العلوي (Top Banner 728x90 أو 468x60 أو 320x50):
+            </div>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+              <input type="checkbox" id="cfgAdsterraTopBannerEnabled" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+              <span>تفعيل هذا البانر</span>
+            </label>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">يظهر هذا البانر الإعلاني في أعلى صفحة الموقع تحت الغلاف التعريفي ومؤشرات الحساب:</p>
+          <textarea id="cfgAdsterraTopBannerCode" class="text-input" rows="4" placeholder="الصق كود البانر العلوي هنا..." style="font-family: monospace; font-size: 12px; direction: ltr;"></textarea>
+        </div>
+
+        <!-- 3. Bottom / In-Feed Banner Code -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span>🔽</span> كود البانر الإعلاني السفلي (Bottom / Native Banner 300x250):
+            </div>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; color: #fff;">
+              <input type="checkbox" id="cfgAdsterraBottomBannerEnabled" style="accent-color: var(--gold-primary); width: 16px; height: 16px;">
+              <span>تفعيل هذا البانر</span>
+            </label>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">يظهر هذا الإعلان أسفل شبكة المحتوى الحصري ومخصص لإعلانات المستطيل أو البانرات الأصلية (Native Ads):</p>
+          <textarea id="cfgAdsterraBottomBannerCode" class="text-input" rows="4" placeholder="الصق كود البانر السفلي هنا..." style="font-family: monospace; font-size: 12px; direction: ltr;"></textarea>
+        </div>
+
+        <button type="button" class="btn-gold" style="width: 100%; font-size: 15px;" onclick="saveSiteConfig()">حفظ إعدادات وأكواد إعلانات Adsterra 💾</button>
+
       </div>
     </section>
 
@@ -904,13 +1063,13 @@
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      ['invoices', 'publisher', 'posts', 'site-config', 'settings'].forEach(id => {
+      ['invoices', 'publisher', 'posts', 'site-config', 'adsterra', 'settings'].forEach(id => {
         const sec = document.getElementById(`sec-${id}`);
         if (sec) sec.classList.toggle('active', id === tabId);
       });
 
       if (tabId === 'posts') loadPosts();
-      if (tabId === 'site-config') loadSiteConfig();
+      if (tabId === 'site-config' || tabId === 'adsterra') loadSiteConfig();
     }
 
     // جلب الفواتير
@@ -1265,22 +1424,53 @@
           if (c.tierCallName) document.getElementById('cfgTier3Name').value = c.tierCallName;
           if (c.tierCallPrice) document.getElementById('cfgTier3Price').value = c.tierCallPrice;
 
-          if (c.telegramChannel) document.getElementById('cfgTgChannelLink').value = c.telegramChannel;
-          if (c.whatsappNumber) document.getElementById('cfgWaLink').value = c.whatsappNumber;
-          if (c.tiktokUrl) document.getElementById('cfgTiktokLink').value = c.tiktokUrl;
-          if (c.instagramUrl) document.getElementById('cfgInstaLink').value = c.instagramUrl;
-          if (c.snapchatUrl) document.getElementById('cfgSnapLink').value = c.snapchatUrl;
+          // شبكات التواصل الاجتماعي - روابط وتفعيل
+          if (document.getElementById('cfgTgChannelLink')) document.getElementById('cfgTgChannelLink').value = c.telegramChannel || '';
+          if (document.getElementById('cfgWaLink')) document.getElementById('cfgWaLink').value = c.whatsappNumber || '';
+          if (document.getElementById('cfgTiktokLink')) document.getElementById('cfgTiktokLink').value = c.tiktokUrl || '';
+          if (document.getElementById('cfgInstaLink')) document.getElementById('cfgInstaLink').value = c.instagramUrl || '';
+          if (document.getElementById('cfgSnapLink')) document.getElementById('cfgSnapLink').value = c.snapchatUrl || '';
+          if (document.getElementById('cfgTwitterLink')) document.getElementById('cfgTwitterLink').value = c.twitterUrl || '';
+          if (document.getElementById('cfgYoutubeLink')) document.getElementById('cfgYoutubeLink').value = c.youtubeUrl || '';
+
+          if (document.getElementById('cfgShowTelegram')) document.getElementById('cfgShowTelegram').checked = c.showTelegram !== false;
+          if (document.getElementById('cfgShowWhatsapp')) document.getElementById('cfgShowWhatsapp').checked = c.showWhatsapp !== false;
+          if (document.getElementById('cfgShowTiktok')) document.getElementById('cfgShowTiktok').checked = c.showTiktok !== false;
+          if (document.getElementById('cfgShowInstagram')) document.getElementById('cfgShowInstagram').checked = c.showInstagram !== false;
+          if (document.getElementById('cfgShowSnapchat')) document.getElementById('cfgShowSnapchat').checked = c.showSnapchat !== false;
+          if (document.getElementById('cfgShowTwitter')) document.getElementById('cfgShowTwitter').checked = Boolean(c.showTwitter);
+          if (document.getElementById('cfgShowYoutube')) document.getElementById('cfgShowYoutube').checked = Boolean(c.showYoutube);
+
+          // إعدادات إعلانات أدستيرا (Adsterra)
+          if (document.getElementById('cfgAdsterraEnabled')) {
+            document.getElementById('cfgAdsterraEnabled').value = c.adsterraEnabled ? 'true' : 'false';
+          }
+          if (document.getElementById('cfgAdsterraHeaderCode')) {
+            document.getElementById('cfgAdsterraHeaderCode').value = c.adsterraHeaderCode || '';
+          }
+          if (document.getElementById('cfgAdsterraTopBannerEnabled')) {
+            document.getElementById('cfgAdsterraTopBannerEnabled').checked = Boolean(c.adsterraTopBannerEnabled);
+          }
+          if (document.getElementById('cfgAdsterraTopBannerCode')) {
+            document.getElementById('cfgAdsterraTopBannerCode').value = c.adsterraTopBannerCode || '';
+          }
+          if (document.getElementById('cfgAdsterraBottomBannerEnabled')) {
+            document.getElementById('cfgAdsterraBottomBannerEnabled').checked = Boolean(c.adsterraBottomBannerEnabled);
+          }
+          if (document.getElementById('cfgAdsterraBottomBannerCode')) {
+            document.getElementById('cfgAdsterraBottomBannerCode').value = c.adsterraBottomBannerCode || '';
+          }
 
           if (document.getElementById('cfgEnableCardPayment')) {
             document.getElementById('cfgEnableCardPayment').value = c.enableCardPayment ? 'true' : 'false';
           }
 
-          if (c.telegramBotToken) document.getElementById('cfgBotToken').value = c.telegramBotToken;
-          if (c.telegramChannelId) document.getElementById('cfgChannelId').value = c.telegramChannelId;
+          if (c.telegramBotToken && document.getElementById('cfgBotToken')) document.getElementById('cfgBotToken').value = c.telegramBotToken;
+          if (c.telegramChannelId && document.getElementById('cfgChannelId')) document.getElementById('cfgChannelId').value = c.telegramChannelId;
 
-          if (c.instapayAccount) document.getElementById('cfgInstapay').value = c.instapayAccount;
-          if (c.vodafoneCash) document.getElementById('cfgVodafone').value = c.vodafoneCash;
-          if (c.zainCash) document.getElementById('cfgZaincash').value = c.zainCash;
+          if (c.instapayAccount && document.getElementById('cfgInstapay')) document.getElementById('cfgInstapay').value = c.instapayAccount;
+          if (c.vodafoneCash && document.getElementById('cfgVodafone')) document.getElementById('cfgVodafone').value = c.vodafoneCash;
+          if (c.zainCash && document.getElementById('cfgZaincash')) document.getElementById('cfgZaincash').value = c.zainCash;
         }
       } catch (err) {
         console.warn('Could not load site config:', err);
@@ -1310,14 +1500,33 @@
 
         enableCardPayment: document.getElementById('cfgEnableCardPayment') ? document.getElementById('cfgEnableCardPayment').value === 'true' : false,
 
-        telegramChannel: document.getElementById('cfgTgChannelLink').value.trim(),
-        whatsappNumber: document.getElementById('cfgWaLink').value.trim(),
-        tiktokUrl: document.getElementById('cfgTiktokLink').value.trim(),
-        instagramUrl: document.getElementById('cfgInstaLink').value.trim(),
-        snapchatUrl: document.getElementById('cfgSnapLink').value.trim(),
+        // روابط وحالات تفعيل وسائل التواصل الاجتماعي
+        telegramChannel: document.getElementById('cfgTgChannelLink') ? document.getElementById('cfgTgChannelLink').value.trim() : '',
+        whatsappNumber: document.getElementById('cfgWaLink') ? document.getElementById('cfgWaLink').value.trim() : '',
+        tiktokUrl: document.getElementById('cfgTiktokLink') ? document.getElementById('cfgTiktokLink').value.trim() : '',
+        instagramUrl: document.getElementById('cfgInstaLink') ? document.getElementById('cfgInstaLink').value.trim() : '',
+        snapchatUrl: document.getElementById('cfgSnapLink') ? document.getElementById('cfgSnapLink').value.trim() : '',
+        twitterUrl: document.getElementById('cfgTwitterLink') ? document.getElementById('cfgTwitterLink').value.trim() : '',
+        youtubeUrl: document.getElementById('cfgYoutubeLink') ? document.getElementById('cfgYoutubeLink').value.trim() : '',
 
-        telegramBotToken: document.getElementById('cfgBotToken').value.trim(),
-        telegramChannelId: document.getElementById('cfgChannelId').value.trim()
+        showTelegram: document.getElementById('cfgShowTelegram') ? document.getElementById('cfgShowTelegram').checked : true,
+        showWhatsapp: document.getElementById('cfgShowWhatsapp') ? document.getElementById('cfgShowWhatsapp').checked : true,
+        showTiktok: document.getElementById('cfgShowTiktok') ? document.getElementById('cfgShowTiktok').checked : true,
+        showInstagram: document.getElementById('cfgShowInstagram') ? document.getElementById('cfgShowInstagram').checked : true,
+        showSnapchat: document.getElementById('cfgShowSnapchat') ? document.getElementById('cfgShowSnapchat').checked : true,
+        showTwitter: document.getElementById('cfgShowTwitter') ? document.getElementById('cfgShowTwitter').checked : false,
+        showYoutube: document.getElementById('cfgShowYoutube') ? document.getElementById('cfgShowYoutube').checked : false,
+
+        // إعدادات وأكواد إعلانات أدستيرا
+        adsterraEnabled: document.getElementById('cfgAdsterraEnabled') ? document.getElementById('cfgAdsterraEnabled').value === 'true' : false,
+        adsterraHeaderCode: document.getElementById('cfgAdsterraHeaderCode') ? document.getElementById('cfgAdsterraHeaderCode').value.trim() : '',
+        adsterraTopBannerEnabled: document.getElementById('cfgAdsterraTopBannerEnabled') ? document.getElementById('cfgAdsterraTopBannerEnabled').checked : false,
+        adsterraTopBannerCode: document.getElementById('cfgAdsterraTopBannerCode') ? document.getElementById('cfgAdsterraTopBannerCode').value.trim() : '',
+        adsterraBottomBannerEnabled: document.getElementById('cfgAdsterraBottomBannerEnabled') ? document.getElementById('cfgAdsterraBottomBannerEnabled').checked : false,
+        adsterraBottomBannerCode: document.getElementById('cfgAdsterraBottomBannerCode') ? document.getElementById('cfgAdsterraBottomBannerCode').value.trim() : '',
+
+        telegramBotToken: document.getElementById('cfgBotToken') ? document.getElementById('cfgBotToken').value.trim() : '',
+        telegramChannelId: document.getElementById('cfgChannelId') ? document.getElementById('cfgChannelId').value.trim() : ''
       };
 
       const notice = document.getElementById('siteConfigNotice');
@@ -1334,13 +1543,15 @@
         const data = await res.json();
 
         if (data && data.success) {
-          notice.style.display = 'block';
-          notice.style.background = 'rgba(16,185,129,0.15)';
-          notice.style.border = '1px solid rgba(16,185,129,0.4)';
-          notice.style.color = '#10b981';
-          notice.textContent = '✓ تم حفظ وتحديث واجهة الموقع فوراً بنجاح! تم تطبيق التغييرات على الواجهة الرئيسية.';
-          setTimeout(() => { notice.style.display = 'none'; }, 5000);
-          alert('تم حفظ وتطبيق التعديلات على واجهة الموقع بنجاح! 💾✨');
+          if (notice) {
+            notice.style.display = 'block';
+            notice.style.background = 'rgba(16,185,129,0.15)';
+            notice.style.border = '1px solid rgba(16,185,129,0.4)';
+            notice.style.color = '#10b981';
+            notice.textContent = '✓ تم حفظ وتحديث واجهة الموقع والإعلانات فوراً بنجاح!';
+            setTimeout(() => { notice.style.display = 'none'; }, 5000);
+          }
+          alert('تم حفظ وتطبيق التعديلات بنجاح! 💾✨');
         } else {
           alert(`حدث خطأ أثناء حفظ الإعدادات: ${data.message || 'يرجى تسجيل الدخول مجدداً'}`);
         }

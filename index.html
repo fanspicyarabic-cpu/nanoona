@@ -127,6 +127,9 @@
         </div>
     </header>
 
+    <!-- Adsterra Header & Popunder Script Container -->
+    <div id="adsterraHeaderScriptContainer"></div>
+
     <!-- Main Container -->
     <main class="max-w-4xl mx-auto px-3 sm:px-4 pt-3">
         
@@ -201,14 +204,17 @@
                 </div>
             </div>
 
-            <!-- Social Links Quick Bar -->
-            <div class="p-3 bg-dark-900/60 border-t border-dark-700/40 flex items-center justify-center gap-6 text-gray-400 text-lg">
+            <!-- Social Links Quick Bar (يتم إظهار وتفعيل المنصات ديناميكياً من لوحة التحكم) -->
+            <div id="socialLinksBar" class="p-3 bg-dark-900/60 border-t border-dark-700/40 flex items-center justify-center flex-wrap gap-6 text-gray-400 text-lg">
                 <a id="linkTelegram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="قناة تليجرام الرسمية"><i class="fa-brands fa-telegram"></i></a>
                 <a id="linkTiktok" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
                 <a id="linkInstagram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="انستغرام"><i class="fa-brands fa-instagram"></i></a>
                 <a id="linkSnapchat" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="سناب شات"><i class="fa-brands fa-snapchat"></i></a>
             </div>
         </div>
+
+        <!-- Adsterra Top Banner Ad Container (بانر إعلاني علوي يتم التحكم به وتفعيله من لوحة التحكم) -->
+        <div id="adsterraTopBannerWrapper" class="hidden mb-6 text-center overflow-hidden rounded-2xl glass-card p-2 border border-gold-500/20 shadow-lg"></div>
 
         <!-- Navigation Tabs -->
         <div class="flex border-b border-dark-700 mb-6 gap-2 overflow-x-auto">
@@ -337,6 +343,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Adsterra Bottom Banner Ad Container (بانر إعلاني سفلي يتم التحكم به وتفعيله من لوحة التحكم) -->
+        <div id="adsterraBottomBannerWrapper" class="hidden my-8 text-center overflow-hidden rounded-2xl glass-card p-2 border border-gold-500/20 shadow-lg"></div>
 
     </main>
 
@@ -886,23 +895,11 @@
                 if (btn) btn.setAttribute('onclick', `selectTier('${cfg.tierCallName || 'مكالمة فيديو مباشر'}', '${cfg.tierCallPrice}')`);
             }
 
-            // روابط التواصل الاجتماعي
-            if (cfg.telegramChannel) {
-                const el = document.getElementById('linkTelegram');
-                if (el) el.href = cfg.telegramChannel;
-            }
-            if (cfg.tiktokUrl) {
-                const el = document.getElementById('linkTiktok');
-                if (el) el.href = cfg.tiktokUrl;
-            }
-            if (cfg.instagramUrl) {
-                const el = document.getElementById('linkInstagram');
-                if (el) el.href = cfg.instagramUrl;
-            }
-            if (cfg.snapchatUrl) {
-                const el = document.getElementById('linkSnapchat');
-                if (el) el.href = cfg.snapchatUrl;
-            }
+            // عرض وتفعيل منصات التواصل الاجتماعي حسب إعدادات لوحة التحكم
+            renderSocialLinks(cfg);
+
+            // تفعيل وحقن إعلانات Adsterra ديناميكياً
+            applyAdsterraAds(cfg);
 
             // تفعيل أو إخفاء الدفع المباشر بالبطاقة البنكية بناءً على إعدادات لوحة التحكم
             const cardWrapper = document.getElementById('spCardPaymentWrapper');
@@ -915,6 +912,146 @@
                     cardWrapper.classList.add('hidden');
                     if (localRadio) localRadio.checked = true;
                     if (cardRadio) cardRadio.checked = false;
+                }
+            }
+        }
+
+        // دالة تشغيل السكربتات المحقونة ديناميكياً لأكواد إعلانات أدستيرا
+        function executeScriptTags(container) {
+            if (!container) return;
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+                newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        // عرض وسائل التواصل الاجتماعي ديناميكياً بناءً على تفعيلها والروابط المدخلة
+        function renderSocialLinks(cfg) {
+            const bar = document.getElementById('socialLinksBar');
+            if (!bar || !cfg) return;
+
+            const platforms = [
+                {
+                    id: 'telegram',
+                    name: 'قناة تليجرام الرسمية',
+                    url: cfg.telegramChannel,
+                    icon: 'fa-brands fa-telegram',
+                    enabled: cfg.showTelegram !== false,
+                    color: 'hover:text-[#229ED9]'
+                },
+                {
+                    id: 'whatsapp',
+                    name: 'واتساب',
+                    url: cfg.whatsappNumber ? (cfg.whatsappNumber.startsWith('http') ? cfg.whatsappNumber : `https://wa.me/${cfg.whatsappNumber.replace(/[^0-9]/g, '')}`) : '',
+                    icon: 'fa-brands fa-whatsapp',
+                    enabled: cfg.showWhatsapp !== false,
+                    color: 'hover:text-[#25D366]'
+                },
+                {
+                    id: 'tiktok',
+                    name: 'تيك توك',
+                    url: cfg.tiktokUrl,
+                    icon: 'fa-brands fa-tiktok',
+                    enabled: cfg.showTiktok !== false,
+                    color: 'hover:text-[#ee1d52]'
+                },
+                {
+                    id: 'instagram',
+                    name: 'انستغرام',
+                    url: cfg.instagramUrl,
+                    icon: 'fa-brands fa-instagram',
+                    enabled: cfg.showInstagram !== false,
+                    color: 'hover:text-[#e1306c]'
+                },
+                {
+                    id: 'snapchat',
+                    name: 'سناب شات',
+                    url: cfg.snapchatUrl,
+                    icon: 'fa-brands fa-snapchat',
+                    enabled: cfg.showSnapchat !== false,
+                    color: 'hover:text-[#fffc00]'
+                },
+                {
+                    id: 'twitter',
+                    name: 'إكس (تويتر)',
+                    url: cfg.twitterUrl,
+                    icon: 'fa-brands fa-x-twitter',
+                    enabled: Boolean(cfg.showTwitter),
+                    color: 'hover:text-white'
+                },
+                {
+                    id: 'youtube',
+                    name: 'يوتيوب',
+                    url: cfg.youtubeUrl,
+                    icon: 'fa-brands fa-youtube',
+                    enabled: Boolean(cfg.showYoutube),
+                    color: 'hover:text-[#ff0000]'
+                }
+            ];
+
+            const activeLinks = platforms.filter(p => p.enabled && p.url && p.url.trim() !== '');
+
+            if (activeLinks.length === 0) {
+                bar.style.display = 'none';
+                return;
+            }
+
+            bar.style.display = 'flex';
+            bar.innerHTML = activeLinks.map(p => `
+                <a id="link_${p.id}" href="${p.url}" target="_blank" rel="noopener" class="${p.color} transition transform hover:scale-125 duration-200" title="${p.name}">
+                    <i class="${p.icon}"></i>
+                </a>
+            `).join('');
+        }
+
+        // تطبيق وحقن إعلانات أدستيرا بناءً على تفعيلها وأكوادها
+        function applyAdsterraAds(cfg) {
+            if (!cfg || (cfg.adsterraEnabled !== true && cfg.adsterraEnabled !== 'true')) {
+                const topWrap = document.getElementById('adsterraTopBannerWrapper');
+                if (topWrap) { topWrap.innerHTML = ''; topWrap.classList.add('hidden'); }
+                const botWrap = document.getElementById('adsterraBottomBannerWrapper');
+                if (botWrap) { botWrap.innerHTML = ''; botWrap.classList.add('hidden'); }
+                return;
+            }
+
+            // 1. Popunder / Social Bar Script (Header Script)
+            if (cfg.adsterraHeaderCode && !window.__adsterraHeaderInjected) {
+                window.__adsterraHeaderInjected = true;
+                const headerWrap = document.getElementById('adsterraHeaderScriptContainer');
+                if (headerWrap) {
+                    headerWrap.innerHTML = cfg.adsterraHeaderCode;
+                    executeScriptTags(headerWrap);
+                }
+            }
+
+            // 2. البانر الإعلاني العلوي (Top Banner)
+            const topWrap = document.getElementById('adsterraTopBannerWrapper');
+            if (topWrap) {
+                if ((cfg.adsterraTopBannerEnabled === true || cfg.adsterraTopBannerEnabled === 'true') && cfg.adsterraTopBannerCode) {
+                    topWrap.innerHTML = cfg.adsterraTopBannerCode;
+                    topWrap.classList.remove('hidden');
+                    executeScriptTags(topWrap);
+                } else {
+                    topWrap.innerHTML = '';
+                    topWrap.classList.add('hidden');
+                }
+            }
+
+            // 3. البانر الإعلاني السفلي (Bottom Banner)
+            const botWrap = document.getElementById('adsterraBottomBannerWrapper');
+            if (botWrap) {
+                if ((cfg.adsterraBottomBannerEnabled === true || cfg.adsterraBottomBannerEnabled === 'true') && cfg.adsterraBottomBannerCode) {
+                    botWrap.innerHTML = cfg.adsterraBottomBannerCode;
+                    botWrap.classList.remove('hidden');
+                    executeScriptTags(botWrap);
+                } else {
+                    botWrap.innerHTML = '';
+                    botWrap.classList.add('hidden');
                 }
             }
         }
