@@ -116,9 +116,9 @@ export default async function handler(req, res) {
       notes: cleanNotes
     });
 
-    const fullGatewayUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}`;
-    const localMethodsUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=local_methods`;
-    const cardUrl = `https://spaceremit.com/apipay-v2/&${baseParams.toString()}&way=card`;
+    const fullGatewayUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}`;
+    const localMethodsUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}&way=local_methods`;
+    const cardUrl = `https://spaceremit.com/apipay-v2/?${baseParams.toString()}&way=card`;
 
     const selectedWay = paymentWay || 'all';
     let paymentUrl = fullGatewayUrl;

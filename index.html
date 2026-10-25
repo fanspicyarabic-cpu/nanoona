@@ -460,14 +460,19 @@
 
                 <!-- 1. نموذج الدفع وبوابة SpaceRemit (Checkout View) -->
                 <div id="spCheckoutBody" class="space-y-4">
-                    <!-- Selected Tier Summary -->
+                    <!-- Selected Tier Summary (مطابق للتصميم الأصلي المعتمد) -->
                     <div class="bg-dark-900/90 p-3.5 rounded-2xl border border-gold-500/20 flex items-center justify-between">
                         <div>
-                            <span class="text-[10px] text-gold-400 font-bold uppercase tracking-wider block">تفاصيل الطلب والفاتورة</span>
-                            <h4 id="selected-tier-name" class="font-bold text-sm text-white">اشتراك برايفيت VIP ⭐️</h4>
-                            <p class="text-[11px] text-gray-400" id="selected-invoice-id">فاتورة رقم: #INV-626507</p>
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <span class="font-bold text-xs text-white">الملكة نانو</span>
+                                <span class="inline-flex items-center text-sky-400" title="حساب رسمي وموثق">
+                                    <svg class="w-4 h-4 fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M10.29 2.308a2.5 2.5 0 0 1 3.42 0l1.19 1.127a2.5 2.5 0 0 0 2.21.644l1.62-.31a2.5 2.5 0 0 1 2.87 1.886l.43 1.594a2.5 2.5 0 0 0 1.54 1.734l1.52.597a2.5 2.5 0 0 1 1.44 3.123l-.56 1.554a2.5 2.5 0 0 0 .22 2.29l.99 1.306a2.5 2.5 0 0 1-.95 3.312l-1.41.828a2.5 2.5 0 0 0-1.23 1.968l-.13 1.644a2.5 2.5 0 0 1-2.48 2.37l-1.64.04a2.5 2.5 0 0 0-1.87 1.332l-.84 1.413a2.5 2.5 0 0 1-3.32.915l-1.44-.8a2.5 2.5 0 0 0-2.27-.083l-1.46.762a2.5 2.5 0 0 1-3.35-.806l-.91-1.37a2.5 2.5 0 0 0-1.92-1.258l-1.64-.131a2.5 2.5 0 0 1-2.54-2.307l-.21-1.636a2.5 2.5 0 0 0-1.16-2.012l-1.45-.756a2.5 2.5 0 0 1-1.07-3.276l.91-1.365a2.5 2.5 0 0 0 .31-2.28l-.48-1.58a2.5 2.5 0 0 1 1.34-3.167l1.5-.647a2.5 2.5 0 0 0 1.61-1.669l.52-1.567a2.5 2.5 0 0 1 2.81-1.974l1.63.25a2.5 2.5 0 0 0 2.24-.593l1.26-1.047zm3.99 7.402a1 1 0 0 0-1.41-1.42l-4.17 4.17-1.47-1.47a1 1 0 1 0-1.42 1.42l2.18 2.18a1 1 0 0 0 1.42 0l4.87-4.88z"/></svg>
+                                </span>
+                            </div>
+                            <h4 id="selected-tier-name" class="font-bold text-sm text-gold-400">اشتراك VIP برايفيت</h4>
+                            <p class="text-[11px] text-gray-400 font-mono mt-0.5" id="selected-invoice-id">فاتورة رقم: #INV-435043</p>
                         </div>
-                        <div id="selected-tier-price" class="text-2xl font-black text-gold-400">$50.00</div>
+                        <div id="selected-tier-price" class="text-3xl font-black text-gold-400 font-mono">$50.00</div>
                     </div>
 
                     <!-- Account / Telegram Handle Input -->
@@ -483,10 +488,21 @@
                                 <i class="fa-solid fa-lock text-gold-400"></i>
                                 واجهة الدفع المباشرة لبوابة SpaceRemit:
                             </span>
-                            <span class="text-[10px] text-gray-400">PCI-DSS Compliant</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] text-gray-400">PCI-DSS Compliant</span>
+                                <a id="spExternalLink" href="#" target="_blank" rel="noopener" class="text-[10px] text-gold-400 hover:underline font-bold flex items-center gap-0.5" title="فتح واجهة الدفع في نافذة مستقلة">
+                                    <span>نافذة كاملة</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 500px; height: 510px;">
-                            <iframe id="sp_payment_iframe" src="about:blank" class="w-full h-full border-0 block" allow="payment"></iframe>
+                            <div id="iframeLoader" class="absolute inset-0 bg-dark-900 flex flex-col items-center justify-center text-center p-4 z-10 transition-opacity duration-300">
+                                <div class="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                                <p class="text-xs text-gold-400 font-bold">جاري تحميل واجهة بوابة SpaceRemit الرسمية... 🔒</p>
+                                <p class="text-[10px] text-gray-400 mt-1">مشفر بالكامل بمعايير الأمان الدولية</p>
+                            </div>
+                            <iframe id="sp_payment_iframe" src="about:blank" onload="document.getElementById('iframeLoader')?.classList.add('opacity-0', 'pointer-events-none')" class="w-full h-full border-0 block relative z-0" allow="payment"></iframe>
                         </div>
                     </div>
 
@@ -778,7 +794,13 @@
                 if (data && data.success && data.paymentUrl) {
                     currentInvoiceNumber = data.invoice_number || (data.invoice && data.invoice.number) || currentInvoiceNumber;
                     if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+
+                    const extLink = document.getElementById('spExternalLink');
+                    if (extLink) extLink.href = data.paymentUrl;
+
                     if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentServiceType}_${userHandle}`) {
+                        const loader = document.getElementById('iframeLoader');
+                        if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
                         iframe.src = data.paymentUrl;
                         iframe.setAttribute('data-loaded-for', `${currentServiceType}_${userHandle}`);
                     }
