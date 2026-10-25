@@ -575,6 +575,23 @@
           </div>
         </div>
 
+        <!-- 3.5 بوابات الدفع الإلكتروني والبطاقات -->
+        <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">💳 خيارات بوابات الدفع (SpaceRemit)</h3>
+          <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 260px;">
+              <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px;">الدفع المباشر بالبطاقة البنكية (Visa / MasterCard):</div>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">يمكنك تفعيل أو إخفاء نموذج الدفع بالبطاقة البنكية من نافذة السداد بالموقع بسهولة. عند التعطيل يقتصر الدفع على العملات الرقمية والمحافظ وويسترن يونيون.</p>
+            </div>
+            <div>
+              <select id="cfgEnableCardPayment" class="text-input" style="width: 170px; font-weight: bold; background: #0f172a; border-color: var(--card-border); color: #fff; cursor: pointer;">
+                <option value="false">معطلة (مخفية) ❌</option>
+                <option value="true">مفعلة (ظاهرة) ✅</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- 4. روابط التواصل الاجتماعي -->
         <div style="margin-bottom: 18px;">
           <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">🌐 روابط منصات التواصل الاجتماعي المعروضة</h3>
@@ -1207,6 +1224,10 @@
           if (c.instagramUrl) document.getElementById('cfgInstaLink').value = c.instagramUrl;
           if (c.snapchatUrl) document.getElementById('cfgSnapLink').value = c.snapchatUrl;
 
+          if (document.getElementById('cfgEnableCardPayment')) {
+            document.getElementById('cfgEnableCardPayment').value = c.enableCardPayment ? 'true' : 'false';
+          }
+
           if (c.telegramBotToken) document.getElementById('cfgBotToken').value = c.telegramBotToken;
           if (c.telegramChannelId) document.getElementById('cfgChannelId').value = c.telegramChannelId;
 
@@ -1238,6 +1259,8 @@
         tierVipPrice: document.getElementById('cfgTier2Price').value.trim(),
         tierCallName: document.getElementById('cfgTier3Name').value.trim(),
         tierCallPrice: document.getElementById('cfgTier3Price').value.trim(),
+
+        enableCardPayment: document.getElementById('cfgEnableCardPayment') ? document.getElementById('cfgEnableCardPayment').value === 'true' : false,
 
         telegramChannel: document.getElementById('cfgTgChannelLink').value.trim(),
         whatsappNumber: document.getElementById('cfgWaLink').value.trim(),

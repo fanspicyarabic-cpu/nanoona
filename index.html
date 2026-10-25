@@ -506,6 +506,17 @@
                             <div id="spaceremit-local-methods-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[310px]"></div>
                         </div>
 
+                        <!-- 2. حاوية الدفع بالبطاقة البنكية (قابلة للتفعيل والإخفاء بمرونة من لوحة التحكم) -->
+                        <div id="spCardPaymentWrapper" class="sp-one-type-select bg-dark-900/90 p-3 sm:p-4 rounded-2xl border border-gold-500/20 hidden">
+                            <label for="sp_card_radio" class="flex items-center gap-2 cursor-pointer mb-2.5 text-xs font-bold text-white">
+                                <input type="radio" name="sp-pay-type-radio" value="card-pay" id="sp_card_radio" class="accent-gold-400">
+                                <span>الدفع المباشر بالبطاقة البنكية (Visa / MasterCard)</span>
+                            </label>
+                            
+                            <!-- Container for card payment -->
+                            <div id="spaceremit-card-pay" class="rounded-xl overflow-hidden bg-white shadow-inner min-h-[140px]"></div>
+                        </div>
+
                         <!-- تعليمات الاختيار الاحترافية -->
                         <div class="text-[11px] text-gray-300 text-center px-1">
                             <span>💡 حدد وسيلتك المفضلة من القائمة أعلاه، ثم اضغط زر المتابعة لفتح تفاصيل السداد فوراً.</span>
@@ -785,12 +796,16 @@
             if (amountInp) amountInp.value = parseFloat(currentPrice).toFixed(2);
             if (notesInp) notesInp.value = cleanNotes;
 
-            // 3. تحديث iframe الخاص بوسائل الدفع الرسمية ببوابة SpaceRemit بالسعر والملاحظات المحدثة
+            // 3. تحديث iframes الخاصة ببوابة SpaceRemit بالسعر والملاحظات المحدثة
             const localIframe = document.getElementById('sp_local_nethods_iframe');
+            const cardIframe = document.getElementById('sp_iframe');
             const baseUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&notes=${cleanNotes}`;
 
             if (localIframe) {
                 localIframe.src = `${baseUrl}&way=local_methods&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
+            }
+            if (cardIframe) {
+                cardIframe.src = `${baseUrl}&way=card&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
             }
 
             // 4. تحديث رابط واتساب للمحافظ المحلية
@@ -1008,6 +1023,20 @@
                 const el = document.getElementById('linkSnapchat');
                 if (el) el.href = cfg.snapchatUrl;
             }
+
+            // تفعيل أو إخفاء الدفع المباشر بالبطاقة البنكية بناءً على إعدادات لوحة التحكم
+            const cardWrapper = document.getElementById('spCardPaymentWrapper');
+            const localRadio = document.getElementById('sp_local_methods_radio');
+            const cardRadio = document.getElementById('sp_card_radio');
+            if (cardWrapper) {
+                if (cfg && (cfg.enableCardPayment === true || cfg.enableCardPayment === 'true')) {
+                    cardWrapper.classList.remove('hidden');
+                } else {
+                    cardWrapper.classList.add('hidden');
+                    if (localRadio) localRadio.checked = true;
+                    if (cardRadio) cardRadio.checked = false;
+                }
+            }
         }
 
         // جلب المنشورات المباشرة من لوحة التحكم (Dynamic Feed Posts)
@@ -1128,7 +1157,7 @@
         const LOCAL_METHODS_BOX_STATUS = true;
         const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay";
 
-        const CARD_BOX_STATUS = false;
+        const CARD_BOX_STATUS = true;
         const CARD_BOX_PARENT_ID = "#spaceremit-card-pay";
         let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = false;
 

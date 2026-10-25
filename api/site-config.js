@@ -36,7 +36,10 @@ let siteConfig = {
   // محافظ ووسائل محلية احتياطية
   instapayAccount: "nanoona@instapay",
   vodafoneCash: "01023456789",
-  zainCash: "07812345678"
+  zainCash: "07812345678",
+
+  // تفعيل أو إخفاء الدفع بالبطاقة البنكية (Visa / MasterCard) من لوحة التحكم
+  enableCardPayment: false
 };
 
 export function getSiteConfig() {
