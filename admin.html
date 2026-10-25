@@ -1317,7 +1317,7 @@
       const box = document.getElementById('postsList');
       box.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">جاري التحميل...</div>`;
       try {
-        const res = await fetch('/api/posts');
+        const res = await fetch('/api/posts?_t=' + Date.now());
         const data = await res.json();
         const posts = (data && data.posts) || [];
         loadedPostsCache = posts;
@@ -1483,7 +1483,7 @@
     // جلب إعدادات الموقع وتعبئة النموذج
     async function loadSiteConfig() {
       try {
-        const res = await fetch('/api/site-config');
+        const res = await fetch('/api/site-config?_t=' + Date.now());
         const data = await res.json();
         if (data && data.success && data.config) {
           const c = data.config;

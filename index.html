@@ -810,7 +810,7 @@
         // جلب وتطبيق إعدادات واجهة الموقع المخصصة من لوحة التحكم (Dynamic Site Config)
         async function loadSiteConfig() {
             try {
-                const res = await fetch('/api/site-config');
+                const res = await fetch('/api/site-config?_t=' + Date.now());
                 const data = await res.json();
                 if (data && data.success && data.config) {
                     applySiteConfig(data.config);
@@ -1059,7 +1059,7 @@
         // جلب المنشورات المباشرة من لوحة التحكم (Dynamic Feed Posts)
         async function loadDynamicPosts() {
             try {
-                const res = await fetch('/api/posts');
+                const res = await fetch('/api/posts?_t=' + Date.now());
                 const data = await res.json();
                 if (data && Array.isArray(data.posts)) {
                     renderDynamicPosts(data.posts);
