@@ -1,6 +1,6 @@
 // api/admin-auth.js - إدارة مصادقة لوحة التحكم وتغيير كلمة السر بشكل آمن وعديم الحالة (Stateless HMAC)
 import crypto from 'crypto';
-import { getAdminPassword, setAdminPassword } from './storage.js';
+import { getAdminPassword, setAdminPassword } from '../lib/storage.js';
 
 const AUTH_SECRET = process.env.ADMIN_JWT_SECRET || 'nanoona2026_jwt_secret_salt_v1';
 

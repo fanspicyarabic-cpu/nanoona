@@ -1,5 +1,5 @@
 // api/share.js - مسار مشاركة المنشورات مع دعم كامل لمعاينة الروابط في تويتر (X)، تليجرام، وواتساب
-import { loadPosts } from './storage.js';
+import { loadPosts } from '../lib/storage.js';
 
 function escapeHtml(text) {
   if (!text) return '';

@@ -1,5 +1,5 @@
 // api/publish.js - أتمتة النشر المزدوج إلى قناة تليجرام عبر Telegram Bot API مع معالجة ذكية للأخطاء
-import { loadSiteConfig } from './storage.js';
+import { loadSiteConfig } from '../lib/storage.js';
 
 function escapeHtml(text) {
   return String(text || '')

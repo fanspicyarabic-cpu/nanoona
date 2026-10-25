@@ -1,6 +1,6 @@
 // api/site-config.js - إدارة وتخصيص واجهة الموقع وإعدادات البوت بأمان مع دعم التخزين الدائم
 import { isValidAdminToken } from './admin-auth.js';
-import { loadSiteConfig, saveSiteConfig } from './storage.js';
+import { loadSiteConfig, saveSiteConfig } from '../lib/storage.js';
 
 export async function getSiteConfig() {
   return await loadSiteConfig();

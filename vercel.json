@@ -4,7 +4,8 @@
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/dashboard", "destination": "/admin.html" },
     { "source": "/p/:id", "destination": "/api/share?id=:id" },
-    { "source": "/post/:id", "destination": "/api/share?id=:id" }
+    { "source": "/post/:id", "destination": "/api/share?id=:id" },
+    { "source": "/api/callback", "destination": "/api/webhook" }
   ],
   "functions": {
     "api/*.js": {

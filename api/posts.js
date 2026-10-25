@@ -1,5 +1,5 @@
 // api/posts.js - إدارة محتوى التغذية الحصرية وتصنيف الوسائط مع دعم التخزين الدائم
-import { loadPosts, savePosts } from './storage.js';
+import { loadPosts, savePosts } from '../lib/storage.js';
 import { isValidAdminToken } from './admin-auth.js';
 
 export default async function handler(req, res) {
