@@ -188,7 +188,6 @@
             <!-- Social Links Quick Bar -->
             <div class="p-3 bg-dark-900/60 border-t border-dark-700/40 flex items-center justify-center gap-6 text-gray-400 text-lg">
                 <a id="linkTelegram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="قناة تليجرام الرسمية"><i class="fa-brands fa-telegram"></i></a>
-                <a id="linkWhatsapp" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="واتساب مباشر"><i class="fa-brands fa-whatsapp"></i></a>
                 <a id="linkTiktok" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
                 <a id="linkInstagram" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="انستغرام"><i class="fa-brands fa-instagram"></i></a>
                 <a id="linkSnapchat" href="https://t.me/nnano14" target="_blank" rel="noopener" class="hover:text-gold-400 transition" title="سناب شات"><i class="fa-brands fa-snapchat"></i></a>
@@ -531,14 +530,6 @@
                         </div>
                     </form>
 
-                    <!-- خيار المحافظ المحلية المصرية والسعودية السريعة عبر واتساب -->
-                    <div class="pt-1">
-                        <a id="spLocalWhatsAppDirect" href="https://wa.me/qr/6SUMEKHOZNDUK1" target="_blank" rel="noopener" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-md">
-                            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
-                            <span>أو تفضل التحويل عبر المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay) عبر واتساب 💬</span>
-                        </a>
-                    </div>
-
                     <!-- زر إلغاء ورجوع سفلي واضح -->
                     <button type="button" onclick="closeModal('subscribeModal')" class="w-full bg-dark-900 hover:bg-dark-700 text-gray-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-dark-700">
                         <i class="fa-solid fa-arrow-right text-gold-400"></i>
@@ -582,9 +573,9 @@
                         </div>
                     </div>
 
-                    <a id="succWhatsAppBtn" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-2xl transition">
-                        <i class="fa-brands fa-whatsapp text-xl"></i>
-                        <span>إرسال الفاتورة الآن عبر واتساب وتفعيل الرابط 💬</span>
+                    <a id="succTgBtn" href="https://t.me/nnano14" target="_blank" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-2xl transition">
+                        <i class="fa-brands fa-telegram text-xl"></i>
+                        <span>الانضمام لقناة VIP الرسمية بالتليجرام 🚀</span>
                     </a>
 
                     <button type="button" onclick="closeModal('subscribeModal')" class="w-full bg-dark-900 hover:bg-dark-700 text-gray-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-dark-700">
@@ -593,7 +584,7 @@
                     </button>
 
                     <p class="text-[11px] text-gray-400 leading-relaxed">
-                        تم فتح الواتساب تلقائياً لتسليمك رابط الانضمام الفردي المباشر للقناة الخاصة.
+                        تم تأكيد عملية السداد، اضغط الزر أعلاه للانضمام فوراً لقناة VIP الخاصة والاستمتاع بالمحتوى الحصري.
                     </p>
                 </div>
 
@@ -808,19 +799,7 @@
                 cardIframe.src = `${baseUrl}&way=card&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}`;
             }
 
-            // 4. تحديث رابط واتساب للمحافظ المحلية
-            let waBase = 'https://wa.me/qr/6SUMEKHOZNDUK1';
-            if (window.currentSiteConfig && window.currentSiteConfig.whatsappNumber) {
-                const num = window.currentSiteConfig.whatsappNumber.replace(/[^0-9]/g, '');
-                if (num) waBase = `https://wa.me/${num}`;
-            }
-            const localWaEl = document.getElementById('spLocalWhatsAppDirect');
-            if (localWaEl) {
-                const waText = `👑 مرحباً الملكة نانو، أرغب بالدفع عبر المحافظ المحلية (فودافون كاش / إنستاباي / STC Pay):\n⭐ الباقة: ${currentTier}\n💰 القيمة: $${currentPrice}\n🧾 الفاتورة: #${currentInvoiceNumber}`;
-                localWaEl.href = `${waBase}?text=${encodeURIComponent(waText)}`;
-            }
-
-            // 5. إظهار واجهة الدفع وإخفاء شاشة النجاح
+            // 4. إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
             const successView = document.getElementById('spSuccessBody');
             if (checkoutView) checkoutView.classList.remove('hidden');
@@ -848,35 +827,20 @@
         // إرسال الفاتورة وعرض شاشة النجاح حصرياً بعد اكتمال الدفع
         function triggerPaymentSuccess(paymentCode) {
             const invId = paymentCode || currentInvoiceNumber;
-
-            const waMsg = `👑 مرحباً الملكة نانو، لقد أتممت وسددت الفاتورة بنجاح عبر بوابة SpaceRemit:
-━━━━━━━━━━━━━━━
-🧾 رقم الفاتورة: #${invId}
-⭐ الباقة: ${currentTier}
-💰 المبلغ المسدد: $${currentPrice}
-🔒 حالة السداد: مكتمل ومعتمد (Paid)
-━━━━━━━━━━━━━━━
-يرجى إرسال رابط الانضمام الفردي المباشر للقناة وتفعيل اشتراكي فوراً.`;
-
-            let waBase = 'https://wa.me/qr/6SUMEKHOZNDUK1';
-            if (window.currentSiteConfig && window.currentSiteConfig.whatsappNumber) {
-                const num = window.currentSiteConfig.whatsappNumber.replace(/[^0-9]/g, '');
-                if (num) waBase = `https://wa.me/${num}`;
-            }
-            const waUrl = `${waBase}?text=${encodeURIComponent(waMsg)}`;
+            const tgChannel = (window.currentSiteConfig && window.currentSiteConfig.telegramChannel) ? window.currentSiteConfig.telegramChannel : 'https://t.me/nnano14';
 
             // تحديث بيانات شاشة النجاح
             const invNumEl = document.getElementById('succInvoiceNum');
             const tierNameEl = document.getElementById('succTierName');
             const tierPriceEl = document.getElementById('succTierPrice');
             const userHandleEl = document.getElementById('succUserHandle');
-            const waBtnEl = document.getElementById('succWhatsAppBtn');
+            const tgBtnEl = document.getElementById('succTgBtn');
 
             if (invNumEl) invNumEl.innerText = `#${invId}`;
             if (tierNameEl) tierNameEl.innerText = currentTier;
             if (tierPriceEl) tierPriceEl.innerText = `$${currentPrice}`;
             if (userHandleEl) userHandleEl.innerText = 'مشترك VIP';
-            if (waBtnEl) waBtnEl.href = waUrl;
+            if (tgBtnEl) tgBtnEl.href = tgChannel;
 
             // إظهار شاشة النجاح وإخفاء واجهة الدفع
             const checkoutView = document.getElementById('spCheckoutBody');
@@ -884,8 +848,10 @@
             if (checkoutView) checkoutView.classList.add('hidden');
             if (successView) successView.classList.remove('hidden');
 
-            // فتح واتساب تلقائياً لإرسال الفاتورة بعد اكتمال السداد
-            window.open(waUrl, '_blank');
+            // توجيه المشترك لقناة التليجرام VIP تلقائياً بعد اكتمال السداد
+            try {
+                window.open(tgChannel, '_blank');
+            } catch (e) {}
 
             // تحديث حالة الفاتورة على السيرفر
             fetch('/api/invoices', {
@@ -896,7 +862,7 @@
                     planType: currentTier,
                     planName: currentTier,
                     amount: currentPrice,
-                    status: 'مدفوعة - تم الإرسال للواتساب',
+                    status: 'مدفوعة - معتمدة',
                     paymentMethod: 'spaceremit',
                     paymentMethodName: 'بوابة SpaceRemit الرسمية (تم السداد)',
                     notes: `فاتورة مسددة معتمدة #${invId}`
@@ -1006,10 +972,6 @@
             if (cfg.telegramChannel) {
                 const el = document.getElementById('linkTelegram');
                 if (el) el.href = cfg.telegramChannel;
-            }
-            if (cfg.whatsappNumber) {
-                const el = document.getElementById('linkWhatsapp');
-                if (el) el.href = cfg.whatsappNumber;
             }
             if (cfg.tiktokUrl) {
                 const el = document.getElementById('linkTiktok');
