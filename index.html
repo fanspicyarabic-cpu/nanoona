@@ -116,7 +116,7 @@
                 <span class="font-bold text-lg tracking-wide text-white">الملكة نانو VIP</span>
             </div>
             <div class="flex items-center space-x-2 space-x-reverse">
-                <button onclick="openModal('subscribeModal')" class="gold-gradient-btn text-xs md:text-sm px-4 py-2 rounded-full flex items-center gap-2">
+                <button onclick="selectTier(currentTier, currentPrice, 'vip')" class="gold-gradient-btn text-xs md:text-sm px-4 py-2 rounded-full flex items-center gap-2">
                     <i class="fa-solid fa-star"></i>
                     <span>اشترك الآن</span>
                 </button>
@@ -162,7 +162,7 @@
 
                 <!-- Action Button Desktop -->
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <button onclick="openModal('subscribeModal')" class="flex-1 sm:flex-initial gold-gradient-btn px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+                    <button onclick="selectTier(currentTier, currentPrice, 'vip')" class="flex-1 sm:flex-initial gold-gradient-btn px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
                         <i class="fa-solid fa-lock-open"></i>
                         <span>الوصول الحصري كامل</span>
                     </button>
@@ -429,7 +429,7 @@
 
     <!-- Bottom Sticky Mobile CTA Bar -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 p-3 bg-dark-900/95 border-t border-gold-500/20 backdrop-blur-lg z-30">
-        <button onclick="openModal('subscribeModal')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
+        <button onclick="selectTier(currentTier, currentPrice, 'vip')" class="w-full gold-gradient-btn py-3 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
             <i class="fa-solid fa-crown"></i>
             <span>اشترك الآن واستمتع بالمحتوى الحصري</span>
         </button>
@@ -461,7 +461,7 @@
                 <!-- 1. نموذج الدفع وبوابة SpaceRemit (Checkout View) -->
                 <div id="spCheckoutBody" class="space-y-4">
                     <!-- Selected Tier Summary (مطابق للتصميم الأصلي المعتمد) -->
-                    <div class="bg-dark-900/90 p-3.5 rounded-2xl border border-gold-500/20 flex items-center justify-between">
+                    <div class="bg-dark-900/90 p-4 rounded-2xl border border-gold-500/20 flex items-center justify-between">
                         <div>
                             <div class="flex items-center gap-1.5 mb-0.5">
                                 <span class="font-bold text-xs text-white">الملكة نانو</span>
@@ -475,62 +475,41 @@
                         <div id="selected-tier-price" class="text-3xl font-black text-gold-400 font-mono">$50.00</div>
                     </div>
 
-                    <!-- Account / Telegram Handle Input -->
-                    <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1.5">معرّف التليجرام أو رقم الواتساب (لتأكيد وتفعيل الاشتراك):</label>
-                        <input type="text" id="userTelegramInput" oninput="updateSpaceRemitPayment()" placeholder="@username" class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500" dir="ltr">
-                    </div>
-
-                    <!-- واجهة SpaceRemit الرسمية المعتمدة (SpaceRemit Official Gateway Interface) -->
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-lock text-gold-400"></i>
-                                واجهة الدفع المباشرة لبوابة SpaceRemit:
-                            </span>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] text-gray-400">PCI-DSS Compliant</span>
-                                <a id="spExternalLink" href="#" target="_blank" rel="noopener" class="text-[10px] text-gold-400 hover:underline font-bold flex items-center gap-0.5" title="فتح واجهة الدفع في نافذة مستقلة">
-                                    <span>نافذة كاملة</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                                </a>
-                            </div>
+                    <!-- بطاقة تأكيد فتح النافذة ومعلومات الدفع الفوري -->
+                    <div class="bg-gradient-to-b from-dark-900 to-dark-800 p-4 rounded-2xl border border-gold-500/30 text-center space-y-3">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gold-500/15 border border-gold-400 flex items-center justify-center text-gold-400 text-xl shadow-lg">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-white">تم فتح صفحة الدفع الرسمية لبوابة SpaceRemit</h4>
+                            <p class="text-xs text-gray-300 mt-1">تفتح البوابة في نافذة مستقلة كاملة لتمكين الدفع السلس بالعملات الرقمية (USDT / Binance Pay) أو البطاقات البنكية أو المحافظ.</p>
                         </div>
 
-                        <!-- وسائل الدفع داخل البوابة: العملات الرقمية والمحافظ أو البطاقات -->
-                        <div class="grid grid-cols-2 gap-2 mb-2">
-                            <button type="button" id="tabLocalMethods" onclick="switchGatewayWay('local_methods')" class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition bg-gold-500/15 border-gold-500 text-gold-400 shadow-sm">
-                                <i class="fa-solid fa-wallet"></i>
-                                <span>العملات الرقمية والمحافظ</span>
-                            </button>
-                            <button type="button" id="tabCardMethods" onclick="switchGatewayWay('card')" class="py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition bg-dark-900 border-dark-700 text-gray-400 hover:text-white">
-                                <i class="fa-regular fa-credit-card"></i>
-                                <span>البطاقة البنكية (Visa / Master)</span>
-                            </button>
-                        </div>
-
-                        <div class="rounded-2xl overflow-hidden border border-gold-500/30 bg-white relative shadow-inner" style="min-height: 500px; height: 510px;">
-                            <div id="iframeLoader" class="absolute inset-0 bg-dark-900 flex flex-col items-center justify-center text-center p-4 z-10 transition-opacity duration-300">
-                                <div class="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                                <p class="text-xs text-gold-400 font-bold">جاري تحميل واجهة بوابة SpaceRemit الرسمية... 🔒</p>
-                                <p class="text-[10px] text-gray-400 mt-1">مشفر بالكامل بمعايير الأمان الدولية</p>
-                            </div>
-                            <iframe id="sp_payment_iframe" src="about:blank" onload="document.getElementById('iframeLoader')?.classList.add('opacity-0', 'pointer-events-none')" class="w-full h-full border-0 block relative z-0" allow="payment"></iframe>
+                        <!-- أزرار فتح البوابة بالنافذة الكاملة -->
+                        <div class="space-y-2 pt-1">
+                            <a id="spFullWindowBtn" href="#" target="_blank" rel="noopener" class="w-full gold-gradient-btn py-3.5 rounded-xl font-black text-sm shadow-xl flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>فتح بوابة الدفع SpaceRemit الآن (نافذة كاملة) ↗</span>
+                            </a>
+                            <a id="spCardWindowBtn" href="#" target="_blank" rel="noopener" class="w-full bg-dark-900 hover:bg-dark-700 text-white border border-gold-500/30 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-md">
+                                <i class="fa-regular fa-credit-card text-gold-400"></i>
+                                <span>الدفع المباشر بالبطاقة البنكية (Visa / MasterCard) 💳</span>
+                            </a>
                         </div>
                     </div>
 
                     <!-- زر تأكيد إتمام الدفع بعد السداد في البوابة -->
                     <div class="pt-1">
-                        <button type="button" onclick="triggerPaymentSuccess()" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-400 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg">
-                            <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
-                            <span>أكملت عملية السداد؟ اضغط هنا لإرسال الفاتورة للواتساب وتفعيل الاشتراك</span>
+                        <button type="button" onclick="triggerPaymentSuccess()" class="w-full bg-emerald-600/25 hover:bg-emerald-600/35 border border-emerald-500/50 text-emerald-400 py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+                            <span>أكملت عملية السداد؟ اضغط هنا لإرسال الفاتورة للواتساب وتفعيل الاشتراك 💬</span>
                         </button>
                     </div>
 
                     <!-- زر إلغاء ورجوع سفلي واضح -->
                     <button type="button" onclick="closeModal('subscribeModal')" class="w-full bg-dark-900 hover:bg-dark-700 text-gray-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-dark-700">
                         <i class="fa-solid fa-arrow-right text-gold-400"></i>
-                        <span>إلغاء عملية الدفع والرجوع للموقع للخلف</span>
+                        <span>إلغاء وعودة للموقع ✕</span>
                     </button>
 
                     <!-- ملاحظة الأمان والاعتماد -->
@@ -685,7 +664,6 @@
             el.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             history.pushState({ modalOpen: true, modalId: modalId }, '');
-            updateSpaceRemitPayment();
         }
 
         function closeModal(modalId) {
@@ -757,6 +735,7 @@
         function selectTier(name, price, serviceType) {
             currentTier = name || 'اشتراك برايفيت VIP ⭐️';
             currentPrice = price || '50.00';
+            currentInvoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
 
             if (serviceType) {
                 currentServiceType = serviceType;
@@ -768,13 +747,29 @@
                 currentServiceType = 'vip';
             }
 
+            const cleanNotes = `${currentServiceType}_${currentPrice}_${currentInvoiceNumber.replace(/[^a-zA-Z0-9]/g, '')}`;
+            const directGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=local_methods`;
+            const cardGatewayUrl = `https://spaceremit.com/apipay-v2/&k=pkPE7TZ3QSHQ92AOB3KEVU53FHNXD5XBVVOF4PSMNLCP2KORDZZ5&amount=${parseFloat(currentPrice).toFixed(2)}&currency=USD&fullname=VIP_Member&email=customer%40nanoona.app&phone=0000000000&notes=${cleanNotes}&way=card`;
+
+            // 1. فتح نافذة كاملة فوراً بدون حجب من المتصفح استجابة لنقر المستخدم
+            try {
+                window.open(directGatewayUrl, '_blank');
+            } catch (e) {
+                console.warn('Popup window notice:', e);
+            }
+
+            // 2. تحديث بيانات المودال
             const nameEl = document.getElementById('selected-tier-name');
             const priceEl = document.getElementById('selected-tier-price');
             const invEl = document.getElementById('selected-invoice-id');
+            const fullBtn = document.getElementById('spFullWindowBtn');
+            const cardBtn = document.getElementById('spCardWindowBtn');
 
-            if (nameEl) nameEl.innerText = name;
-            if (priceEl) priceEl.innerText = `$${price}`;
-            if (invEl) invEl.innerText = 'جاري التوثيق...';
+            if (nameEl) nameEl.innerText = currentTier;
+            if (priceEl) priceEl.innerText = `$${currentPrice}`;
+            if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
+            if (fullBtn) fullBtn.href = directGatewayUrl;
+            if (cardBtn) cardBtn.href = cardGatewayUrl;
 
             // إظهار واجهة الدفع وإخفاء شاشة النجاح
             const checkoutView = document.getElementById('spCheckoutBody');
@@ -783,104 +778,26 @@
             if (successView) successView.classList.add('hidden');
 
             openModal('subscribeModal');
-            requestSecurePaymentSession();
-        }
 
-        let currentLocalMethodsUrl = '';
-        let currentCardUrl = '';
-        let currentGatewayWay = 'local_methods';
-
-        // التبديل بين وسائل الدفع في واجهة SpaceRemit (عملات رقمية ومحافظ أو بطاقات بنكية)
-        function switchGatewayWay(way) {
-            currentGatewayWay = way;
-            const iframe = document.getElementById('sp_payment_iframe');
-            const tabLocal = document.getElementById('tabLocalMethods');
-            const tabCard = document.getElementById('tabCardMethods');
-            const extLink = document.getElementById('spExternalLink');
-            const loader = document.getElementById('iframeLoader');
-
-            if (way === 'card') {
-                if (tabLocal) {
-                    tabLocal.classList.remove('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
-                    tabLocal.classList.add('bg-dark-900', 'border-dark-700', 'text-gray-400');
-                }
-                if (tabCard) {
-                    tabCard.classList.add('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
-                    tabCard.classList.remove('bg-dark-900', 'border-dark-700', 'text-gray-400');
-                }
-                if (currentCardUrl && iframe) {
-                    if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
-                    iframe.src = currentCardUrl;
-                    if (extLink) extLink.href = currentCardUrl;
-                }
-            } else {
-                if (tabCard) {
-                    tabCard.classList.remove('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
-                    tabCard.classList.add('bg-dark-900', 'border-dark-700', 'text-gray-400');
-                }
-                if (tabLocal) {
-                    tabLocal.classList.add('bg-gold-500/15', 'border-gold-500', 'text-gold-400');
-                    tabLocal.classList.remove('bg-dark-900', 'border-dark-700', 'text-gray-400');
-                }
-                if (currentLocalMethodsUrl && iframe) {
-                    if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
-                    iframe.src = currentLocalMethodsUrl;
-                    if (extLink) extLink.href = currentLocalMethodsUrl;
-                }
-            }
-        }
-
-        // طلب جلسة دفع مؤمنة حصراً من السيرفر الخلفي (Serverless Functions)
-        async function requestSecurePaymentSession() {
-            const userHandleInput = document.getElementById('userTelegramInput');
-            const userHandle = (userHandleInput ? userHandleInput.value.trim() : '') || 'customer';
-            const iframe = document.getElementById('sp_payment_iframe');
-            const invEl = document.getElementById('selected-invoice-id');
-
-            try {
-                const res = await fetch('/api/create-payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        serviceType: currentServiceType,
-                        telegramUsername: userHandle,
-                        paymentWay: currentGatewayWay
-                    })
-                });
-
-                const data = await res.json();
+            // 3. توثيق وتسجيل الفاتورة على السيرفر في الخلفية
+            fetch('/api/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    serviceType: currentServiceType,
+                    telegramUsername: 'مشترك VIP',
+                    paymentWay: 'local_methods'
+                })
+            }).then(r => r.json()).then(data => {
                 if (data && data.success) {
-                    currentInvoiceNumber = data.invoice_number || (data.invoice && data.invoice.number) || currentInvoiceNumber;
-                    if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
-
-                    currentLocalMethodsUrl = data.local_methods_url || data.localMethodsUrl || data.paymentUrl;
-                    currentCardUrl = data.card_url || data.cardUrl || '';
-
-                    const activeTargetUrl = currentGatewayWay === 'card' && currentCardUrl ? currentCardUrl : currentLocalMethodsUrl;
-
-                    const extLink = document.getElementById('spExternalLink');
-                    if (extLink) extLink.href = activeTargetUrl;
-
-                    if (iframe && iframe.getAttribute('data-loaded-for') !== `${currentServiceType}_${userHandle}_${currentGatewayWay}`) {
-                        const loader = document.getElementById('iframeLoader');
-                        if (loader) loader.classList.remove('opacity-0', 'pointer-events-none');
-                        iframe.src = activeTargetUrl;
-                        iframe.setAttribute('data-loaded-for', `${currentServiceType}_${userHandle}_${currentGatewayWay}`);
+                    if (data.invoice_number) {
+                        currentInvoiceNumber = data.invoice_number;
+                        if (invEl) invEl.innerText = `فاتورة رقم: #${currentInvoiceNumber}`;
                     }
-                } else {
-                    console.warn('Secure payment generation warning:', data);
+                    if (data.local_methods_url && fullBtn) fullBtn.href = data.local_methods_url;
+                    if (data.card_url && cardBtn) cardBtn.href = data.card_url;
                 }
-            } catch (err) {
-                console.error('Error generating secure payment session:', err);
-            }
-        }
-
-        // تحديث جلسة الدفع عند تعديل المعرّف مع تقنين الطلبات (Debounce)
-        function updateSpaceRemitPayment() {
-            clearTimeout(paymentDebounceTimer);
-            paymentDebounceTimer = setTimeout(() => {
-                requestSecurePaymentSession();
-            }, 500);
+            }).catch(() => {});
         }
 
         // إرسال الفاتورة وعرض شاشة النجاح حصرياً بعد اكتمال الدفع

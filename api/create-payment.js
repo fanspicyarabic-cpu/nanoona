@@ -28,10 +28,7 @@ export default async function handler(req, res) {
 
     const { userId, telegramUsername, amount, serviceType, paymentWay } = body || {};
 
-    const cleanTelegram = (telegramUsername || userId || '').trim();
-    if (!cleanTelegram) {
-      return res.status(400).json({ success: false, message: 'معرّف التليجرام مطلوب للمتابعة.' });
-    }
+    const cleanTelegram = (telegramUsername || userId || 'مشترك VIP').trim() || 'مشترك VIP';
 
     // 1. التحقق الصارم من السيرفر وجلب الأسعار الحالية المحدثة ديناميكياً من لوحة التحكم
     const siteConfig = getSiteConfig() || {};
