@@ -1,44 +1,11 @@
-// api/posts.js - إدارة محتوى التغذية الحصرية وتصنيف الوسائط
-let memoryPosts = [
-  {
-    id: 'post-1',
-    title: 'جلسة تصوير خاصة وحصرية لجمهور VIP 📸✨',
-    content: 'كواليس حصرية من جلسة التصوير الجديدة مع لمسات الميك-أب الملكي والإطلالة الذهبية. شاركوني رأيكم بالتعليقات!',
-    mediaUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop',
-    mediaType: 'image',
-    isVip: true,
-    likes: 142,
-    views: 1250,
-    createdAt: new Date(Date.now() - 3600000 * 5).toISOString()
-  },
-  {
-    id: 'post-2',
-    title: 'مقطع فيديو ترحيبي خاص بالأعضاء الجدد 📹👑',
-    content: 'أهلاً بكم في عالمي الخاص! في هذا الفيديو القصير أشارككم خطة الأسبوع والمفاجآت القادمة لمشتركي البرايفيت.',
-    mediaUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    mediaType: 'video',
-    isVip: false,
-    likes: 289,
-    views: 3410,
-    createdAt: new Date(Date.now() - 3600000 * 18).toISOString()
-  },
-  {
-    id: 'post-3',
-    title: 'بث مباشر مسجل ومحادثة حصرية عن أسرار الرشاقة 💎',
-    content: 'تسجيل كامل للبث المباشر الأخير مع الملكة نانو، إجابات على أسئلة المتابعين ودردشة عفوية مليئة بالطاقة الإيجابية.',
-    mediaUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    mediaType: 'youtube',
-    isVip: true,
-    likes: 415,
-    views: 5200,
-    createdAt: new Date(Date.now() - 3600000 * 36).toISOString()
-  }
-];
+// api/posts.js - إدارة محتوى التغذية الحصرية وتصنيف الوسائط مع دعم التخزين الدائم
+import { loadPosts, savePosts } from './storage.js';
+import { isValidAdminToken } from './admin-auth.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-token');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -46,27 +13,40 @@ export default async function handler(req, res) {
 
   // GET: جلب المنشورات
   if (req.method === 'GET') {
-    const { type, isVip } = req.query || {};
-    let filtered = memoryPosts;
+    try {
+      const { type, isVip } = req.query || {};
+      let posts = await loadPosts();
 
-    if (type && type !== 'all') {
-      if (type === 'video') {
-        filtered = filtered.filter(p => p.mediaType === 'video' || p.mediaType === 'youtube' || p.mediaType === 'vimeo');
-      } else if (type === 'image') {
-        filtered = filtered.filter(p => p.mediaType === 'image');
+      if (type && type !== 'all') {
+        if (type === 'video') {
+          posts = posts.filter(p => p.mediaType === 'video' || p.mediaType === 'youtube' || p.mediaType === 'vimeo');
+        } else if (type === 'image') {
+          posts = posts.filter(p => p.mediaType === 'image');
+        }
       }
-    }
 
-    if (isVip !== undefined && isVip !== '') {
-      const vipBool = isVip === 'true' || isVip === '1';
-      filtered = filtered.filter(p => p.isVip === vipBool);
-    }
+      if (isVip !== undefined && isVip !== '') {
+        const vipBool = isVip === 'true' || isVip === '1';
+        posts = posts.filter(p => p.isVip === vipBool);
+      }
 
-    return res.status(200).json({
-      success: true,
-      posts: filtered,
-      count: filtered.length
-    });
+      return res.status(200).json({
+        success: true,
+        posts: posts,
+        count: posts.length
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message });
+    }
+  }
+
+  // التحقق من صلاحيات الأدمن لأي عملية تعديل/حذف/إضافة
+  const token = req.headers['x-admin-token'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null);
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    // إذا تم تمرير توكن غير صالح
+    if (token && !isValidAdminToken(token)) {
+      return res.status(403).json({ success: false, message: 'انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً' });
+    }
   }
 
   // POST: إضافة منشور جديد
@@ -83,6 +63,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ success: false, message: 'عنوان المنشور مطلوب' });
       }
 
+      const currentPosts = await loadPosts();
       const newPost = {
         id: `post-${Date.now()}`,
         title: title.trim(),
@@ -95,11 +76,12 @@ export default async function handler(req, res) {
         createdAt: new Date().toISOString()
       };
 
-      memoryPosts.unshift(newPost);
+      currentPosts.unshift(newPost);
+      await savePosts(currentPosts);
 
       return res.status(201).json({
         success: true,
-        message: 'تم نشر المنشور بنجاح',
+        message: 'تم نشر المنشور بنجاح وحفظه',
         post: newPost
       });
     } catch (e) {
@@ -114,28 +96,33 @@ export default async function handler(req, res) {
       if (typeof body === 'string') {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
-      const { id, title, content, mediaUrl, mediaType, isVip } = body || {};
+      const { id, title, content, mediaUrl, mediaType, isVip, views, likes } = body || {};
       if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
 
-      const idx = memoryPosts.findIndex(p => p.id === id);
+      let currentPosts = await loadPosts();
+      const idx = currentPosts.findIndex(p => p.id === id);
       if (idx === -1) {
         return res.status(404).json({ success: false, message: 'المنشور غير موجود' });
       }
 
-      memoryPosts[idx] = {
-        ...memoryPosts[idx],
-        title: title !== undefined ? title.trim() : memoryPosts[idx].title,
-        content: content !== undefined ? content.trim() : memoryPosts[idx].content,
-        mediaUrl: mediaUrl !== undefined ? mediaUrl.trim() : memoryPosts[idx].mediaUrl,
-        mediaType: mediaType !== undefined ? mediaType : memoryPosts[idx].mediaType,
-        isVip: isVip !== undefined ? Boolean(isVip) : memoryPosts[idx].isVip,
+      currentPosts[idx] = {
+        ...currentPosts[idx],
+        title: title !== undefined ? title.trim() : currentPosts[idx].title,
+        content: content !== undefined ? content.trim() : currentPosts[idx].content,
+        mediaUrl: mediaUrl !== undefined ? mediaUrl.trim() : currentPosts[idx].mediaUrl,
+        mediaType: mediaType !== undefined ? mediaType : currentPosts[idx].mediaType,
+        isVip: isVip !== undefined ? Boolean(isVip) : currentPosts[idx].isVip,
+        views: views !== undefined ? views : currentPosts[idx].views,
+        likes: likes !== undefined ? likes : currentPosts[idx].likes,
         updatedAt: new Date().toISOString()
       };
 
+      await savePosts(currentPosts);
+
       return res.status(200).json({
         success: true,
-        message: 'تم تعديل المنشور بنجاح',
-        post: memoryPosts[idx]
+        message: 'تم تعديل المنشور بنجاح وحفظ التغيير',
+        post: currentPosts[idx]
       });
     } catch (e) {
       return res.status(500).json({ success: false, message: e.message });
@@ -144,11 +131,21 @@ export default async function handler(req, res) {
 
   // DELETE: حذف منشور
   if (req.method === 'DELETE') {
-    const { id } = req.query || {};
-    if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
+    try {
+      const { id } = req.query || {};
+      if (!id) return res.status(400).json({ success: false, message: 'معرف المنشور مطلوب' });
 
-    memoryPosts = memoryPosts.filter(p => p.id !== id);
-    return res.status(200).json({ success: true, message: 'تم حذف المنشور بنجاح' });
+      let currentPosts = await loadPosts();
+      const filtered = currentPosts.filter(p => p.id !== id);
+      await savePosts(filtered);
+
+      return res.status(200).json({
+        success: true,
+        message: 'تم حذف المنشور بنجاح وتحديث القائمة'
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message });
+    }
   }
 
   return res.status(405).json({ success: false, message: 'Method Not Allowed' });

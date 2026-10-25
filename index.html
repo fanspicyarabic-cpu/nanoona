@@ -21,8 +21,11 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="الملكة نانو | المنصة الرسمية الحصرية VIP 👑">
     <meta name="twitter:description" content="شاهد المحتوى الحصري واستمتع بالتواصل المباشر مع الملكة نانو">
-    <meta name="twitter:image" content="https://nanoona.vercel.app/avatar.jpg">
     <meta name="theme-color" content="#EAB308">
+    <!-- Favicon (أيقونة الموقع في تبويبات المتصفح والجوال) -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/jpeg" href="avatar.jpg">
+    <link rel="apple-touch-icon" href="avatar.jpg">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -150,9 +153,18 @@
                         <div class="flex items-center justify-center sm:justify-start gap-2">
                             <h1 id="celebrityNameDisplay" class="text-2xl sm:text-3xl font-black text-white">الملكة نانو</h1>
                             <!-- شارة التوثيق الحقيقية الرسمية (Official Verified Rosette Badge) -->
-                            <span class="inline-flex items-center text-sky-400" title="حساب رسمي وموثق">
-                                <svg class="w-6 h-6 fill-current drop-shadow-md" viewBox="0 0 24 24">
-                                    <path d="M10.29 2.308a2.5 2.5 0 0 1 3.42 0l1.19 1.127a2.5 2.5 0 0 0 2.21.644l1.62-.31a2.5 2.5 0 0 1 2.87 1.886l.43 1.594a2.5 2.5 0 0 0 1.54 1.734l1.52.597a2.5 2.5 0 0 1 1.44 3.123l-.56 1.554a2.5 2.5 0 0 0 .22 2.29l.99 1.306a2.5 2.5 0 0 1-.95 3.312l-1.41.828a2.5 2.5 0 0 0-1.23 1.968l-.13 1.644a2.5 2.5 0 0 1-2.48 2.37l-1.64.04a2.5 2.5 0 0 0-1.87 1.332l-.84 1.413a2.5 2.5 0 0 1-3.32.915l-1.44-.8a2.5 2.5 0 0 0-2.27-.083l-1.46.762a2.5 2.5 0 0 1-3.35-.806l-.91-1.37a2.5 2.5 0 0 0-1.92-1.258l-1.64-.131a2.5 2.5 0 0 1-2.54-2.307l-.21-1.636a2.5 2.5 0 0 0-1.16-2.012l-1.45-.756a2.5 2.5 0 0 1-1.07-3.276l.91-1.365a2.5 2.5 0 0 0 .31-2.28l-.48-1.58a2.5 2.5 0 0 1 1.34-3.167l1.5-.647a2.5 2.5 0 0 0 1.61-1.669l.52-1.567a2.5 2.5 0 0 1 2.81-1.974l1.63.25a2.5 2.5 0 0 0 2.24-.593l1.26-1.047zm3.99 7.402a1 1 0 0 0-1.41-1.42l-4.17 4.17-1.47-1.47a1 1 0 1 0-1.42 1.42l2.18 2.18a1 1 0 0 0 1.42 0l4.87-4.88z"/>
+                            <span class="inline-flex items-center justify-center flex-shrink-0 align-middle select-none transition-transform hover:scale-110" title="حساب رسمي وموثق 100%">
+                                <svg class="w-6 h-6 sm:w-7 sm:h-7 drop-shadow-[0_2px_8px_rgba(0,149,246,0.45)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="verifiedBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#38BDF8"/>
+                                            <stop offset="100%" stop-color="#0095F6"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- 12-point Official Rosette Seal (Instagram / Twitter / Telegram) -->
+                                    <path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z" fill="url(#verifiedBlueGrad)"/>
+                                    <!-- Crisp Pure White Centered Checkmark -->
+                                    <path d="M9 12.5l2.2 2.2 4.6-4.6" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </span>
                         </div>
@@ -170,18 +182,22 @@
             </div>
 
             <!-- Profile Stats Bar -->
-            <div class="grid grid-cols-3 border-t border-dark-700/60 bg-dark-800/50 py-3 text-center">
+            <div class="grid grid-cols-4 border-t border-dark-700/60 bg-dark-800/50 py-3 text-center">
                 <div>
-                    <div id="statFollowersDisplay" class="text-lg sm:text-xl font-bold text-gold-400">1.2M</div>
-                    <div class="text-xs text-gray-400">متابع</div>
+                    <div id="statFollowersDisplay" class="text-base sm:text-lg font-bold text-gold-400">1.2M</div>
+                    <div class="text-[11px] text-gray-400">متابع</div>
                 </div>
-                <div class="border-x border-dark-700/60">
-                    <div id="statSubscribersDisplay" class="text-lg sm:text-xl font-bold text-gold-400">154K</div>
-                    <div class="text-xs text-gray-400">مشترك VIP</div>
+                <div class="border-r border-dark-700/60">
+                    <div id="statSubscribersDisplay" class="text-base sm:text-lg font-bold text-gold-400">154K</div>
+                    <div class="text-[11px] text-gray-400">مشترك VIP</div>
                 </div>
-                <div>
-                    <div id="statLikesDisplay" class="text-lg sm:text-xl font-bold text-gold-400">3.8M</div>
-                    <div class="text-xs text-gray-400">إعجاب</div>
+                <div class="border-r border-dark-700/60">
+                    <div id="statViewsDisplay" class="text-base sm:text-lg font-bold text-gold-400">5.4M</div>
+                    <div class="text-[11px] text-gray-400">مشاهدة</div>
+                </div>
+                <div class="border-r border-dark-700/60">
+                    <div id="statLikesDisplay" class="text-base sm:text-lg font-bold text-gold-400">3.8M</div>
+                    <div class="text-[11px] text-gray-400">إعجاب</div>
                 </div>
             </div>
 
@@ -223,112 +239,10 @@
 
             <!-- Feed Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="feedPostsGrid">
-
-                <!-- Locked Post Card 1 (Video) -->
-                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="videos">
-                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
-                        <div class="flex items-center gap-3">
-                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
-                            <div>
-                                <h4 class="font-bold text-sm text-white">فيديو كواليس حصري 🎬</h4>
-                                <span class="text-xs text-gray-400">منذ ساعتين</span>
-                            </div>
-                        </div>
-                        <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <i class="fa-solid fa-video"></i> فيديو VIP
-                        </span>
-                    </div>
-                    
-                    <!-- Blurred Preview Box -->
-                    <div class="relative h-64 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600');">
-                        <!-- Heavy Blur overlay -->
-                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
-                            <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
-                                <i class="fa-solid fa-lock"></i>
-                            </div>
-                            <h3 class="font-bold text-lg text-white mb-1">المحتوى محمي للمشتركين</h3>
-                            <p class="text-xs text-gray-300 mb-4 max-w-xs">فيديو حصري بطول 8 دقائق خلف الكواليس متاح لـ باقة VIP الذهبية فقط.</p>
-                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-key"></i>
-                                <span>فتح الفيديو ($50 / شهر)</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
-                        <div class="flex items-center gap-4">
-                            <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">1.4k</span></button>
-                            <span><i class="fa-regular fa-comment ml-1"></i> 89</span>
-                        </div>
-                        <span><i class="fa-solid fa-eye ml-1"></i> 4.2k مشاهدة</span>
-                    </div>
+                <div class="col-span-1 md:col-span-2 text-center py-12 text-gray-400">
+                    <i class="fa-solid fa-circle-notch fa-spin text-2xl text-gold-400 mb-2"></i>
+                    <p class="text-xs">جاري تحميل المحتوى الحصري...</p>
                 </div>
-
-                <!-- Locked Post Card 2 (Photo Set) -->
-                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700" data-category="photos">
-                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
-                        <div class="flex items-center gap-3">
-                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
-                            <div>
-                                <h4 class="font-bold text-sm text-white">جلسة تصوير دبي 📸</h4>
-                                <span class="text-xs text-gray-400">أمس</span>
-                            </div>
-                        </div>
-                        <span class="bg-gold-500/20 text-gold-400 border border-gold-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <i class="fa-solid fa-images"></i> 12 صورة
-                        </span>
-                    </div>
-                    
-                    <div class="relative h-64 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600');">
-                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/60 flex flex-col items-center justify-center p-6 text-center">
-                            <div class="w-14 h-14 rounded-full bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
-                                <i class="fa-solid fa-lock"></i>
-                            </div>
-                            <h3 class="font-bold text-lg text-white mb-1">ألبوم صور حصري عالية الدقة</h3>
-                            <p class="text-xs text-gray-300 mb-4 max-w-xs">اشترك الآن لمشاهدة جميع الصور بالدقة الكاملة وتنزيلها.</p>
-                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-unlock"></i>
-                                <span>فتح المحتوى الحصري</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="p-3 bg-dark-800/40 flex items-center justify-between text-xs text-gray-400">
-                        <div class="flex items-center gap-4">
-                            <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">3.1k</span></button>
-                            <span><i class="fa-regular fa-comment ml-1"></i> 240</span>
-                        </div>
-                        <span><i class="fa-solid fa-eye ml-1"></i> 9.8k مشاهدة</span>
-                    </div>
-                </div>
-
-                <!-- Locked Post Card 3 (Live Stream Archive) -->
-                <div class="post-item-card glass-card glass-card-hover rounded-2xl overflow-hidden relative group border border-dark-700 md:col-span-2" data-category="live">
-                    <div class="p-4 flex items-center justify-between border-b border-dark-700/50">
-                        <div class="flex items-center gap-3">
-                            <img src="avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100'" class="w-10 h-10 rounded-full object-cover">
-                            <div>
-                                <h4 class="font-bold text-sm text-white">تسجيل البث المباشر الخاص 🎙️</h4>
-                                <span class="text-xs text-gray-400">منذ 3 أيام</span>
-                            </div>
-                        </div>
-                        <span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <i class="fa-solid fa-headset"></i> بث مباشر مسجل (45 دقيقة)
-                        </span>
-                    </div>
-                    
-                    <div class="relative h-56 w-full bg-cover bg-center overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800');">
-                        <div class="absolute inset-0 backdrop-blur-xl bg-dark-900/70 flex flex-col items-center justify-center p-6 text-center">
-                            <i class="fa-solid fa-lock text-3xl text-gold-400 mb-2"></i>
-                            <h3 class="font-bold text-xl text-white">جلسة إجابة على الأسئلة الخاصة والتفاعل المباشر</h3>
-                            <p class="text-xs text-gray-300 mt-1 mb-4">هذا المحتوى مخصص فقط لأعضاء الفئة المتقدمة والدردشة المباشرة</p>
-                            <button onclick="selectTier('اشتراك VIP برايفيت', '50.00')" class="gold-gradient-btn px-8 py-3 rounded-xl text-sm font-bold shadow-xl">
-                                اشترك للمشاهدة الآن
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -927,6 +841,10 @@
                 const el = document.getElementById('statSubscribersDisplay');
                 if (el) el.innerText = cfg.subscribersCount;
             }
+            if (cfg.viewsCount) {
+                const el = document.getElementById('statViewsDisplay');
+                if (el) el.innerText = cfg.viewsCount;
+            }
             if (cfg.likesCount) {
                 const el = document.getElementById('statLikesDisplay');
                 if (el) el.innerText = cfg.likesCount;
@@ -1006,17 +924,33 @@
             try {
                 const res = await fetch('/api/posts');
                 const data = await res.json();
-                if (data && data.posts && data.posts.length > 0) {
+                if (data && Array.isArray(data.posts)) {
                     renderDynamicPosts(data.posts);
+                } else {
+                    renderDynamicPosts([]);
                 }
             } catch (err) {
-                console.warn('[Posts] Using default feed posts:', err);
+                console.warn('[Posts] Using empty feed posts fallback:', err);
+                renderDynamicPosts([]);
             }
         }
 
         function renderDynamicPosts(posts) {
             const grid = document.getElementById('feedPostsGrid');
             if (!grid) return;
+
+            if (!posts || posts.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-1 md:col-span-2 text-center py-16 px-4 bg-dark-800/40 border border-dark-700/60 rounded-2xl">
+                        <div class="w-16 h-16 rounded-full bg-gold-500/10 border border-gold-500/20 mx-auto flex items-center justify-center text-gold-400 text-2xl mb-3 shadow-lg">
+                            <i class="fa-regular fa-folder-open"></i>
+                        </div>
+                        <h4 class="text-white font-bold text-base mb-1">لا توجد منشورات حالياً في التغذية</h4>
+                        <p class="text-xs text-gray-400 max-w-sm mx-auto">سيتم إتاحة محتويات جديدة فور نشرها من قبل صانعة المحتوى.</p>
+                    </div>
+                `;
+                return;
+            }
 
             const cardsHtml = posts.map(p => {
                 const isVip = p.isVip;
@@ -1090,6 +1024,7 @@
                             <div class="flex items-center gap-4">
                                 <button onclick="toggleLike(this)" class="hover:text-red-400 transition"><i class="fa-regular fa-heart ml-1"></i> <span class="like-num">${p.likes || 350}</span></button>
                                 <span><i class="fa-regular fa-comment ml-1"></i> ${Math.floor((p.likes || 350) / 3)}</span>
+                                <span><i class="fa-solid fa-eye ml-1"></i> ${p.views || 2400} مشاهدة</span>
                             </div>
                             <button onclick="openMediaLightbox('${p.title.replace(/'/g, "\\'")}', '${mediaType}', '${(p.mediaUrl || '').replace(/'/g, "\\'")}')" class="text-gold-400 hover:underline flex items-center gap-1">
                                 <span>مشاهدة كاملة</span>

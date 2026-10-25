@@ -1,49 +1,9 @@
-// api/site-config.js - إدارة وتخصيص واجهة الموقع وإعدادات البوت بأمان
+// api/site-config.js - إدارة وتخصيص واجهة الموقع وإعدادات البوت بأمان مع دعم التخزين الدائم
 import { isValidAdminToken } from './admin-auth.js';
+import { loadSiteConfig, saveSiteConfig } from './storage.js';
 
-let siteConfig = {
-  // بيانات المشهورة والبروفايل
-  celebrityName: "الملكة نانو",
-  celebrityTitle: "صانعة محتوى حصري | تجربة التواصل المباشر وVIP",
-  celebrityBio: "مرحباً بكم في العالم الخاص بالملكة نانو. تم إنشاء هذه المنصة لتوفير تجربة تواصل آمنة وحصرية مع المتابعين المميزين، بعيداً عن قيود منصات التواصل التقليدية.",
-  avatarUrl: "avatar.jpg",
-  coverUrl: "avatar.jpg",
-  
-  // مؤشرات الإحصائيات في البروفايل
-  followersCount: "1.2M",
-  subscribersCount: "154K",
-  likesCount: "3.8M",
-  
-  // أسعار وتفاصيل باقات الاشتراك المعتمدة
-  tierBasicName: "اشتراك المحتوى الأساسي",
-  tierBasicPrice: "20.00",
-  tierVipName: "اشتراك برايفيت VIP ⭐️",
-  tierVipPrice: "50.00",
-  tierCallName: "مكالمة فيديو مباشر 📹",
-  tierCallPrice: "150.00",
-  
-  // روابط التواصل الاجتماعي
-  telegramChannel: "https://t.me/nnano14",
-  whatsappNumber: "https://wa.me/qr/6SUMEKHOZNDUK1",
-  tiktokUrl: "https://t.me/nnano14",
-  instagramUrl: "https://t.me/nnano14",
-  snapchatUrl: "https://t.me/nnano14",
-
-  // إعدادات بوت وتليجرام (لا يتم كشفها للواجهة الأمامية في GET)
-  telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || "",
-  telegramChannelId: process.env.TELEGRAM_CHANNEL_ID || "@nnano14",
-  
-  // محافظ ووسائل محلية احتياطية
-  instapayAccount: "nanoona@instapay",
-  vodafoneCash: "01023456789",
-  zainCash: "07812345678",
-
-  // تفعيل أو إخفاء الدفع بالبطاقة البنكية (Visa / MasterCard) من لوحة التحكم
-  enableCardPayment: false
-};
-
-export function getSiteConfig() {
-  return siteConfig;
+export async function getSiteConfig() {
+  return await loadSiteConfig();
 }
 
 export default async function handler(req, res) {
@@ -55,17 +15,21 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // GET: إرجاع إعدادات الموقع بعد حجب المفاتيح والتوكنات السرية تماماً لمنع فحصها عبر F12
+  // GET: إرجاع إعدادات الموقع بعد حجب المفاتيح والتوكنات السرية
   if (req.method === 'GET') {
-    const safeConfig = { ...siteConfig };
-    safeConfig.hasBotToken = Boolean(siteConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN);
-    // حجب التوكن الحساس لمنع كشفه في أدوات المطور للمتصفح
-    delete safeConfig.telegramBotToken;
+    try {
+      const siteConfig = await loadSiteConfig();
+      const safeConfig = { ...siteConfig };
+      safeConfig.hasBotToken = Boolean(siteConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN);
+      delete safeConfig.telegramBotToken;
 
-    return res.status(200).json({
-      success: true,
-      config: safeConfig
-    });
+      return res.status(200).json({
+        success: true,
+        config: safeConfig
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message });
+    }
   }
 
   // POST: تحديث إعدادات الموقع (حصرياً للأدمن المعتمد مع التحقق من توكن الجلسة)
@@ -84,29 +48,29 @@ export default async function handler(req, res) {
         try { body = JSON.parse(body); } catch (e) { body = {}; }
       }
 
-      // الحفاظ على توكن البوت القديم إذا لم يرسل المستخدم توكناً جديداً
+      const currentConfig = await loadSiteConfig();
       const incomingBotToken = body.telegramBotToken ? body.telegramBotToken.trim() : null;
 
-      siteConfig = {
-        ...siteConfig,
-        ...(body || {})
+      const updateData = {
+        ...body
       };
 
       if (!incomingBotToken) {
-        siteConfig.telegramBotToken = siteConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN || "";
+        updateData.telegramBotToken = currentConfig.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN || "";
       } else {
-        siteConfig.telegramBotToken = incomingBotToken;
+        updateData.telegramBotToken = incomingBotToken;
       }
 
-      console.log('[Site Config Updated Securely]');
+      const updated = await saveSiteConfig(updateData);
+      console.log('[Site Config Updated Securely and Persisted]');
 
-      const safeConfig = { ...siteConfig };
-      safeConfig.hasBotToken = Boolean(siteConfig.telegramBotToken);
+      const safeConfig = { ...updated };
+      safeConfig.hasBotToken = Boolean(safeConfig.telegramBotToken);
       delete safeConfig.telegramBotToken;
 
       return res.status(200).json({
         success: true,
-        message: 'تم تحديث إعدادات واجهة الموقع بنجاح',
+        message: 'تم تحديث إعدادات واجهة الموقع بنجاح وحفظها',
         config: safeConfig
       });
     } catch (e) {

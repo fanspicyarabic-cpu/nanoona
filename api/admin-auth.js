@@ -1,32 +1,42 @@
-// api/admin-auth.js - إدارة مصادقة لوحة التحكم وتغيير كلمة السر بشكل آمن
+// api/admin-auth.js - إدارة مصادقة لوحة التحكم وتغيير كلمة السر بشكل آمن وعديم الحالة (Stateless HMAC)
 import crypto from 'crypto';
+import { getAdminPassword, setAdminPassword } from './storage.js';
 
-// كلمة السر في ذاكرة السيرفر، مع إمكانية تحديدها عبر متغيرات البيئة ADMIN_PASSWORD
-let currentAdminPassword = process.env.ADMIN_PASSWORD || 'nanoona2026';
+const AUTH_SECRET = process.env.ADMIN_JWT_SECRET || 'nanoona2026_jwt_secret_salt_v1';
 
-// قائمة التوكنات النشطة لجلسات الأدمن المعتمدة
-const activeSessions = new Map();
-
-// إنشاء توكن عشوائي ومشفر للجلسة
-function generateSessionToken() {
-  return crypto.randomBytes(32).toString('hex');
+// إنشاء توكن مشفر وموقع رقمياً للجلسة (صالحة عبر جميع خوادم Vercel Serverless)
+export function generateSessionToken() {
+  const timestamp = Date.now();
+  const signature = crypto.createHmac('sha256', AUTH_SECRET)
+    .update(`${timestamp}`)
+    .digest('hex');
+  return `${timestamp}.${signature}`;
 }
 
-// دالة مساعدة للتحقق من صلاحيات الأدمن عبر ترويسات الطلب أو التوكن
+// دالة مساعدة للتحقق من صحة وصلاحية توكن الأدمن بدون الاعتماد على ذاكرة مشتركة
 export function isValidAdminToken(token) {
-  if (!token) return false;
-  const session = activeSessions.get(token);
-  if (!session) return false;
-  // صلاحية الجلسة 24 ساعة
-  if (Date.now() - session.createdAt > 24 * 60 * 60 * 1000) {
-    activeSessions.delete(token);
+  if (!token || typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 2) return false;
+  const [timestampStr, signature] = parts;
+  const timestamp = parseInt(timestampStr, 10);
+  if (isNaN(timestamp)) return false;
+
+  // صلاحية الجلسة 7 أيام
+  if (Date.now() - timestamp > 7 * 24 * 60 * 60 * 1000) {
     return false;
   }
-  return true;
-}
 
-export function getCurrentAdminPassword() {
-  return currentAdminPassword;
+  const expectedSignature = crypto.createHmac('sha256', AUTH_SECRET)
+    .update(`${timestamp}`)
+    .digest('hex');
+
+  if (signature.length !== expectedSignature.length) return false;
+  try {
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
+  } catch (e) {
+    return false;
+  }
 }
 
 export default async function handler(req, res) {
@@ -56,15 +66,13 @@ export default async function handler(req, res) {
       }
 
       const { action, password, oldPassword, newPassword, token } = body || {};
+      const currentAdminPassword = await getAdminPassword();
 
       // 1. تسجيل الدخول
       if (action === 'login' || (!action && password)) {
         const inputPass = (password || '').trim();
         if (inputPass === currentAdminPassword) {
           const sessionToken = generateSessionToken();
-          activeSessions.set(sessionToken, {
-            createdAt: Date.now()
-          });
 
           return res.status(200).json({
             success: true,
@@ -82,8 +90,8 @@ export default async function handler(req, res) {
       // 2. تغيير كلمة السر من لوحة التحكم
       if (action === 'change-password') {
         const adminToken = token || req.headers['x-admin-token'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null);
-        
-        // التحقق من توكن الجلسة أولاً لضمان عدم وصول أي شخص خارجي
+
+        // التحقق من توكن الجلسة أولاً
         if (!isValidAdminToken(adminToken)) {
           return res.status(403).json({
             success: false,
@@ -115,12 +123,9 @@ export default async function handler(req, res) {
           });
         }
 
-        // تحديث كلمة السر وتجديد التوكن
-        currentAdminPassword = newPass;
+        // تحديث كلمة السر
+        await setAdminPassword(newPass);
         const newSessionToken = generateSessionToken();
-        activeSessions.set(newSessionToken, {
-          createdAt: Date.now()
-        });
 
         console.log('🔒 [Security] تم تغيير كلمة سر لوحة التحكم بنجاح');
 

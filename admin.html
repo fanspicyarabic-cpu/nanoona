@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة التحكم الإدارية | الملكة نانو</title>
+  <!-- Favicon (أيقونة لوحة التحكم في المتصفح) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/jpeg" href="avatar.jpg">
+  <link rel="apple-touch-icon" href="avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -537,7 +541,7 @@
         <!-- 2. إحصائيات البروفايل -->
         <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 18px;">
           <h3 style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 12px;">📊 مؤشرات وإحصائيات البروفايل</h3>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
             <div class="form-group">
               <label class="form-label">عدد المتابعين:</label>
               <input type="text" id="cfgFollowersCount" class="text-input" placeholder="1.2M">
@@ -545,6 +549,10 @@
             <div class="form-group">
               <label class="form-label">عدد المشتركين VIP:</label>
               <input type="text" id="cfgSubscribersCount" class="text-input" placeholder="154K">
+            </div>
+            <div class="form-group">
+              <label class="form-label">عدد المشاهدات:</label>
+              <input type="text" id="cfgViewsCount" class="text-input" placeholder="5.4M">
             </div>
             <div class="form-group">
               <label class="form-label">عدد الإعجابات:</label>
@@ -720,6 +728,16 @@
           <option value="video">فيديو مباشر (MP4/WebM)</option>
           <option value="youtube">يوتيوب (YouTube)</option>
         </select>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="form-group">
+          <label class="form-label">عدد المشاهدات:</label>
+          <input type="text" id="editPostViews" class="text-input" placeholder="1250 أو 4.2k">
+        </div>
+        <div class="form-group">
+          <label class="form-label">عدد الإعجابات:</label>
+          <input type="text" id="editPostLikes" class="text-input" placeholder="142">
+        </div>
       </div>
       <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-md);">
         <div>
@@ -1084,7 +1102,10 @@
       try {
         await fetch('/api/posts', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': sessionStorage.getItem('admin_token') || ''
+          },
           body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip })
         });
 
@@ -1093,7 +1114,10 @@
           const channelId = document.getElementById('cfgChannelId').value.trim();
           await fetch('/api/publish', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'x-admin-token': sessionStorage.getItem('admin_token') || ''
+            },
             body: JSON.stringify({ title, content, mediaUrl, mediaType, isVip, botToken, channelId, buttonText, buttonUrl })
           });
         }
@@ -1103,6 +1127,7 @@
         document.getElementById('postContent').value = '';
         document.getElementById('postMediaUrl').value = '';
         onMediaUrlChange('');
+        loadPosts();
       } catch (e) {
         alert('حدث خطأ أثناء النشر');
       }
@@ -1118,7 +1143,7 @@
         const posts = (data && data.posts) || [];
         loadedPostsCache = posts;
 
-        if (posts.length === 0) { box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد منشورات حالياً.</div>'; return; }
+        if (posts.length === 0) { box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد منشورات حالياً. يمكنك إضافة منشور جديد من النموذج أعلاه.</div>'; return; }
 
         box.innerHTML = posts.map(p => `
           <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap;">
@@ -1150,6 +1175,8 @@
       document.getElementById('editPostMediaUrl').value = p.mediaUrl || '';
       document.getElementById('editPostMediaType').value = p.mediaType || 'image';
       document.getElementById('editPostIsVip').checked = Boolean(p.isVip);
+      document.getElementById('editPostViews').value = p.views !== undefined ? p.views : 1250;
+      document.getElementById('editPostLikes').value = p.likes !== undefined ? p.likes : 142;
 
       document.getElementById('editPostModal').classList.add('active');
     }
@@ -1166,14 +1193,19 @@
       const mediaUrl = document.getElementById('editPostMediaUrl').value.trim();
       const mediaType = document.getElementById('editPostMediaType').value;
       const isVip = document.getElementById('editPostIsVip').checked;
+      const views = document.getElementById('editPostViews').value.trim();
+      const likes = document.getElementById('editPostLikes').value.trim();
 
       if (!title) { alert('عنوان المنشور مطلوب'); return; }
 
       try {
         const res = await fetch('/api/posts', {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, title, content, mediaUrl, mediaType, isVip })
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': sessionStorage.getItem('admin_token') || ''
+          },
+          body: JSON.stringify({ id, title, content, mediaUrl, mediaType, isVip, views, likes })
         });
         const data = await res.json();
         if (data && data.success) {
@@ -1190,8 +1222,22 @@
 
     async function deletePost(id) {
       if (!confirm('هل أنت متأكد من حذف هذا المنشور نهائياً من المنصة؟')) return;
-      await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
-      loadPosts();
+      try {
+        const res = await fetch(`/api/posts?id=${id}`, {
+          method: 'DELETE',
+          headers: {
+            'x-admin-token': sessionStorage.getItem('admin_token') || ''
+          }
+        });
+        const data = await res.json();
+        if (data && data.success) {
+          loadPosts();
+        } else {
+          alert(data.message || 'فشل حذف المنشور');
+        }
+      } catch (e) {
+        alert('حدث خطأ أثناء حذف المنشور');
+      }
     }
 
     // جلب إعدادات الموقع وتعبئة النموذج
@@ -1209,6 +1255,7 @@
 
           if (c.followersCount) document.getElementById('cfgFollowersCount').value = c.followersCount;
           if (c.subscribersCount) document.getElementById('cfgSubscribersCount').value = c.subscribersCount;
+          if (c.viewsCount && document.getElementById('cfgViewsCount')) document.getElementById('cfgViewsCount').value = c.viewsCount;
           if (c.likesCount) document.getElementById('cfgLikesCount').value = c.likesCount;
 
           if (c.tierBasicName) document.getElementById('cfgTier1Name').value = c.tierBasicName;
@@ -1251,6 +1298,7 @@
 
         followersCount: document.getElementById('cfgFollowersCount').value.trim(),
         subscribersCount: document.getElementById('cfgSubscribersCount').value.trim(),
+        viewsCount: document.getElementById('cfgViewsCount') ? document.getElementById('cfgViewsCount').value.trim() : '5.4M',
         likesCount: document.getElementById('cfgLikesCount').value.trim(),
 
         tierBasicName: document.getElementById('cfgTier1Name').value.trim(),
@@ -1294,7 +1342,7 @@
           setTimeout(() => { notice.style.display = 'none'; }, 5000);
           alert('تم حفظ وتطبيق التعديلات على واجهة الموقع بنجاح! 💾✨');
         } else {
-          alert('حدث خطأ أثناء حفظ الإعدادات');
+          alert(`حدث خطأ أثناء حفظ الإعدادات: ${data.message || 'يرجى تسجيل الدخول مجدداً'}`);
         }
       } catch (e) {
         alert('فشل الاتصال بالخادم لحفظ الإعدادات');
